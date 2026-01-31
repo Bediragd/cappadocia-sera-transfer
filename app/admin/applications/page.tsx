@@ -316,47 +316,6 @@ export default function ApplicationsPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-                  <span>{new Date(selectedApplication.created_at).toLocaleString("tr-TR")}</span>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4 p-4 rounded-lg bg-muted/50">
-                <div>
-                  <p className="text-sm text-muted-foreground">Tecrube</p>
-                  <p className="font-medium">{selectedApplication.experience_years} yil</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Ehliyet Turu</p>
-                  <p className="font-medium">{selectedApplication.license_type}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Kendi Araci</p>
-                  <p className="font-medium">{selectedApplication.has_own_vehicle ? "Evet" : "Hayir"}</p>
-                </div>
-                {selectedApplication.vehicle_type && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">Arac Turu</p>
-                    <p className="font-medium">{selectedApplication.vehicle_type}</p>
-                  </div>
-                )}
-              </div>
-
-              {selectedApplication.message && (
-                <div>
-                  <p className="text-sm text-muted-foreground mb-2">Ek Bilgiler</p>
-                  <p className="p-4 rounded-lg bg-muted/50 text-foreground">
-                    {selectedApplication.message}
-                  </p>
-                </div>
-              )}
-
-              <div className="flex justify-end">
-                {getStatusBadge(selectedApplication.status)}
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

@@ -474,21 +474,3 @@ export default function VehiclesPage() {
     </div>
   )
 }
-
-                    </div>
-                    <div className="flex items-center justify-between pt-2 border-t border-border">
-                      <span className="text-sm text-muted-foreground">Baslangic Fiyati</span>
-                      <span className="font-semibold text-foreground">
-                        {vehicle.base_price.toLocaleString("tr-TR")} TL
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
