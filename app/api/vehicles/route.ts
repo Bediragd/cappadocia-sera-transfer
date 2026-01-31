@@ -17,20 +17,26 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const {
-      name, nameTr, nameEn, nameRu, nameHi,
-      descriptionTr, descriptionEn, descriptionRu, descriptionHi,
-      capacity, luggageCapacity, imageUrl, pricePerKm, basePrice
+      name_tr, name_en, name_ru, name_hi, model,
+      description_tr, description_en, description_ru, description_hi,
+      capacity, luggage_capacity, image_url, price_per_km, base_price, is_active
     } = body
+
+    // Generate slug from Turkish name
+    const slug = name_tr.toLowerCase()
+      .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's')
+      .replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
     const result = await sql`
       INSERT INTO vehicles (
-        name, name_tr, name_en, name_ru, name_hi,
+        slug, name_tr, name_en, name_ru, name_hi, model,
         description_tr, description_en, description_ru, description_hi,
-        capacity, luggage_capacity, image_url, price_per_km, base_price
+        capacity, luggage_capacity, image_url, price_per_km, base_price, is_active
       ) VALUES (
-        ${name}, ${nameTr}, ${nameEn}, ${nameRu}, ${nameHi},
-        ${descriptionTr}, ${descriptionEn}, ${descriptionRu}, ${descriptionHi},
-        ${capacity}, ${luggageCapacity}, ${imageUrl}, ${pricePerKm}, ${basePrice}
+        ${slug}, ${name_tr}, ${name_en}, ${name_ru}, ${name_hi}, ${model},
+        ${description_tr}, ${description_en}, ${description_ru}, ${description_hi},
+        ${capacity}, ${luggage_capacity}, ${image_url}, ${price_per_km}, ${base_price}, ${is_active !== false}
       )
       RETURNING *
     `
