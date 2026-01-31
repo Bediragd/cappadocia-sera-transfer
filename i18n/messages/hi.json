@@ -1,0 +1,164 @@
+{
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "एक त्रुटि हुई",
+    "success": "सफल",
+    "submit": "जमा करें",
+    "cancel": "रद्द करें",
+    "save": "सहेजें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "view": "देखें",
+    "search": "खोजें",
+    "filter": "फ़िल्टर",
+    "all": "सभी",
+    "yes": "हां",
+    "no": "नहीं",
+    "back": "वापस",
+    "next": "अगला",
+    "previous": "पिछला",
+    "close": "बंद करें"
+  },
+  "nav": {
+    "home": "होम",
+    "services": "सेवाएं",
+    "vehicles": "हमारे वाहन",
+    "about": "हमारे बारे में",
+    "contact": "संपर्क",
+    "booking": "बुकिंग",
+    "gallery": "गैलरी",
+    "driverApplication": "ड्राइवर आवेदन"
+  },
+  "hero": {
+    "title": "नेवशहिर VIP ट्रांसफर",
+    "subtitle": "कैपाडोसिया की विश्वसनीय ट्रांसफर सेवा",
+    "description": "हवाई अड्डा ट्रांसफर, अंतर-शहर यात्रा और VIP टूर के लिए पेशेवर सेवा",
+    "bookNow": "अभी बुक करें",
+    "callUs": "हमें कॉल करें",
+    "whatsapp": "WhatsApp से संपर्क करें"
+  },
+  "services": {
+    "title": "हमारी सेवाएं",
+    "subtitle": "आपके लिए ट्रांसफर समाधान",
+    "airportTransfer": {
+      "title": "हवाई अड्डा ट्रांसफर",
+      "description": "कैसेरी और नेवशहिर हवाई अड्डों से सुरक्षित और आरामदायक ट्रांसफर"
+    },
+    "cityTransfer": {
+      "title": "अंतर-शहर ट्रांसफर",
+      "description": "तुर्की में कहीं भी आरामदायक और सुरक्षित ट्रांसफर"
+    },
+    "vipTour": {
+      "title": "VIP टूर सेवा",
+      "description": "कैपाडोसिया की अनूठी सुंदरता खोजें"
+    },
+    "weddingTransfer": {
+      "title": "शादी और विशेष कार्यक्रम",
+      "description": "आपके विशेष दिनों के लिए लक्जरी कार किराए पर"
+    }
+  },
+  "vehicles": {
+    "title": "हमारा बेड़ा",
+    "subtitle": "हर जरूरत के लिए वाहन विकल्प",
+    "passengers": "यात्री",
+    "luggage": "सामान",
+    "features": "विशेषताएं",
+    "selectVehicle": "वाहन चुनें",
+    "sedan": {
+      "name": "सेडान (VIP)",
+      "description": "1-3 लोगों के लिए आरामदायक ट्रांसफर"
+    },
+    "vip": {
+      "name": "VIP मिनीवैन",
+      "description": "4-6 लोगों के लिए लक्जरी ट्रांसफर"
+    },
+    "minibus": {
+      "name": "मिनीबस",
+      "description": "7-14 लोगों के लिए समूह ट्रांसफर"
+    }
+  },
+  "booking": {
+    "title": "बुकिंग",
+    "subtitle": "त्वरित और आसान बुकिंग",
+    "pickupLocation": "पिकअप स्थान",
+    "dropoffLocation": "ड्रॉपऑफ स्थान",
+    "pickupDate": "पिकअप तारीख",
+    "pickupTime": "पिकअप समय",
+    "passengers": "यात्रियों की संख्या",
+    "luggage": "सामान की संख्या",
+    "selectVehicle": "वाहन चुनें",
+    "customerName": "पूरा नाम",
+    "customerEmail": "ईमेल",
+    "customerPhone": "फोन",
+    "notes": "नोट्स (वैकल्पिक)",
+    "totalPrice": "कुल कीमत",
+    "confirmBooking": "बुकिंग की पुष्टि करें",
+    "bookingSuccess": "आपकी बुकिंग सफलतापूर्वक बनाई गई!",
+    "bookingNumber": "बुकिंग नंबर",
+    "selectAirport": "हवाई अड्डा चुनें",
+    "enterAddress": "पता दर्ज करें"
+  },
+  "about": {
+    "title": "हमारे बारे में",
+    "subtitle": "हमें क्यों चुनें?",
+    "description": "10 वर्षों से अधिक के अनुभव के साथ, हम कैपाडोसिया क्षेत्र में विश्वसनीय और आरामदायक ट्रांसफर सेवा प्रदान करते हैं।",
+    "experience": "वर्षों का अनुभव",
+    "customers": "खुश ग्राहक",
+    "vehicles": "वाहन बेड़ा",
+    "drivers": "पेशेवर ड्राइवर",
+    "features": {
+      "safety": {
+        "title": "सुरक्षा",
+        "description": "हमारे सभी वाहन बीमित और नियमित रूप से रखरखाव किए गए हैं"
+      },
+      "comfort": {
+        "title": "आराम",
+        "description": "लक्जरी और आरामदायक वाहन विकल्प"
+      },
+      "punctuality": {
+        "title": "समयबद्धता",
+        "description": "समय पर पहुंचने की गारंटी"
+      },
+      "support": {
+        "title": "24/7 सहायता",
+        "description": "हम हमेशा आपके साथ हैं"
+      }
+    }
+  },
+  "contact": {
+    "title": "संपर्क",
+    "subtitle": "हमसे संपर्क करें",
+    "name": "पूरा नाम",
+    "email": "ईमेल",
+    "phone": "फोन",
+    "subject": "विषय",
+    "message": "आपका संदेश",
+    "send": "संदेश भेजें",
+    "address": "पता",
+    "workingHours": "कार्य समय",
+    "everyday": "हर दिन 24/7",
+    "successMessage": "आपका संदेश सफलतापूर्वक भेजा गया!"
+  },
+  "footer": {
+    "description": "कैपाडोसिया क्षेत्र में विश्वसनीय ट्रांसफर सेवा",
+    "quickLinks": "त्वरित लिंक",
+    "contactInfo": "संपर्क जानकारी",
+    "followUs": "हमें फॉलो करें",
+    "copyright": "सर्वाधिकार सुरक्षित।"
+  },
+  "driverApplication": {
+    "title": "ड्राइवर आवेदन",
+    "subtitle": "हमारी टीम में शामिल हों",
+    "name": "पूरा नाम",
+    "email": "ईमेल",
+    "phone": "फोन",
+    "experienceYears": "अनुभव (वर्ष)",
+    "licenseType": "लाइसेंस प्रकार",
+    "hasOwnVehicle": "क्या आपके पास अपना वाहन है?",
+    "vehicleType": "वाहन प्रकार",
+    "city": "शहर",
+    "message": "अतिरिक्त जानकारी",
+    "submit": "आवेदन जमा करें",
+    "successMessage": "आपका आवेदन सफलतापूर्वक प्राप्त हुआ!"
+  }
+}

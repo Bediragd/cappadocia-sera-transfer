@@ -1,0 +1,164 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "filter": "Filter",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "vehicles": "Our Vehicles",
+    "about": "About Us",
+    "contact": "Contact",
+    "booking": "Booking",
+    "gallery": "Gallery",
+    "driverApplication": "Driver Application"
+  },
+  "hero": {
+    "title": "Nevşehir VIP Transfer",
+    "subtitle": "Cappadocia's Reliable Transfer Service",
+    "description": "Professional service for airport transfers, intercity journeys and VIP tours",
+    "bookNow": "Book Now",
+    "callUs": "Call Us",
+    "whatsapp": "Contact via WhatsApp"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Transfer solutions tailored for you",
+    "airportTransfer": {
+      "title": "Airport Transfer",
+      "description": "Safe and comfortable transfer service from Kayseri and Nevşehir airports"
+    },
+    "cityTransfer": {
+      "title": "Intercity Transfer",
+      "description": "Comfortable and safe transfer to anywhere in Turkey"
+    },
+    "vipTour": {
+      "title": "VIP Tour Service",
+      "description": "Discover the unique beauties of Cappadocia"
+    },
+    "weddingTransfer": {
+      "title": "Wedding & Special Events",
+      "description": "Luxury car rental for your special days"
+    }
+  },
+  "vehicles": {
+    "title": "Our Fleet",
+    "subtitle": "Vehicle options for every need",
+    "passengers": "Passengers",
+    "luggage": "Luggage",
+    "features": "Features",
+    "selectVehicle": "Select Vehicle",
+    "sedan": {
+      "name": "Sedan (VIP)",
+      "description": "Comfortable transfer for 1-3 people"
+    },
+    "vip": {
+      "name": "VIP Minivan",
+      "description": "Luxury transfer for 4-6 people"
+    },
+    "minibus": {
+      "name": "Minibus",
+      "description": "Group transfer for 7-14 people"
+    }
+  },
+  "booking": {
+    "title": "Booking",
+    "subtitle": "Quick and easy booking",
+    "pickupLocation": "Pickup Location",
+    "dropoffLocation": "Dropoff Location",
+    "pickupDate": "Pickup Date",
+    "pickupTime": "Pickup Time",
+    "passengers": "Number of Passengers",
+    "luggage": "Number of Luggage",
+    "selectVehicle": "Select Vehicle",
+    "customerName": "Full Name",
+    "customerEmail": "Email",
+    "customerPhone": "Phone",
+    "notes": "Notes (Optional)",
+    "totalPrice": "Total Price",
+    "confirmBooking": "Confirm Booking",
+    "bookingSuccess": "Your booking has been successfully created!",
+    "bookingNumber": "Booking Number",
+    "selectAirport": "Select airport",
+    "enterAddress": "Enter address"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Why Choose Us?",
+    "description": "With over 10 years of experience, we provide reliable and comfortable transfer service in the Cappadocia region.",
+    "experience": "Years Experience",
+    "customers": "Happy Customers",
+    "vehicles": "Vehicle Fleet",
+    "drivers": "Professional Drivers",
+    "features": {
+      "safety": {
+        "title": "Safety",
+        "description": "All our vehicles are insured and regularly maintained"
+      },
+      "comfort": {
+        "title": "Comfort",
+        "description": "Luxury and comfortable vehicle options"
+      },
+      "punctuality": {
+        "title": "Punctuality",
+        "description": "On-time arrival guarantee"
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "We are always here for you"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Get in touch with us",
+    "name": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "subject": "Subject",
+    "message": "Your Message",
+    "send": "Send Message",
+    "address": "Address",
+    "workingHours": "Working Hours",
+    "everyday": "24/7 Every day",
+    "successMessage": "Your message has been sent successfully!"
+  },
+  "footer": {
+    "description": "Reliable transfer service in the Cappadocia region",
+    "quickLinks": "Quick Links",
+    "contactInfo": "Contact Info",
+    "followUs": "Follow Us",
+    "copyright": "All rights reserved."
+  },
+  "driverApplication": {
+    "title": "Driver Application",
+    "subtitle": "Join our team",
+    "name": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "experienceYears": "Experience (Years)",
+    "licenseType": "License Type",
+    "hasOwnVehicle": "Do you have your own vehicle?",
+    "vehicleType": "Vehicle Type",
+    "city": "City",
+    "message": "Additional Information",
+    "submit": "Submit Application",
+    "successMessage": "Your application has been successfully received!"
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu",
+    "success": "Başarılı",
+    "submit": "Gönder",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "view": "Görüntüle",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "all": "Tümü",
+    "yes": "Evet",
+    "no": "Hayır",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki",
+    "close": "Kapat"
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "services": "Hizmetler",
+    "vehicles": "Araçlarımız",
+    "about": "Hakkımızda",
+    "contact": "İletişim",
+    "booking": "Rezervasyon",
+    "gallery": "Galeri",
+    "driverApplication": "Şoför Başvurusu"
+  },
+  "hero": {
+    "title": "Nevşehir VIP Transfer",
+    "subtitle": "Kapadokya'nın Güvenilir Transfer Hizmeti",
+    "description": "Havalimanı transferleri, şehirler arası yolculuklar ve VIP turlar için profesyonel hizmet",
+    "bookNow": "Hemen Rezervasyon Yap",
+    "callUs": "Bizi Arayın",
+    "whatsapp": "WhatsApp ile İletişim"
+  },
+  "services": {
+    "title": "Hizmetlerimiz",
+    "subtitle": "Size özel transfer çözümleri",
+    "airportTransfer": {
+      "title": "Havalimanı Transferi",
+      "description": "Kayseri ve Nevşehir havalimanlarından güvenli ve konforlu transfer hizmeti"
+    },
+    "cityTransfer": {
+      "title": "Şehirler Arası Transfer",
+      "description": "Türkiye'nin her yerine konforlu ve güvenli transfer"
+    },
+    "vipTour": {
+      "title": "VIP Tur Hizmeti",
+      "description": "Kapadokya'nın eşsiz güzelliklerini keşfedin"
+    },
+    "weddingTransfer": {
+      "title": "Düğün & Özel Gün",
+      "description": "Özel günleriniz için lüks araç kiralama"
+    }
+  },
+  "vehicles": {
+    "title": "Araç Filomuz",
+    "subtitle": "Her ihtiyaca uygun araç seçenekleri",
+    "passengers": "Yolcu",
+    "luggage": "Bavul",
+    "features": "Özellikler",
+    "selectVehicle": "Araç Seç",
+    "sedan": {
+      "name": "Sedan (VIP)",
+      "description": "1-3 kişilik konforlu transfer"
+    },
+    "vip": {
+      "name": "VIP Minivan",
+      "description": "4-6 kişilik lüks transfer"
+    },
+    "minibus": {
+      "name": "Minibüs",
+      "description": "7-14 kişilik grup transferi"
+    }
+  },
+  "booking": {
+    "title": "Rezervasyon",
+    "subtitle": "Hızlı ve kolay rezervasyon",
+    "pickupLocation": "Alış Noktası",
+    "dropoffLocation": "Bırakış Noktası",
+    "pickupDate": "Alış Tarihi",
+    "pickupTime": "Alış Saati",
+    "passengers": "Yolcu Sayısı",
+    "luggage": "Bavul Sayısı",
+    "selectVehicle": "Araç Seçin",
+    "customerName": "Ad Soyad",
+    "customerEmail": "E-posta",
+    "customerPhone": "Telefon",
+    "notes": "Notlar (Opsiyonel)",
+    "totalPrice": "Toplam Fiyat",
+    "confirmBooking": "Rezervasyonu Onayla",
+    "bookingSuccess": "Rezervasyonunuz başarıyla oluşturuldu!",
+    "bookingNumber": "Rezervasyon Numarası",
+    "selectAirport": "Havalimanı seçin",
+    "enterAddress": "Adres girin"
+  },
+  "about": {
+    "title": "Hakkımızda",
+    "subtitle": "Neden Bizi Tercih Etmelisiniz?",
+    "description": "10 yılı aşkın tecrübemizle Kapadokya bölgesinde güvenilir ve konforlu transfer hizmeti sunuyoruz.",
+    "experience": "Yıllık Deneyim",
+    "customers": "Mutlu Müşteri",
+    "vehicles": "Araç Filosu",
+    "drivers": "Profesyonel Şoför",
+    "features": {
+      "safety": {
+        "title": "Güvenlik",
+        "description": "Tüm araçlarımız sigortalı ve düzenli bakımlı"
+      },
+      "comfort": {
+        "title": "Konfor",
+        "description": "Lüks ve konforlu araç seçenekleri"
+      },
+      "punctuality": {
+        "title": "Dakiklik",
+        "description": "Zamanında varış garantisi"
+      },
+      "support": {
+        "title": "7/24 Destek",
+        "description": "Her zaman yanınızdayız"
+      }
+    }
+  },
+  "contact": {
+    "title": "İletişim",
+    "subtitle": "Bizimle iletişime geçin",
+    "name": "Ad Soyad",
+    "email": "E-posta",
+    "phone": "Telefon",
+    "subject": "Konu",
+    "message": "Mesajınız",
+    "send": "Mesaj Gönder",
+    "address": "Adres",
+    "workingHours": "Çalışma Saatleri",
+    "everyday": "Her gün 7/24",
+    "successMessage": "Mesajınız başarıyla gönderildi!"
+  },
+  "footer": {
+    "description": "Kapadokya bölgesinin güvenilir transfer hizmeti",
+    "quickLinks": "Hızlı Bağlantılar",
+    "contactInfo": "İletişim Bilgileri",
+    "followUs": "Bizi Takip Edin",
+    "copyright": "Tüm hakları saklıdır."
+  },
+  "driverApplication": {
+    "title": "Şoför Başvurusu",
+    "subtitle": "Ekibimize katılın",
+    "name": "Ad Soyad",
+    "email": "E-posta",
+    "phone": "Telefon",
+    "experienceYears": "Tecrübe (Yıl)",
+    "licenseType": "Ehliyet Türü",
+    "hasOwnVehicle": "Kendi aracınız var mı?",
+    "vehicleType": "Araç Türü",
+    "city": "Şehir",
+    "message": "Ek Bilgiler",
+    "submit": "Başvuru Gönder",
+    "successMessage": "Başvurunuz başarıyla alındı!"
+  }
+}
