@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     let bookings
     if (status && status !== 'all') {
       bookings = await sql`
-        SELECT b.*, v.name_tr as vehicle_name, d.full_name as driver_name
+        SELECT b.*, COALESCE(b.final_price, b.calculated_price) as total_price, v.name_tr as vehicle_name, d.full_name as driver_name
         FROM bookings b
         LEFT JOIN vehicles v ON b.vehicle_id = v.id
         LEFT JOIN drivers d ON b.driver_id = d.id
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       `
     } else {
       bookings = await sql`
-        SELECT b.*, v.name_tr as vehicle_name, d.full_name as driver_name
+        SELECT b.*, COALESCE(b.final_price, b.calculated_price) as total_price, v.name_tr as vehicle_name, d.full_name as driver_name
         FROM bookings b
         LEFT JOIN vehicles v ON b.vehicle_id = v.id
         LEFT JOIN drivers d ON b.driver_id = d.id

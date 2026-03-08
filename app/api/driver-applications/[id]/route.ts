@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const applications = await sql`SELECT * FROM drivers WHERE id = ${id}`
+    const applications = await sql`SELECT * FROM driver_applications WHERE id = ${id}`
 
     if (applications.length === 0) {
       return NextResponse.json({ error: 'Application not found' }, { status: 404 })
@@ -34,7 +34,7 @@ export async function PATCH(
     }
 
     const result = await sql`
-      UPDATE drivers SET
+      UPDATE driver_applications SET
         status = ${status},
         notes = COALESCE(${notes}, notes),
         updated_at = NOW()
@@ -59,7 +59,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
-    await sql`DELETE FROM drivers WHERE id = ${id}`
+    await sql`DELETE FROM driver_applications WHERE id = ${id}`
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Error deleting application:', error)

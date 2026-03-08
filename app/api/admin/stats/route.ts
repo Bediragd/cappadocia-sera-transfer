@@ -16,16 +16,16 @@ export async function GET() {
       sql`SELECT COUNT(*) as count FROM bookings`,
       sql`SELECT COUNT(*) as count FROM bookings WHERE status = 'pending'`,
       sql`SELECT COUNT(*) as count FROM bookings WHERE status = 'confirmed'`,
-      sql`SELECT COUNT(*) as count FROM drivers WHERE is_active = true`,
+      sql`SELECT COUNT(*) as count FROM drivers WHERE status = 'approved'`,
       sql`SELECT COUNT(*) as count FROM vehicles WHERE is_active = true`,
       sql`SELECT COUNT(*) as count FROM contact_messages WHERE is_read = false`,
       sql`SELECT COUNT(*) as count FROM driver_applications WHERE status = 'pending'`,
-      sql`SELECT COALESCE(SUM(total_price), 0) as total FROM bookings WHERE payment_status = 'paid'`
+      sql`SELECT COALESCE(SUM(COALESCE(final_price, calculated_price)), 0) as total FROM bookings WHERE payment_status = 'paid'`
     ])
 
     // Get recent bookings
     const recentBookings = await sql`
-      SELECT b.*, v.name_tr as vehicle_name
+      SELECT b.*, COALESCE(b.final_price, b.calculated_price) as total_price, v.name_tr as vehicle_name
       FROM bookings b
       LEFT JOIN vehicles v ON b.vehicle_id = v.id
       ORDER BY b.created_at DESC
@@ -37,7 +37,7 @@ export async function GET() {
       SELECT 
         DATE_TRUNC('month', created_at) as month,
         COUNT(*) as bookings,
-        COALESCE(SUM(total_price), 0) as revenue
+        COALESCE(SUM(COALESCE(final_price, calculated_price)), 0) as revenue
       FROM bookings
       WHERE created_at >= NOW() - INTERVAL '6 months'
       GROUP BY DATE_TRUNC('month', created_at)

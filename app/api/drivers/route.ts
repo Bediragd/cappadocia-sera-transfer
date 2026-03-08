@@ -4,11 +4,9 @@ import { sql } from '@/lib/db'
 export async function GET() {
   try {
     const drivers = await sql`
-      SELECT d.*, v.name_tr as vehicle_name
-      FROM drivers d
-      LEFT JOIN vehicles v ON d.vehicle_id = v.id
-      WHERE d.is_active = true
-      ORDER BY d.name ASC
+      SELECT id, status, full_name as name, email, phone, city, license_number, own_vehicle, vehicle_type, notes, created_at
+      FROM drivers
+      ORDER BY full_name ASC
     `
     return NextResponse.json({ drivers })
   } catch (error) {
@@ -20,11 +18,11 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, phone, email, licenseNumber, vehicleId } = body
+    const { name, phone, email, licenseNumber } = body
 
     const result = await sql`
-      INSERT INTO drivers (name, phone, email, license_number, vehicle_id)
-      VALUES (${name}, ${phone}, ${email}, ${licenseNumber}, ${vehicleId || null})
+      INSERT INTO drivers (full_name, phone, email, license_number)
+      VALUES (${name}, ${phone}, ${email}, ${licenseNumber || null})
       RETURNING *
     `
 

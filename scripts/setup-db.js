@@ -1,3 +1,12 @@
+/**
+ * Tam veritabanı kurulumu. Sırayla çalıştırır:
+ * 001 → users, vehicles, airports, bookings, drivers, contact_messages, settings, sessions
+ * 002 → popular_hotels
+ * 003 → driver_applications
+ * 004 → ek araçlar (kapasite)
+ * 005 → araç description sütunları
+ * Eksik tablo kalırsa: node scripts/setup-missing-tables.js
+ */
 require('dotenv').config();
 const { Pool } = require('pg');
 const fs = require('fs');
@@ -66,6 +75,13 @@ async function setupDatabase() {
       console.log('   • popular_hotels (Popüler oteller)');
     } catch (e) {
       console.log('   ⚠️  002-create-hotels-table.sql atlandı:', e.message);
+    }
+    try {
+      const sql003 = fs.readFileSync(path.join(__dirname, '003-create-driver-applications-table.sql'), 'utf8');
+      await pool.query(sql003);
+      console.log('   • driver_applications (Şoför başvuruları)');
+    } catch (e) {
+      console.log('   ⚠️  003-create-driver-applications-table.sql atlandı:', e.message);
     }
     console.log('\n📦 Varsayılan veriler eklendi:');
     console.log('   • 3 araç (Sedan, VIP Minivan, Minibüs)');
