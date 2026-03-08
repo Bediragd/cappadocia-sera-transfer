@@ -1,7 +1,44 @@
-import { neon } from '@neondatabase/serverless'
+/**
+ * Veritabanı bağlantısı: Sunucuda (PM2/Node) Neon serverless fetch timeout verdiği için
+ * pg (TCP/5432) kullanıyoruz. Aynı sql`...` API'si korunuyor.
+ */
+import { Pool } from 'pg'
 
-const sql = neon(process.env.DATABASE_URL!)
+function getConnectionString(): string {
+  let url = process.env.DATABASE_URL ?? ''
+  url = url.replace(/[?&]channel_binding=require/gi, '').replace(/[?&]channel_binding=disable/gi, '')
+  if (!url.includes('sslmode=')) url += (url.includes('?') ? '&' : '?') + 'sslmode=require'
+  if (!url.includes('uselibpqcompat=')) url += (url.includes('?') ? '&' : '?') + 'uselibpqcompat=true'
+  url += (url.includes('?') ? '&' : '?') + 'channel_binding=disable'
+  return url
+}
 
+const connectionString = getConnectionString()
+const isNeon = connectionString.includes('neon.tech')
+
+const pool = new Pool({
+  connectionString: connectionString || 'postgres://localhost',
+  ssl: isNeon ? { rejectUnauthorized: false } : false,
+  connectionTimeoutMillis: 20000,
+  max: 10,
+})
+
+// Neon sql`` ile uyumlu: tagged template -> pg.query, sonuç olarak rows döner
+async function query(
+  strings: TemplateStringsArray,
+  ...values: unknown[]
+): Promise<Record<string, unknown>[]> {
+  let text = strings[0] ?? ''
+  const params: unknown[] = []
+  for (let i = 0; i < values.length; i++) {
+    params.push(values[i])
+    text += `$${params.length}` + (strings[i + 1] ?? '')
+  }
+  const result = await pool.query(text, params)
+  return result.rows as Record<string, unknown>[]
+}
+
+const sql = query
 export { sql }
 
 // Types

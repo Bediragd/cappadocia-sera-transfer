@@ -134,10 +134,21 @@ export function BookingFormImproved() {
   }, [])
 
   // Admin panelinde eklenen tüm aktif araçları API'den yükle (kullanıcı binmek istediği aracı seçer)
+  const [vehiclesError, setVehiclesError] = useState<string | null>(null)
   useEffect(() => {
+    setVehiclesError(null)
     fetch("/api/vehicles")
-      .then((res) => res.json())
-      .then((data: { vehicles?: { id: number; slug: string; name_tr: string; model: string; image_url: string | null; capacity: number; luggage_capacity: number; base_price: number }[] }) => {
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`)
+        }
+        return res.json()
+      })
+      .then((data: { vehicles?: { id: number; slug: string; name_tr: string; model: string; image_url: string | null; capacity: number; luggage_capacity: number; base_price: number }[]; error?: string }) => {
+        if (data.error) {
+          setVehiclesError(data.error)
+          return
+        }
         const list = data.vehicles || []
         const options = list
           .sort((a: { capacity: number }, b: { capacity: number }) => a.capacity - b.capacity)
@@ -153,7 +164,9 @@ export function BookingFormImproved() {
           }))
         setVehicleList(options)
       })
-      .catch(() => {})
+      .catch((err) => {
+        setVehiclesError(err?.message || "Araç listesi yüklenemedi")
+      })
   }, [])
 
   // Seçilen tarih için dolu slotları getir
@@ -382,8 +395,12 @@ export function BookingFormImproved() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {vehicleList.length === 0 ? (
-                        <p className="text-sm text-muted-foreground py-4">
-                          Araç listesi yükleniyor...
+                        <p className="text-sm py-4">
+                          {vehiclesError ? (
+                            <span className="text-destructive">{vehiclesError}</span>
+                          ) : (
+                            <span className="text-muted-foreground">Araç listesi yükleniyor...</span>
+                          )}
                         </p>
                       ) : (
                         vehicleList.map((vehicle) => (
