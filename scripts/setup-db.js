@@ -15,19 +15,23 @@ async function setupDatabase() {
   console.log('🚀 Veritabanı kurulumu başlıyor...\n');
 
   try {
-    // sslmode=require uyarısını kaldırmak ve güvenli SSL için verify-full kullan
+    // Neon bazen verify-full ile takılabiliyor; sunucuda sslmode=require kullan
     let connectionString = process.env.DATABASE_URL;
-    if (connectionString.includes('sslmode=require') || connectionString.includes('sslmode=prefer')) {
-      connectionString = connectionString.replace(/sslmode=(require|prefer)/i, 'sslmode=verify-full');
-    } else if (!connectionString.includes('sslmode=')) {
-      connectionString += (connectionString.includes('?') ? '&' : '?') + 'sslmode=verify-full';
+    if (!connectionString.includes('sslmode=')) {
+      connectionString += (connectionString.includes('?') ? '&' : '?') + 'sslmode=require';
     }
-    // Sunucuda Neon WebSocket bazen çalışmaz; standart pg (TCP/SSL) kullan
     const pool = new Pool({
       connectionString,
-      ssl: connectionString.includes('neon.tech') ? { rejectUnauthorized: true } : false,
+      ssl: connectionString.includes('neon.tech') ? { rejectUnauthorized: false } : false,
+      connectionTimeoutMillis: 15000,
     });
-    
+
+    console.log('🔌 Veritabanına bağlanılıyor...');
+    await pool.query('SELECT 1');
+    console.log('   Bağlantı OK.\n');
+
+    await pool.query('SET statement_timeout = 90000');
+
     // Read SQL file
     const sqlFilePath = path.join(__dirname, '001-create-tables.sql');
     const sqlContent = fs.readFileSync(sqlFilePath, 'utf8');
@@ -35,7 +39,7 @@ async function setupDatabase() {
     console.log('📄 SQL dosyası okundu: 001-create-tables.sql');
     console.log('⚙️  Tablolar oluşturuluyor...\n');
 
-    // Execute SQL
+    // Execute SQL (tek seferde; takılırsa 60 sn sonra timeout)
     await pool.query(sqlContent);
 
     console.log('✅ Tüm tablolar başarıyla oluşturuldu!');
