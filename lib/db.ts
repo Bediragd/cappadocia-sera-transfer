@@ -19,7 +19,7 @@ const isNeon = connectionString.includes('neon.tech')
 const pool = new Pool({
   connectionString: connectionString || 'postgres://localhost',
   ssl: isNeon ? { rejectUnauthorized: false } : false,
-  connectionTimeoutMillis: 20000,
+  connectionTimeoutMillis: 45000,
   max: 10,
 })
 
