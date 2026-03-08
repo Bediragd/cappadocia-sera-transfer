@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { neon, Pool } = require('@neondatabase/serverless');
+const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
 
@@ -15,7 +15,11 @@ async function setupDatabase() {
   console.log('🚀 Veritabanı kurulumu başlıyor...\n');
 
   try {
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    // Sunucuda Neon WebSocket bazen çalışmaz; standart pg (TCP/SSL) kullan
+    const pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.DATABASE_URL.includes('neon.tech') ? { rejectUnauthorized: false } : false,
+    });
     
     // Read SQL file
     const sqlFilePath = path.join(__dirname, '001-create-tables.sql');
