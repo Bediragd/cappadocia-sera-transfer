@@ -1,15 +1,17 @@
-import { neon } from "@neondatabase/serverless"
 import { NextResponse } from "next/server"
+import { sql } from "@/lib/db"
+
+const CACHE_MAX_AGE = 120
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const sql = neon(process.env.DATABASE_URL!)
+    const { id } = await params
     const hotels = await sql`
       SELECT * FROM popular_hotels 
-      WHERE id = ${params.id} AND is_active = true
+      WHERE id = ${id} AND is_active = true
     `
     
     if (hotels.length === 0) {
@@ -19,7 +21,9 @@ export async function GET(
       )
     }
     
-    return NextResponse.json(hotels[0])
+    return NextResponse.json(hotels[0], {
+      headers: { "Cache-Control": `public, s-maxage=${CACHE_MAX_AGE}, stale-while-revalidate=60` },
+    })
   } catch (error) {
     console.error("Error fetching hotel:", error)
     return NextResponse.json(
@@ -31,12 +35,11 @@ export async function GET(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await request.json()
-    const sql = neon(process.env.DATABASE_URL!)
-    
+    const { id } = await params
     const result = await sql`
       UPDATE popular_hotels 
       SET 
@@ -53,7 +56,7 @@ export async function PATCH(
         price_range = COALESCE(${body.priceRange}, price_range),
         description = COALESCE(${body.description}, description),
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = ${params.id}
+      WHERE id = ${id}
       RETURNING *
     `
     
@@ -76,16 +79,14 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const sql = neon(process.env.DATABASE_URL!)
-    
-    // Soft delete
+    const { id } = await params
     const result = await sql`
       UPDATE popular_hotels 
       SET is_active = false, updated_at = CURRENT_TIMESTAMP
-      WHERE id = ${params.id}
+      WHERE id = ${id}
       RETURNING *
     `
     

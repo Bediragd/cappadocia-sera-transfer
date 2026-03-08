@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 
+const CACHE_MAX_AGE = 120 // 2 dk; araç listesi sık değişmez
+
 export async function GET() {
   try {
     const vehicles = await sql`
       SELECT * FROM vehicles WHERE is_active = true ORDER BY capacity ASC
     `
-    return NextResponse.json({ vehicles })
+    return NextResponse.json({ vehicles }, {
+      headers: { "Cache-Control": `public, s-maxage=${CACHE_MAX_AGE}, stale-while-revalidate=60` },
+    })
   } catch (error) {
     console.error('Error fetching vehicles:', error)
     return NextResponse.json({ error: 'Failed to fetch vehicles' }, { status: 500 })

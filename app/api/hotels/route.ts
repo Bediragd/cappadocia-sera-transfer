@@ -1,5 +1,7 @@
-import { neon } from "@neondatabase/serverless"
 import { NextResponse } from "next/server"
+import { sql } from "@/lib/db"
+
+const CACHE_MAX_AGE = 120 // 2 dakika; otel listesi sık değişmez
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -8,18 +10,6 @@ export async function GET(request: Request) {
   const minRating = searchParams.get("minRating")
   
   try {
-    const sql = neon(process.env.DATABASE_URL!)
-    
-    // Filtreler için dinamik query oluştur
-    let baseQuery = `
-      SELECT 
-        id, name, category, region, address, 
-        latitude, longitude, rating, image_url,
-        amenities, phone, price_range, description
-      FROM popular_hotels 
-      WHERE is_active = true
-    `
-    
     // Filtreleri uygula
     if (region) {
       const hotels = await sql`
@@ -27,7 +17,9 @@ export async function GET(request: Request) {
         WHERE is_active = true AND region = ${region}
         ORDER BY rating DESC, name ASC
       `
-      return NextResponse.json(hotels)
+      return NextResponse.json(hotels, {
+        headers: { "Cache-Control": `public, s-maxage=${CACHE_MAX_AGE}, stale-while-revalidate=60` },
+      })
     }
     
     if (category) {
@@ -36,7 +28,9 @@ export async function GET(request: Request) {
         WHERE is_active = true AND category = ${category}
         ORDER BY rating DESC, name ASC
       `
-      return NextResponse.json(hotels)
+      return NextResponse.json(hotels, {
+        headers: { "Cache-Control": `public, s-maxage=${CACHE_MAX_AGE}, stale-while-revalidate=60` },
+      })
     }
     
     if (minRating) {
@@ -45,7 +39,9 @@ export async function GET(request: Request) {
         WHERE is_active = true AND rating >= ${parseFloat(minRating)}
         ORDER BY rating DESC, name ASC
       `
-      return NextResponse.json(hotels)
+      return NextResponse.json(hotels, {
+        headers: { "Cache-Control": `public, s-maxage=${CACHE_MAX_AGE}, stale-while-revalidate=60` },
+      })
     }
     
     // Filtre yoksa tüm otelleri getir
@@ -55,7 +51,9 @@ export async function GET(request: Request) {
       ORDER BY rating DESC, name ASC
     `
     
-    return NextResponse.json(hotels)
+    return NextResponse.json(hotels, {
+      headers: { "Cache-Control": `public, s-maxage=${CACHE_MAX_AGE}, stale-while-revalidate=60` },
+    })
   } catch (error) {
     console.error("Error fetching hotels:", error)
     return NextResponse.json(
@@ -68,8 +66,6 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const sql = neon(process.env.DATABASE_URL!)
-    
     const result = await sql`
       INSERT INTO popular_hotels (
         name, category, region, address, latitude, longitude, 
