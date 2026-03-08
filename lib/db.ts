@@ -1,40 +1,54 @@
 /**
- * Veritabanı bağlantısı: Sunucuda (PM2/Node) Neon serverless fetch timeout verdiği için
- * pg (TCP/5432) kullanıyoruz. Aynı sql`...` API'si korunuyor.
+ * Veritabanı bağlantısı: pg (TCP/5432) kullanıyoruz. Sunucudan Neon’a bağlantı
+ * yavaş/timeout olabiliyorsa DATABASE_URL’i yerel PostgreSQL’e çevirin.
  */
 import { Pool } from 'pg'
 
 function getConnectionString(): string {
-  let url = process.env.DATABASE_URL ?? ''
-  url = url.replace(/[?&]channel_binding=require/gi, '').replace(/[?&]channel_binding=disable/gi, '')
+  const raw = process.env.DATABASE_URL ?? ''
+  if (!raw.trim()) return ''
+  let url = raw
+    .replace(/[?&]channel_binding=require/gi, '')
+    .replace(/[?&]channel_binding=disable/gi, '')
   if (!url.includes('sslmode=')) url += (url.includes('?') ? '&' : '?') + 'sslmode=require'
   if (!url.includes('uselibpqcompat=')) url += (url.includes('?') ? '&' : '?') + 'uselibpqcompat=true'
   url += (url.includes('?') ? '&' : '?') + 'channel_binding=disable'
   return url
 }
 
-const connectionString = getConnectionString()
-const isNeon = connectionString.includes('neon.tech')
+let pool: Pool | null = null
 
-const pool = new Pool({
-  connectionString: connectionString || 'postgres://localhost',
-  ssl: isNeon ? { rejectUnauthorized: false } : false,
-  connectionTimeoutMillis: 45000,
-  max: 10,
-})
+function getPool(): Pool {
+  if (pool) return pool
+  const connectionString = getConnectionString()
+  if (!connectionString) {
+    throw new Error(
+      'DATABASE_URL ortam değişkeni tanımlı değil. Sunucuda proje kökündeki .env dosyasında DATABASE_URL=... olmalı.'
+    )
+  }
+  const isNeon = connectionString.includes('neon.tech')
+  pool = new Pool({
+    connectionString,
+    ssl: isNeon ? { rejectUnauthorized: false } : false,
+    connectionTimeoutMillis: 45000,
+    max: 10,
+  })
+  return pool
+}
 
 // Neon sql`` ile uyumlu: tagged template -> pg.query, sonuç olarak rows döner
 async function query(
   strings: TemplateStringsArray,
   ...values: unknown[]
 ): Promise<Record<string, unknown>[]> {
+  const p = getPool()
   let text = strings[0] ?? ''
   const params: unknown[] = []
   for (let i = 0; i < values.length; i++) {
     params.push(values[i])
     text += `$${params.length}` + (strings[i + 1] ?? '')
   }
-  const result = await pool.query(text, params)
+  const result = await p.query(text, params)
   return result.rows as Record<string, unknown>[]
 }
 

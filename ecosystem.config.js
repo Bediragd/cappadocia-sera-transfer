@@ -3,11 +3,13 @@ module.exports = {
     name: 'cappadocia-transfer',
     script: 'npm',
     args: 'start',
+    cwd: __dirname,
     instances: 2,
     exec_mode: 'cluster',
     autorestart: true,
     watch: false,
     max_memory_restart: '500M',
+    env_file: '.env',
     env: {
       NODE_ENV: 'production',
       PORT: 3000

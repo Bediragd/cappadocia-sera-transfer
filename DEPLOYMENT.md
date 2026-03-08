@@ -260,9 +260,42 @@ npm run build
 # Hataları düzeltin, tekrar push edin
 ```
 
-### Database bağlanamıyor
-- Environment variables'da DATABASE_URL doğru mu?
-- Neon'da IP whitelist var mı? (Tümüne izin verin)
+### Veritabanı bağlanamıyor (VPS / PM2)
+
+**1. DATABASE_URL yüklü mü?**  
+Sunucuda proje kökünde:
+```bash
+cd ~/cappadocia-sera-transfer
+grep -q DATABASE_URL .env && echo "VAR" || echo "YOK"
+```
+YOK ise `.env` dosyasında `DATABASE_URL=postgresql://...` satırı olmalı.
+
+**2. Sağlık kontrolü**  
+Uygulama ayaktayken:
+```bash
+curl -s http://127.0.0.1:3000/api/health
+```
+- `{"db":"ok"}` → Bağlantı çalışıyor.
+- `{"db":"error","message":"DATABASE_URL tanımlı değil..."}` → `.env` yok veya PM2 farklı dizinden çalışıyor; `ecosystem.config.js` içinde `cwd` ve `env_file: '.env'` kullanın.
+- `{"db":"error","message":"Connection terminated..."}` → Sunucudan Neon’a erişim yok (timeout). Aşağıdaki çözüme geçin.
+
+**3. Neon sunucudan erişilemiyorsa**  
+Bazı VPS’lerden Neon’a (443/5432) bağlantı timeout olur. İki seçenek:
+
+- **A) Uygulamayı Vercel’e deploy edin**  
+  Vercel’den Neon’a bağlantı genelde sorunsuz çalışır. Repo’yu Vercel’e bağlayıp `DATABASE_URL`’i environment variable olarak verin.
+
+- **B) VPS’te kendi PostgreSQL’inizi kullanın**  
+  ```bash
+  sudo apt install postgresql postgresql-contrib
+  sudo -u postgres createuser -P myapp
+  sudo -u postgres createdb -O myapp cappadocia
+  ```
+  `.env` içinde:
+  ```env
+  DATABASE_URL=postgresql://myapp:SIFRE@localhost:5432/cappadocia
+  ```
+  Ardından `node scripts/setup-db.js` ile tabloları oluşturun.
 
 ### Domain bağlanmıyor
 - DNS değişikliklerinin yayılması 1-48 saat sürebilir
