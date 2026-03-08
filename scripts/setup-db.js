@@ -15,14 +15,19 @@ async function setupDatabase() {
   console.log('🚀 Veritabanı kurulumu başlıyor...\n');
 
   try {
-    // Neon bazen verify-full ile takılabiliyor; sunucuda sslmode=require kullan
+    // pg uyarısını kaldırmak için açık sslmode (verify-full veya uselibpqcompat+require)
     let connectionString = process.env.DATABASE_URL;
-    if (!connectionString.includes('sslmode=')) {
-      connectionString += (connectionString.includes('?') ? '&' : '?') + 'sslmode=require';
+    const hasSslMode = /[?&]sslmode=/i.test(connectionString);
+    const hasCompat = /[?&]uselibpqcompat=true/i.test(connectionString);
+    if (!hasSslMode) {
+      const sep = connectionString.includes('?') ? '&' : '?';
+      connectionString += sep + 'sslmode=verify-full';
+    } else if (!hasCompat && /sslmode=(require|prefer|verify-ca)/i.test(connectionString)) {
+      connectionString = connectionString.replace(/sslmode=(require|prefer|verify-ca)/i, 'sslmode=verify-full');
     }
     const pool = new Pool({
       connectionString,
-      ssl: connectionString.includes('neon.tech') ? { rejectUnauthorized: false } : false,
+      ssl: connectionString.includes('neon.tech') ? { rejectUnauthorized: true } : false,
       connectionTimeoutMillis: 15000,
     });
 
