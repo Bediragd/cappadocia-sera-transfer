@@ -1,55 +1,60 @@
 /**
- * Veritabanı bağlantısı: pg (TCP/5432) kullanıyoruz. Sunucudan Neon’a bağlantı
- * yavaş/timeout olabiliyorsa DATABASE_URL’i yerel PostgreSQL’e çevirin.
+ * Veritabanı bağlantısı (pg). Yerel PostgreSQL (localhost) veya Neon destekler.
+ * .env: DATABASE_URL=postgresql://user:pass@localhost:5432/cappadocia_db
  */
 import { Pool } from 'pg'
-
-function getConnectionString(): string {
-  const raw = process.env.DATABASE_URL ?? ''
-  if (!raw.trim()) return ''
-  let url = raw
-    .replace(/[?&]channel_binding=require/gi, '')
-    .replace(/[?&]channel_binding=disable/gi, '')
-  if (!url.includes('sslmode=')) url += (url.includes('?') ? '&' : '?') + 'sslmode=require'
-  if (!url.includes('uselibpqcompat=')) url += (url.includes('?') ? '&' : '?') + 'uselibpqcompat=true'
-  url += (url.includes('?') ? '&' : '?') + 'channel_binding=disable'
-  return url
-}
 
 let pool: Pool | null = null
 
 function getPool(): Pool {
   if (pool) return pool
-  const connectionString = getConnectionString()
-  if (!connectionString) {
+  const connectionString = process.env.DATABASE_URL
+  if (!connectionString?.trim()) {
     throw new Error(
-      'DATABASE_URL ortam değişkeni tanımlı değil. Sunucuda proje kökündeki .env dosyasında DATABASE_URL=... olmalı.'
+      '[DB] DATABASE_URL tanımlı değil. .env dosyasında DATABASE_URL=postgresql://... olmalı.'
     )
   }
-  const isNeon = connectionString.includes('neon.tech')
+  const useSsl = connectionString.includes('neon.tech')
   pool = new Pool({
     connectionString,
-    ssl: isNeon ? { rejectUnauthorized: false } : false,
-    connectionTimeoutMillis: 45000,
+    ssl: useSsl ? { rejectUnauthorized: false } : false,
+    connectionTimeoutMillis: 5000,
     max: 10,
+  })
+  pool.on('error', (err: Error) => {
+    console.error('[DB] Bağlantı havuzu hatası (bağlantı koptu):', err.message)
   })
   return pool
 }
 
-// Neon sql`` ile uyumlu: tagged template -> pg.query, sonuç olarak rows döner
+// sql`` tagged template -> pg.query, sonuç rows döner
 async function query(
   strings: TemplateStringsArray,
   ...values: unknown[]
 ): Promise<Record<string, unknown>[]> {
-  const p = getPool()
+  let p: Pool
+  try {
+    p = getPool()
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[DB] Pool oluşturulamadı:', msg)
+    throw err
+  }
   let text = strings[0] ?? ''
   const params: unknown[] = []
   for (let i = 0; i < values.length; i++) {
     params.push(values[i])
     text += `$${params.length}` + (strings[i + 1] ?? '')
   }
-  const result = await p.query(text, params)
-  return result.rows as Record<string, unknown>[]
+  try {
+    const result = await p.query(text, params)
+    return result.rows as Record<string, unknown>[]
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    const code = err instanceof Error && 'code' in err ? (err as NodeJS.ErrnoException).code : ''
+    console.error('[DB] Sorgu hatası:', code || msg, msg)
+    throw err
+  }
 }
 
 const sql = query
