@@ -15,10 +15,17 @@ async function setupDatabase() {
   console.log('🚀 Veritabanı kurulumu başlıyor...\n');
 
   try {
+    // sslmode=require uyarısını kaldırmak ve güvenli SSL için verify-full kullan
+    let connectionString = process.env.DATABASE_URL;
+    if (connectionString.includes('sslmode=require') || connectionString.includes('sslmode=prefer')) {
+      connectionString = connectionString.replace(/sslmode=(require|prefer)/i, 'sslmode=verify-full');
+    } else if (!connectionString.includes('sslmode=')) {
+      connectionString += (connectionString.includes('?') ? '&' : '?') + 'sslmode=verify-full';
+    }
     // Sunucuda Neon WebSocket bazen çalışmaz; standart pg (TCP/SSL) kullan
     const pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DATABASE_URL.includes('neon.tech') ? { rejectUnauthorized: false } : false,
+      connectionString,
+      ssl: connectionString.includes('neon.tech') ? { rejectUnauthorized: true } : false,
     });
     
     // Read SQL file
