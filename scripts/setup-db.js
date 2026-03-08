@@ -59,6 +59,14 @@ async function setupDatabase() {
     console.log('   • contact_messages (İletişim mesajları)');
     console.log('   • settings (Site ayarları)');
     console.log('   • sessions (Oturum yönetimi)');
+    // Oteller tablosu (rezervasyon formu otel listesi için)
+    try {
+      const sql002 = fs.readFileSync(path.join(__dirname, '002-create-hotels-table.sql'), 'utf8');
+      await pool.query(sql002);
+      console.log('   • popular_hotels (Popüler oteller)');
+    } catch (e) {
+      console.log('   ⚠️  002-create-hotels-table.sql atlandı:', e.message);
+    }
     console.log('\n📦 Varsayılan veriler eklendi:');
     console.log('   • 3 araç (Sedan, VIP Minivan, Minibüs)');
     console.log('   • 2 havalimanı (Nevşehir, Kayseri)');
