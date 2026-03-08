@@ -58,9 +58,7 @@ export default function AdminLayout({
           {/* Logo */}
           <div className="flex items-center justify-between h-16 px-4 border-b border-border">
             <Link href="/admin" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">S</span>
-              </div>
+              <img src="/logo.png" alt="Cappadocia Sera Transfer" className="w-8 h-8 rounded-full object-cover" />
               <span className="font-bold text-foreground">Admin Panel</span>
             </Link>
             <button

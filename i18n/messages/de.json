@@ -1,0 +1,215 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "error": "Ein Fehler ist aufgetreten",
+    "success": "Erfolgreich",
+    "submit": "Absenden",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "view": "Ansehen",
+    "search": "Suchen",
+    "filter": "Filter",
+    "all": "Alle",
+    "yes": "Ja",
+    "no": "Nein",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "close": "Schließen"
+  },
+  "nav": {
+    "home": "Startseite",
+    "services": "Leistungen",
+    "vehicles": "Unsere Fahrzeuge",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "booking": "Buchung",
+    "gallery": "Galerie",
+    "driverApplication": "Fahrerbewerbung"
+  },
+  "hero": {
+    "title": "Nevşehir VIP Transfer",
+    "subtitle": "Zuverlässiger Transfer-Service in Kappadokien",
+    "description": "Professioneller Service für Flughafentransfers, Überlandfahrten und VIP-Touren",
+    "bookNow": "Jetzt buchen",
+    "callUs": "Rufen Sie uns an",
+    "whatsapp": "Kontakt per WhatsApp",
+    "tagline": "Nevşehir • Kayseri • Kappadokien",
+    "headline": "Erreichen Sie die Magie Kappadokiens",
+    "headlineHighlight": "in Komfort",
+    "heroDescription": "Sicherer und komfortabler Transfer vom Flughafen zum Hotel und zurück. Eine unvergessliche Fahrt im Schatten der Feenkamine erwartet Sie.",
+    "twoAirports": "2 Flughäfen",
+    "airportsNames": "Nevşehir & Kayseri",
+    "service24": "24/7 Service",
+    "alwaysWithYou": "Immer für Sie da",
+    "safeTrip": "Sichere Fahrt",
+    "insuredVehicles": "Versicherte Fahrzeuge"
+  },
+  "services": {
+    "title": "Unsere Leistungen",
+    "subtitle": "Transferlösungen für Sie",
+    "airportTransfer": {
+      "title": "Flughafen-Transfer",
+      "description": "Sicherer und komfortabler Transfer von den Flughäfen Kayseri und Nevşehir"
+    },
+    "cityTransfer": {
+      "title": "Überland-Transfer",
+      "description": "Komfortabler und sicherer Transfer in die ganze Türkei"
+    },
+    "vipTour": {
+      "title": "VIP-Tour",
+      "description": "Entdecken Sie die einzigartigen Schönheiten Kappadokiens"
+    },
+    "weddingTransfer": {
+      "title": "Hochzeit & besondere Anlässe",
+      "description": "Luxus-Autovermietung für Ihre besonderen Tage"
+    }
+  },
+  "vehicles": {
+    "title": "Unsere Flotte",
+    "subtitle": "Fahrzeugoptionen für jeden Bedarf",
+    "passengers": "Passagiere",
+    "luggage": "Gepäck",
+    "features": "Ausstattung",
+    "selectVehicle": "Fahrzeug wählen",
+    "sedan": {
+      "name": "Sedan (VIP)",
+      "description": "Komfortabler Transfer für 1–3 Personen"
+    },
+    "vip": {
+      "name": "VIP-Minivan",
+      "description": "Luxus-Transfer für 4–6 Personen"
+    },
+    "minibus": {
+      "name": "Minibus",
+      "description": "Gruppen-Transfer für 7–14 Personen"
+    }
+  },
+  "booking": {
+    "title": "Buchung",
+    "subtitle": "Schnell und einfach buchen",
+    "pickupLocation": "Abholort",
+    "dropoffLocation": "Zielort",
+    "pickupDate": "Abholdatum",
+    "pickupTime": "Abholzeit",
+    "passengers": "Anzahl Passagiere",
+    "luggage": "Anzahl Gepäckstücke",
+    "selectVehicle": "Fahrzeug wählen",
+    "selectVehicleDescription": "Wählen Sie das gewünschte Fahrzeug. Die Liste ist nach Kapazität sortiert.",
+    "customerName": "Vollständiger Name",
+    "customerEmail": "E-Mail",
+    "customerPhone": "Telefon",
+    "notes": "Anmerkungen (optional)",
+    "totalPrice": "Gesamtpreis",
+    "confirmBooking": "Buchung bestätigen",
+    "bookingSuccess": "Ihre Buchung wurde erfolgreich erstellt!",
+    "bookingNumber": "Buchungsnummer",
+    "selectAirport": "Flughafen wählen",
+    "enterAddress": "Adresse eingeben",
+    "selectHotel": "Hotel wählen",
+    "transferType": "Transferart",
+    "airportToHotel": "Flughafen → Hotel",
+    "hotelToAirport": "Hotel → Flughafen",
+    "slotFull": "Ausgebucht",
+    "requestBooking": "Reservierung anfragen",
+    "pendingApproval": "Wird nach Bestätigung durch uns bestätigt.",
+    "customerDetails": "Ihre Daten",
+    "hotelDescription": "Reservierung nach Flughafen–Hotel-Name. Nach unserer Bestätigung gültig.",
+    "slotFullWarning": "Für diese Uhrzeit existiert bereits eine bestätigte Reservierung.",
+    "confirmAfterAdmin": "Ihre Buchung wird nach Bestätigung im Admin-Panel bestätigt.",
+    "kvkkAccept": "Ich habe die Datenschutzhinweise gelesen und akzeptiert",
+    "placeholderName": "Name",
+    "placeholderEmail": "example@email.com",
+    "placeholderPhone": "+90 5XX XXX XX XX",
+    "placeholderNotes": "Besondere Wünsche..."
+  },
+  "about": {
+    "title": "Über uns",
+    "subtitle": "Warum uns?",
+    "description": "Mit über 10 Jahren Erfahrung bieten wir zuverlässigen und komfortablen Transfer in Kappadokien.",
+    "sectionTitle": "Über uns",
+    "companyName": "Cappadocia Sera Transfer",
+    "paragraph1": "Im Herzen Kappadokiens bieten wir unseren Gästen erstklassigen Transfer. Sichere und komfortable Fahrten von den Flughäfen Nevşehir und Kayseri zu allen Hotels in der Region.",
+    "paragraph2": "Mit unserer modernen Flotte und professionellen Fahrern sorgen wir für eine angenehme Fahrt. Sie müssen sich um den Transport keine Sorgen machen.",
+    "experienceBadge": "10+",
+    "feature1": "Über 10 Jahre Erfahrung",
+    "feature2": "Professionelle Fahrer",
+    "feature3": "Moderne und gepflegte Flotte",
+    "feature4": "Versicherte Fahrten",
+    "feature5": "Mehrsprachiger Support",
+    "feature6": "Wettbewerbsfähige Preise",
+    "imageAlt": "Cappadocia Sera Transfer Fahrzeug",
+    "experience": "Jahre Erfahrung",
+    "customers": "Zufriedene Kunden",
+    "vehicles": "Fahrzeugflotte",
+    "drivers": "Professionelle Fahrer",
+    "features": {
+      "safety": {
+        "title": "Sicherheit",
+        "description": "Alle unsere Fahrzeuge sind versichert und werden regelmäßig gewartet"
+      },
+      "comfort": {
+        "title": "Komfort",
+        "description": "Luxuriöse und komfortable Fahrzeugoptionen"
+      },
+      "punctuality": {
+        "title": "Pünktlichkeit",
+        "description": "Garantierte pünktliche Ankunft"
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Wir sind immer für Sie da"
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Nehmen Sie Kontakt auf",
+    "name": "Vollständiger Name",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "whatsapp": "WhatsApp",
+    "address": "Adresse",
+    "subject": "Betreff",
+    "message": "Ihre Nachricht",
+    "send": "Nachricht senden",
+    "workingHours": "Öffnungszeiten",
+    "everyday": "24/7 jeden Tag",
+    "successMessage": "Ihre Nachricht wurde erfolgreich gesendet!",
+    "availability": "Wir sind 24/7 für Sie da. Erreichen Sie uns per WhatsApp oder Telefon.",
+    "willReplySoon": "Wir melden uns schnellstmöglich.",
+    "sendNewMessage": "Neue Nachricht senden",
+    "contactCta": "Kontaktieren Sie uns per WhatsApp oder füllen Sie das Formular aus.",
+    "placeholderName": "Ihr Name",
+    "placeholderEmail": "example@email.com",
+    "placeholderPhone": "+90 5XX XXX XX XX",
+    "placeholderSubject": "Betreff",
+    "placeholderMessage": "Ihre Nachricht..."
+  },
+  "footer": {
+    "description": "Sicherer und komfortabler Transfer in Kappadokien. Wir sind für Ihre Flughafen- und Hoteltransfers da.",
+    "quickLinks": "Schnelllinks",
+    "contactInfo": "Kontakt",
+    "contact": "Kontakt",
+    "serviceRegions": "Service-Regionen",
+    "followUs": "Folgen Sie uns",
+    "copyright": "© 2026 Cappadocia Sera Transfer. Alle Rechte vorbehalten."
+  },
+  "driverApplication": {
+    "title": "Fahrerbewerbung",
+    "subtitle": "Werden Sie Teil unseres Teams",
+    "name": "Vollständiger Name",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "experienceYears": "Erfahrung (Jahre)",
+    "licenseType": "Führerscheinklasse",
+    "hasOwnVehicle": "Haben Sie ein eigenes Fahrzeug?",
+    "vehicleType": "Fahrzeugtyp",
+    "city": "Stadt",
+    "message": "Zusätzliche Informationen",
+    "submit": "Bewerbung absenden",
+    "successMessage": "Ihre Bewerbung wurde erfolgreich erhalten!"
+  }
+}

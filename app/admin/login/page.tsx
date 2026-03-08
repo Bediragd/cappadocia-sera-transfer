@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@example.com"
+                  placeholder="akbudakramazannazmi@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-9"
@@ -97,9 +97,9 @@ export default function AdminLoginPage() {
             </Button>
 
             <div className="text-center text-sm text-muted-foreground">
-              <p>Test kullanıcısı:</p>
-              <p>Email: admin@example.com</p>
-              <p>Şifre: admin123</p>
+              <p>Admin girişi:</p>
+              <p>Email: akbudakramazannazmi@gmail.com</p>
+              <p>Şifre: (kayıtlı şifreniz)</p>
             </div>
           </form>
         </CardContent>

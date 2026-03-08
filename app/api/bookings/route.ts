@@ -62,11 +62,11 @@ export async function POST(request: NextRequest) {
 
     const result = await sql`
       INSERT INTO bookings (
-        booking_number, customer_name, customer_email, customer_phone,
+        booking_number, status, customer_name, customer_email, customer_phone,
         pickup_location, dropoff_location, pickup_date, pickup_time,
         passengers, luggage, vehicle_id, total_price, currency, notes
       ) VALUES (
-        ${bookingNumber}, ${validatedData.customerName}, ${validatedData.customerEmail},
+        ${bookingNumber}, 'pending', ${validatedData.customerName}, ${validatedData.customerEmail},
         ${validatedData.customerPhone}, ${validatedData.pickupLocation}, ${validatedData.dropoffLocation},
         ${validatedData.pickupDate}, ${validatedData.pickupTime}, ${validatedData.passengers},
         ${validatedData.luggage}, ${validatedData.vehicleId}, ${totalPrice}, 'TRY',

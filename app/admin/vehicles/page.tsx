@@ -209,6 +209,9 @@ export default function VehiclesPage() {
             <Car className="w-5 h-5" />
             Arac Listesi ({vehicles.length})
           </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Aktif araçlar rezervasyon sayfasında müşterilere görünür; kullanıcı binmek istediği aracı oradan seçer.
+          </p>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

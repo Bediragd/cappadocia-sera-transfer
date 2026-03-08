@@ -41,21 +41,42 @@ async function setupDatabase() {
     console.log('   • 3 araç (Sedan, VIP Minivan, Minibüs)');
     console.log('   • 2 havalimanı (Nevşehir, Kayseri)');
     console.log('   • Site ayarları');
+
+    // 9+1, 10+1, 11+1, 12+1 kapasiteli araçları ekle
+    try {
+      const sql004 = fs.readFileSync(path.join(__dirname, '004-add-capacity-vehicles.sql'), 'utf8');
+      await pool.query(sql004);
+      console.log('   • 4 kapasite aracı (9+1, 10+1, 11+1, 12+1)');
+    } catch (e) {
+      console.log('   ⚠️  004-add-capacity-vehicles.sql atlandı:', e.message);
+    }
+
+    // Araç description sütunları (admin paneli araç ekleme için)
+    try {
+      const sql005 = fs.readFileSync(path.join(__dirname, '005-add-vehicle-description-columns.sql'), 'utf8');
+      await pool.query(sql005);
+      console.log('   • Araç description sütunları (varsa) eklendi');
+    } catch (e) {
+      console.log('   ⚠️  005-add-vehicle-description-columns.sql atlandı:', e.message);
+    }
     
     // Create test admin user
     const crypto = require('crypto');
     const testPassword = 'admin123';
     const passwordHash = crypto.createHash('sha256').update(testPassword).digest('hex');
     
+    const adminHash = crypto.createHash('sha256').update('Admin123!').digest('hex');
     try {
       await pool.query(`
         INSERT INTO users (email, password_hash, name, role)
-        VALUES ('admin@example.com', '${passwordHash}', 'Admin', 'admin')
+        VALUES 
+          ('admin@example.com', '${passwordHash}', 'Admin', 'admin'),
+          ('akbudakramazannazmi@gmail.com', '${adminHash}', 'Admin', 'admin')
         ON CONFLICT (email) DO NOTHING
       `);
-      console.log('\n👤 Test admin kullanıcısı oluşturuldu:');
-      console.log('   Email: admin@example.com');
-      console.log('   Şifre: admin123');
+      console.log('\n👤 Admin kullanıcıları:');
+      console.log('   • Email: akbudakramazannazmi@gmail.com  Şifre: Admin123!');
+      console.log('   • Email: admin@example.com  Şifre: admin123');
     } catch (error) {
       console.log('\n⚠️  Admin kullanıcısı zaten mevcut veya oluşturulamadı');
     }

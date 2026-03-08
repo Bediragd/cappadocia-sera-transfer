@@ -1,0 +1,215 @@
+{
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "success": "نجاح",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view": "عرض",
+    "search": "بحث",
+    "filter": "تصفية",
+    "all": "الكل",
+    "yes": "نعم",
+    "no": "لا",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "close": "إغلاق"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "services": "الخدمات",
+    "vehicles": "مركباتنا",
+    "about": "من نحن",
+    "contact": "اتصل بنا",
+    "booking": "الحجز",
+    "gallery": "المعرض",
+    "driverApplication": "طلب سائق"
+  },
+  "hero": {
+    "title": "نقل VIP نيفشهر",
+    "subtitle": "خدمة نقل موثوقة في كابادوكيا",
+    "description": "خدمة احترافية لتنقلات المطار والرحلات بين المدن وجولات VIP",
+    "bookNow": "احجز الآن",
+    "callUs": "اتصل بنا",
+    "whatsapp": "التواصل عبر واتساب",
+    "tagline": "نيفشهر • قيصري • كابادوكيا",
+    "headline": "سحر كابادوكيا",
+    "headlineHighlight": "براحة",
+    "heroDescription": "نقل آمن ومريح من المطار إلى الفندق أو العكس. رحلة لا تُنسى في ظل المداخن الجنية بانتظارك.",
+    "twoAirports": "مطاران",
+    "airportsNames": "نيفشهر وقيصري",
+    "service24": "خدمة 24/7",
+    "alwaysWithYou": "معك دائماً",
+    "safeTrip": "رحلة آمنة",
+    "insuredVehicles": "مركبات مؤمنة"
+  },
+  "services": {
+    "title": "خدماتنا",
+    "subtitle": "حلول نقل مصممة لك",
+    "airportTransfer": {
+      "title": "نقل المطار",
+      "description": "خدمة نقل آمنة ومريحة من مطاري قيصري ونيفشهر"
+    },
+    "cityTransfer": {
+      "title": "النقل بين المدن",
+      "description": "نقل مريح وآمن إلى أي مكان في تركيا"
+    },
+    "vipTour": {
+      "title": "جولة VIP",
+      "description": "اكتشف جمال كابادوكيا الفريد"
+    },
+    "weddingTransfer": {
+      "title": "الأعراس والمناسبات",
+      "description": "استئجار سيارات فاخرة لأيامك الخاصة"
+    }
+  },
+  "vehicles": {
+    "title": "أسطولنا",
+    "subtitle": "خيارات مركبات لكل احتياج",
+    "passengers": "الركاب",
+    "luggage": "الأمتعة",
+    "features": "المميزات",
+    "selectVehicle": "اختر المركبة",
+    "sedan": {
+      "name": "سيدان (VIP)",
+      "description": "نقل مريح لـ 1-3 أشخاص"
+    },
+    "vip": {
+      "name": "ميني فان VIP",
+      "description": "نقل فاخر لـ 4-6 أشخاص"
+    },
+    "minibus": {
+      "name": "ميني باص",
+      "description": "نقل جماعي لـ 7-14 شخصاً"
+    }
+  },
+  "booking": {
+    "title": "الحجز",
+    "subtitle": "حجز سريع وسهل",
+    "pickupLocation": "مكان الانطلاق",
+    "dropoffLocation": "مكان الوصول",
+    "pickupDate": "تاريخ الانطلاق",
+    "pickupTime": "وقت الانطلاق",
+    "passengers": "عدد الركاب",
+    "luggage": "عدد الأمتعة",
+    "selectVehicle": "اختر المركبة",
+    "selectVehicleDescription": "اختر المركبة التي تريد السفر بها. القائمة مرتبة حسب السعة.",
+    "customerName": "الاسم الكامل",
+    "customerEmail": "البريد الإلكتروني",
+    "customerPhone": "الهاتف",
+    "notes": "ملاحظات (اختياري)",
+    "totalPrice": "السعر الإجمالي",
+    "confirmBooking": "تأكيد الحجز",
+    "bookingSuccess": "تم إنشاء حجزك بنجاح!",
+    "bookingNumber": "رقم الحجز",
+    "selectAirport": "اختر المطار",
+    "enterAddress": "أدخل العنوان",
+    "selectHotel": "اختر الفندق",
+    "transferType": "نوع النقل",
+    "airportToHotel": "المطار → الفندق",
+    "hotelToAirport": "الفندق → المطار",
+    "slotFull": "مكتمل",
+    "requestBooking": "طلب حجز",
+    "pendingApproval": "سيتم التأكيد بعد الموافقة من قبلنا.",
+    "customerDetails": "بياناتك",
+    "hotelDescription": "الحجز باسم المطار–الفندق. يتأكد بعد موافقتنا.",
+    "slotFullWarning": "هذا الوقت لديه حجز مؤكد بالفعل.",
+    "confirmAfterAdmin": "سيتم تأكيد حجزك بعد الموافقة من لوحة الإدارة.",
+    "kvkkAccept": "قرأت وأوافق على إشعار حماية البيانات",
+    "placeholderName": "الاسم",
+    "placeholderEmail": "example@email.com",
+    "placeholderPhone": "+90 5XX XXX XX XX",
+    "placeholderNotes": "طلبات خاصة..."
+  },
+  "about": {
+    "title": "من نحن",
+    "subtitle": "لماذا تختارنا؟",
+    "description": "بأكثر من 10 سنوات من الخبرة، نقدم خدمة نقل موثوقة ومريحة في منطقة كابادوكيا.",
+    "sectionTitle": "من نحن",
+    "companyName": "Cappadocia Sera Transfer",
+    "paragraph1": "في قلب كابادوكيا نقدم لضيوفنا أفضل خدمة نقل. من مطاري نيفشهر وقيصري إلى كل فنادق المنطقة.",
+    "paragraph2": "بأسطولنا الحديث وسائقينا المحترفين، كل لحظة من الرحلة مريحة.",
+    "experienceBadge": "10+",
+    "feature1": "أكثر من 10 سنوات خبرة",
+    "feature2": "سائقون محترفون",
+    "feature3": "أسطول حديث ومصان",
+    "feature4": "رحلات مؤمنة",
+    "feature5": "دعم متعدد اللغات",
+    "feature6": "أسعار تنافسية",
+    "imageAlt": "مركبة Cappadocia Sera Transfer",
+    "experience": "سنوات الخبرة",
+    "customers": "عملاء سعداء",
+    "vehicles": "أسطول المركبات",
+    "drivers": "سائقون محترفون",
+    "features": {
+      "safety": {
+        "title": "الأمان",
+        "description": "جميع مركباتنا مؤمنة وتخضع للصيانة الدورية"
+      },
+      "comfort": {
+        "title": "الراحة",
+        "description": "خيارات مركبات فاخرة ومريحة"
+      },
+      "punctuality": {
+        "title": "الدقة",
+        "description": "ضمان الوصول في الوقت المحدد"
+      },
+      "support": {
+        "title": "دعم 24/7",
+        "description": "نحن دائماً هنا من أجلك"
+      }
+    }
+  },
+  "contact": {
+    "title": "اتصل بنا",
+    "subtitle": "تواصل معنا",
+    "name": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "whatsapp": "واتساب",
+    "address": "العنوان",
+    "subject": "الموضوع",
+    "message": "رسالتك",
+    "send": "إرسال الرسالة",
+    "workingHours": "ساعات العمل",
+    "everyday": "24/7 كل يوم",
+    "successMessage": "تم إرسال رسالتك بنجاح!",
+    "availability": "نحن في خدمتك 24/7. تواصل عبر واتساب أو الهاتف.",
+    "willReplySoon": "سنرد عليك في أقرب وقت.",
+    "sendNewMessage": "إرسال رسالة جديدة",
+    "contactCta": "تواصل عبر واتساب أو املأ النموذج.",
+    "placeholderName": "اسمك",
+    "placeholderEmail": "example@email.com",
+    "placeholderPhone": "+90 5XX XXX XX XX",
+    "placeholderSubject": "الموضوع",
+    "placeholderMessage": "اكتب رسالتك..."
+  },
+  "footer": {
+    "description": "نقل آمن ومريح في كابادوكيا. نحن هنا لتنقلات المطار والفندق.",
+    "quickLinks": "روابط سريعة",
+    "contactInfo": "معلومات الاتصال",
+    "contact": "اتصل بنا",
+    "serviceRegions": "مناطق الخدمة",
+    "followUs": "تابعنا",
+    "copyright": "© 2026 Cappadocia Sera Transfer. جميع الحقوق محفوظة."
+  },
+  "driverApplication": {
+    "title": "طلب سائق",
+    "subtitle": "انضم إلى فريقنا",
+    "name": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "experienceYears": "الخبرة (بالسنوات)",
+    "licenseType": "نوع الرخصة",
+    "hasOwnVehicle": "هل تملك مركبة خاصة؟",
+    "vehicleType": "نوع المركبة",
+    "city": "المدينة",
+    "message": "معلومات إضافية",
+    "submit": "إرسال الطلب",
+    "successMessage": "تم استلام طلبك بنجاح!"
+  }
+}

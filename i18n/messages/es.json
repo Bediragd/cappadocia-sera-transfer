@@ -1,0 +1,215 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ha ocurrido un error",
+    "success": "Éxito",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "view": "Ver",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "all": "Todo",
+    "yes": "Sí",
+    "no": "No",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "close": "Cerrar"
+  },
+  "nav": {
+    "home": "Inicio",
+    "services": "Servicios",
+    "vehicles": "Nuestros vehículos",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "booking": "Reserva",
+    "gallery": "Galería",
+    "driverApplication": "Solicitud de conductor"
+  },
+  "hero": {
+    "title": "Transfer VIP Nevşehir",
+    "subtitle": "Servicio de transfer fiable en Capadocia",
+    "description": "Servicio profesional para transferencias al aeropuerto, trayectos y tours VIP",
+    "bookNow": "Reservar ahora",
+    "callUs": "Llámanos",
+    "whatsapp": "Contactar por WhatsApp",
+    "tagline": "Nevşehir • Kayseri • Capadocia",
+    "headline": "La magia de Capadocia",
+    "headlineHighlight": "con confort",
+    "heroDescription": "Transfer seguro y cómodo aeropuerto–hotel o hotel–aeropuerto. Le espera un viaje inolvidable.",
+    "twoAirports": "2 aeropuertos",
+    "airportsNames": "Nevşehir y Kayseri",
+    "service24": "Servicio 24/7",
+    "alwaysWithYou": "Siempre con usted",
+    "safeTrip": "Viaje seguro",
+    "insuredVehicles": "Vehículos asegurados"
+  },
+  "services": {
+    "title": "Nuestros servicios",
+    "subtitle": "Soluciones de transfer para usted",
+    "airportTransfer": {
+      "title": "Transfer aeropuerto",
+      "description": "Transfer seguro y cómodo desde los aeropuertos de Kayseri y Nevşehir"
+    },
+    "cityTransfer": {
+      "title": "Transfer entre ciudades",
+      "description": "Transfer cómodo y seguro a cualquier lugar de Turquía"
+    },
+    "vipTour": {
+      "title": "Tour VIP",
+      "description": "Descubra las bellezas únicas de Capadocia"
+    },
+    "weddingTransfer": {
+      "title": "Boda y eventos especiales",
+      "description": "Alquiler de vehículos de lujo para sus días especiales"
+    }
+  },
+  "vehicles": {
+    "title": "Nuestra flota",
+    "subtitle": "Vehículos para cada necesidad",
+    "passengers": "Pasajeros",
+    "luggage": "Equipaje",
+    "features": "Características",
+    "selectVehicle": "Seleccionar vehículo",
+    "sedan": {
+      "name": "Sedan (VIP)",
+      "description": "Transfer cómodo para 1-3 personas"
+    },
+    "vip": {
+      "name": "Minivan VIP",
+      "description": "Transfer de lujo para 4-6 personas"
+    },
+    "minibus": {
+      "name": "Minibús",
+      "description": "Transfer en grupo para 7-14 personas"
+    }
+  },
+  "booking": {
+    "title": "Reserva",
+    "subtitle": "Reserva rápida y fácil",
+    "pickupLocation": "Lugar de recogida",
+    "dropoffLocation": "Lugar de destino",
+    "pickupDate": "Fecha de recogida",
+    "pickupTime": "Hora de recogida",
+    "passengers": "Número de pasajeros",
+    "luggage": "Número de equipajes",
+    "selectVehicle": "Seleccionar vehículo",
+    "selectVehicleDescription": "Elija el vehículo deseado. La lista está ordenada por capacidad.",
+    "customerName": "Nombre completo",
+    "customerEmail": "Email",
+    "customerPhone": "Teléfono",
+    "notes": "Notas (opcional)",
+    "totalPrice": "Precio total",
+    "confirmBooking": "Confirmar reserva",
+    "bookingSuccess": "¡Su reserva se ha creado correctamente!",
+    "bookingNumber": "Número de reserva",
+    "selectAirport": "Seleccionar aeropuerto",
+    "enterAddress": "Introducir dirección",
+    "selectHotel": "Seleccionar hotel",
+    "transferType": "Tipo de transfer",
+    "airportToHotel": "Aeropuerto → Hotel",
+    "hotelToAirport": "Hotel → Aeropuerto",
+    "slotFull": "Completo",
+    "requestBooking": "Solicitar reserva",
+    "pendingApproval": "Se confirmará tras aprobación por nuestra parte.",
+    "customerDetails": "Sus datos",
+    "hotelDescription": "Reserva por aeropuerto–hotel. Confirmada tras nuestra aprobación.",
+    "slotFullWarning": "Esta hora tiene ya una reserva confirmada.",
+    "confirmAfterAdmin": "Su reserva se confirmará tras la aprobación en el panel de administración.",
+    "kvkkAccept": "He leído y acepto la política de protección de datos",
+    "placeholderName": "Nombre",
+    "placeholderEmail": "example@email.com",
+    "placeholderPhone": "+90 5XX XXX XX XX",
+    "placeholderNotes": "Solicitudes especiales..."
+  },
+  "about": {
+    "title": "Nosotros",
+    "subtitle": "¿Por qué elegirnos?",
+    "description": "Con más de 10 años de experiencia, ofrecemos un transfer fiable y cómodo en Capadocia.",
+    "sectionTitle": "Nosotros",
+    "companyName": "Cappadocia Sera Transfer",
+    "paragraph1": "En el corazón de Capadocia ofrecemos el mejor transfer. Desde Nevşehir y Kayseri a todos los hoteles de la región.",
+    "paragraph2": "Con nuestra flota moderna y conductores profesionales, cada momento del viaje es agradable.",
+    "experienceBadge": "10+",
+    "feature1": "Más de 10 años de experiencia",
+    "feature2": "Conductores profesionales",
+    "feature3": "Flota moderna y mantenida",
+    "feature4": "Viajes asegurados",
+    "feature5": "Soporte multilingüe",
+    "feature6": "Precios competitivos",
+    "imageAlt": "Vehículo Cappadocia Sera Transfer",
+    "experience": "Años de experiencia",
+    "customers": "Clientes satisfechos",
+    "vehicles": "Flota de vehículos",
+    "drivers": "Conductores profesionales",
+    "features": {
+      "safety": {
+        "title": "Seguridad",
+        "description": "Todos nuestros vehículos están asegurados y con mantenimiento regular"
+      },
+      "comfort": {
+        "title": "Confort",
+        "description": "Opciones de vehículos de lujo y cómodos"
+      },
+      "punctuality": {
+        "title": "Puntualidad",
+        "description": "Garantía de llegada a tiempo"
+      },
+      "support": {
+        "title": "Soporte 24/7",
+        "description": "Siempre estamos aquí para usted"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "Contáctenos",
+    "name": "Nombre completo",
+    "email": "Email",
+    "phone": "Teléfono",
+    "whatsapp": "WhatsApp",
+    "address": "Dirección",
+    "subject": "Asunto",
+    "message": "Su mensaje",
+    "send": "Enviar mensaje",
+    "workingHours": "Horario",
+    "everyday": "24/7 todos los días",
+    "successMessage": "¡Su mensaje se ha enviado correctamente!",
+    "availability": "Estamos a su servicio 24/7. Contáctenos por WhatsApp o teléfono.",
+    "willReplySoon": "Le responderemos lo antes posible.",
+    "sendNewMessage": "Enviar nuevo mensaje",
+    "contactCta": "Contáctenos por WhatsApp o rellene el formulario.",
+    "placeholderName": "Su nombre",
+    "placeholderEmail": "example@email.com",
+    "placeholderPhone": "+90 5XX XXX XX XX",
+    "placeholderSubject": "Asunto",
+    "placeholderMessage": "Escriba su mensaje..."
+  },
+  "footer": {
+    "description": "Transfer seguro y cómodo en Capadocia. Estamos aquí para sus transferencias al aeropuerto y al hotel.",
+    "quickLinks": "Enlaces rápidos",
+    "contactInfo": "Información de contacto",
+    "contact": "Contacto",
+    "serviceRegions": "Zonas de servicio",
+    "followUs": "Síguenos",
+    "copyright": "© 2026 Cappadocia Sera Transfer. Todos los derechos reservados."
+  },
+  "driverApplication": {
+    "title": "Solicitud de conductor",
+    "subtitle": "Únase a nuestro equipo",
+    "name": "Nombre completo",
+    "email": "Email",
+    "phone": "Teléfono",
+    "experienceYears": "Experiencia (años)",
+    "licenseType": "Tipo de licencia",
+    "hasOwnVehicle": "¿Tiene vehículo propio?",
+    "vehicleType": "Tipo de vehículo",
+    "city": "Ciudad",
+    "message": "Información adicional",
+    "submit": "Enviar solicitud",
+    "successMessage": "¡Su solicitud ha sido recibida correctamente!"
+  }
+}

@@ -16,14 +16,14 @@ const contactInfo = [
   {
     icon: Phone,
     titleKey: "phone",
-    content: "+90 500 123 45 67",
-    href: "tel:+905001234567",
+    content: "0553 464 71 50",
+    href: "tel:+905534647150",
   },
   {
     icon: MessageCircle,
     titleKey: "whatsapp",
-    content: "+90 500 123 45 67",
-    href: "https://wa.me/905001234567",
+    content: "0553 464 71 50",
+    href: "https://wa.me/905534647150",
   },
   {
     icon: Mail,
@@ -82,7 +82,7 @@ export function Contact() {
           <p className="text-accent font-medium mb-2 tracking-widest uppercase text-sm">{t("contact.title")}</p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{t("contact.subtitle")}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Sorulariniz icin 7/24 hizmetinizdeyiz. WhatsApp veya telefon ile aninda ulasin.
+            {t("contact.availability")}
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export function Contact() {
                 <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <info.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-card-foreground mb-2">{info.titleKey}</h3>
+                <h3 className="text-lg font-semibold text-card-foreground mb-2">{t(`contact.${info.titleKey}`)}</h3>
                 <a
                   href={info.href}
                   className="text-muted-foreground hover:text-primary transition-colors text-sm"
@@ -117,8 +117,8 @@ export function Contact() {
                     <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-2">{t("contact.successMessage")}</h3>
-                  <p className="text-muted-foreground mb-4">En kisa surede size donecegiz.</p>
-                  <Button onClick={() => setIsSubmitted(false)}>Yeni Mesaj Gonder</Button>
+                  <p className="text-muted-foreground mb-4">{t("contact.willReplySoon")}</p>
+                  <Button onClick={() => setIsSubmitted(false)}>{t("contact.sendNewMessage")}</Button>
                 </div>
               ) : (
                 <Form {...form}>
@@ -131,7 +131,7 @@ export function Contact() {
                           <FormItem>
                             <FormLabel>{t("contact.name")}</FormLabel>
                             <FormControl>
-                              <Input placeholder="Adiniz Soyadiniz" {...field} />
+                              <Input placeholder={t("contact.placeholderName")} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -144,7 +144,7 @@ export function Contact() {
                           <FormItem>
                             <FormLabel>{t("contact.email")}</FormLabel>
                             <FormControl>
-                              <Input type="email" placeholder="ornek@email.com" {...field} />
+                              <Input type="email" placeholder={t("contact.placeholderEmail")} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -159,7 +159,7 @@ export function Contact() {
                           <FormItem>
                             <FormLabel>{t("contact.phone")}</FormLabel>
                             <FormControl>
-                              <Input type="tel" placeholder="+90 5XX XXX XX XX" {...field} />
+                              <Input type="tel" placeholder={t("contact.placeholderPhone")} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -172,7 +172,7 @@ export function Contact() {
                           <FormItem>
                             <FormLabel>{t("contact.subject")}</FormLabel>
                             <FormControl>
-                              <Input placeholder="Mesaj konusu" {...field} />
+                              <Input placeholder={t("contact.placeholderSubject")} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -187,7 +187,7 @@ export function Contact() {
                           <FormLabel>{t("contact.message")}</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="Mesajinizi yazin..."
+                              placeholder={t("contact.placeholderMessage")}
                               className="resize-none min-h-[120px]"
                               {...field}
                             />
@@ -223,17 +223,17 @@ export function Contact() {
           </div>
           <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">{t("hero.bookNow")}</h3>
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-            WhatsApp uzerinden hizlica iletisime gecin veya formumuzu doldurun.
+            {t("contact.contactCta")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild>
-              <a href="https://wa.me/905001234567" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/905534647150" target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 {t("hero.whatsapp")}
               </a>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <a href="tel:+905001234567">
+              <a href="tel:+905534647150">
                 <Phone className="w-5 h-5 mr-2" />
                 {t("hero.callUs")}
               </a>

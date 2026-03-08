@@ -33,7 +33,7 @@ export default function SettingsPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Telefon</Label>
-                <Input id="phone" defaultValue="+90 500 123 45 67" />
+                <Input id="phone" defaultValue="0553 464 71 50" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">E-posta</Label>

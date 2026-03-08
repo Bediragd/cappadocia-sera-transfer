@@ -26,9 +26,7 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">S</span>
-            </div>
+            <img src="/logo.png" alt="Cappadocia Sera Transfer" className="w-10 h-10 rounded-full object-cover" />
             <div className="flex flex-col">
               <span className="font-sans text-lg md:text-xl font-bold text-foreground tracking-tight">
                 Cappadocia Sera
@@ -51,9 +49,9 @@ export function Header() {
 
           <div className="hidden md:flex items-center gap-4">
             <LanguageSwitcher currentLocale={locale} />
-            <a href="tel:+905001234567" className="flex items-center gap-2 text-sm font-medium text-foreground">
+            <a href="tel:+905534647150" className="flex items-center gap-2 text-sm font-medium text-foreground">
               <Phone className="w-4 h-4" />
-              <span>+90 500 123 45 67</span>
+              <span>0553 464 71 50</span>
             </a>
             <Button asChild>
               <Link href="#rezervasyon">{t("nav.booking")}</Link>
@@ -81,9 +79,9 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
-              <a href="tel:+905001234567" className="flex items-center gap-2 text-sm font-medium text-foreground">
+              <a href="tel:+905534647150" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Phone className="w-4 h-4" />
-                <span>+90 500 123 45 67</span>
+                <span>0553 464 71 50</span>
               </a>
               <Button asChild className="w-full">
                 <Link href="#rezervasyon">{t("nav.booking")}</Link>

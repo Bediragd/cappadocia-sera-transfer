@@ -1,0 +1,215 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Succès",
+    "submit": "Envoyer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "all": "Tout",
+    "yes": "Oui",
+    "no": "Non",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "close": "Fermer"
+  },
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "vehicles": "Nos véhicules",
+    "about": "À propos",
+    "contact": "Contact",
+    "booking": "Réservation",
+    "gallery": "Galerie",
+    "driverApplication": "Candidature chauffeur"
+  },
+  "hero": {
+    "title": "Transfert VIP Nevşehir",
+    "subtitle": "Service de transfert fiable en Cappadoce",
+    "description": "Service professionnel pour transferts aéroport, trajets interurbains et circuits VIP",
+    "bookNow": "Réserver",
+    "callUs": "Appelez-nous",
+    "whatsapp": "Contacter par WhatsApp",
+    "tagline": "Nevşehir • Kayseri • Cappadoce",
+    "headline": "La magie de la Cappadoce",
+    "headlineHighlight": "dans le confort",
+    "heroDescription": "Transfert sûr et confortable aéroport–hôtel ou hôtel–aéroport. Un voyage inoubliable vous attend.",
+    "twoAirports": "2 aéroports",
+    "airportsNames": "Nevşehir et Kayseri",
+    "service24": "Service 24h/24",
+    "alwaysWithYou": "Toujours avec vous",
+    "safeTrip": "Voyage en sécurité",
+    "insuredVehicles": "Véhicules assurés"
+  },
+  "services": {
+    "title": "Nos services",
+    "subtitle": "Solutions de transfert pour vous",
+    "airportTransfer": {
+      "title": "Transfert aéroport",
+      "description": "Transfert sûr et confortable depuis les aéroports de Kayseri et Nevşehir"
+    },
+    "cityTransfer": {
+      "title": "Transfert interurbain",
+      "description": "Transfert confortable et sûr partout en Turquie"
+    },
+    "vipTour": {
+      "title": "Tour VIP",
+      "description": "Découvrez les beautés uniques de la Cappadoce"
+    },
+    "weddingTransfer": {
+      "title": "Mariage et événements",
+      "description": "Location de véhicules de luxe pour vos jours spéciaux"
+    }
+  },
+  "vehicles": {
+    "title": "Notre flotte",
+    "subtitle": "Véhicules pour tous les besoins",
+    "passengers": "Passagers",
+    "luggage": "Bagages",
+    "features": "Équipements",
+    "selectVehicle": "Choisir un véhicule",
+    "sedan": {
+      "name": "Sedan (VIP)",
+      "description": "Transfert confortable pour 1 à 3 personnes"
+    },
+    "vip": {
+      "name": "Minivan VIP",
+      "description": "Transfert luxe pour 4 à 6 personnes"
+    },
+    "minibus": {
+      "name": "Minibus",
+      "description": "Transfert groupe pour 7 à 14 personnes"
+    }
+  },
+  "booking": {
+    "title": "Réservation",
+    "subtitle": "Réservation rapide et facile",
+    "pickupLocation": "Lieu de prise en charge",
+    "dropoffLocation": "Lieu de dépôt",
+    "pickupDate": "Date de prise en charge",
+    "pickupTime": "Heure de prise en charge",
+    "passengers": "Nombre de passagers",
+    "luggage": "Nombre de bagages",
+    "selectVehicle": "Choisir un véhicule",
+    "selectVehicleDescription": "Choisissez le véhicule souhaité. La liste est triée par capacité.",
+    "customerName": "Nom complet",
+    "customerEmail": "E-mail",
+    "customerPhone": "Téléphone",
+    "notes": "Remarques (optionnel)",
+    "totalPrice": "Prix total",
+    "confirmBooking": "Confirmer la réservation",
+    "bookingSuccess": "Votre réservation a été créée avec succès !",
+    "bookingNumber": "Numéro de réservation",
+    "selectAirport": "Choisir l'aéroport",
+    "enterAddress": "Entrer l'adresse",
+    "selectHotel": "Choisir l'hôtel",
+    "transferType": "Type de transfert",
+    "airportToHotel": "Aéroport → Hôtel",
+    "hotelToAirport": "Hôtel → Aéroport",
+    "slotFull": "Complet",
+    "requestBooking": "Demander une réservation",
+    "pendingApproval": "Sera confirmé après validation par nos soins.",
+    "customerDetails": "Vos informations",
+    "hotelDescription": "Réservation par aéroport–hôtel. Confirmé après notre validation.",
+    "slotFullWarning": "Ce créneau a déjà une réservation confirmée.",
+    "confirmAfterAdmin": "Votre réservation sera confirmée après approbation dans l'admin.",
+    "kvkkAccept": "J'ai lu et j'accepte la notice de protection des données",
+    "placeholderName": "Nom",
+    "placeholderEmail": "example@email.com",
+    "placeholderPhone": "+90 5XX XXX XX XX",
+    "placeholderNotes": "Demandes particulières..."
+  },
+  "about": {
+    "title": "À propos",
+    "subtitle": "Pourquoi nous choisir ?",
+    "description": "Avec plus de 10 ans d'expérience, nous assurons un transfert fiable et confortable en Cappadoce.",
+    "sectionTitle": "À propos",
+    "companyName": "Cappadocia Sera Transfer",
+    "paragraph1": "Au cœur de la Cappadoce, nous offrons à nos clients un transfert de qualité. De Nevşehir et Kayseri vers tous les hôtels de la région.",
+    "paragraph2": "Avec notre flotte moderne et nos chauffeurs professionnels, chaque moment du trajet est agréable.",
+    "experienceBadge": "10+",
+    "feature1": "Plus de 10 ans d'expérience",
+    "feature2": "Chauffeurs professionnels",
+    "feature3": "Flotte moderne et entretenue",
+    "feature4": "Voyages assurés",
+    "feature5": "Support multilingue",
+    "feature6": "Prix compétitifs",
+    "imageAlt": "Véhicule Cappadocia Sera Transfer",
+    "experience": "Années d'expérience",
+    "customers": "Clients satisfaits",
+    "vehicles": "Flotte de véhicules",
+    "drivers": "Chauffeurs professionnels",
+    "features": {
+      "safety": {
+        "title": "Sécurité",
+        "description": "Tous nos véhicules sont assurés et entretenus régulièrement"
+      },
+      "comfort": {
+        "title": "Confort",
+        "description": "Véhicules luxe et confortables"
+      },
+      "punctuality": {
+        "title": "Ponctualité",
+        "description": "Garantie d'arrivée à l'heure"
+      },
+      "support": {
+        "title": "Support 24/7",
+        "description": "Nous sommes toujours là pour vous"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Contactez-nous",
+    "name": "Nom complet",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "whatsapp": "WhatsApp",
+    "address": "Adresse",
+    "subject": "Sujet",
+    "message": "Votre message",
+    "send": "Envoyer le message",
+    "workingHours": "Heures d'ouverture",
+    "everyday": "24h/24, 7j/7",
+    "successMessage": "Votre message a été envoyé avec succès !",
+    "availability": "Nous sommes à votre service 24h/24. Contactez-nous par WhatsApp ou téléphone.",
+    "willReplySoon": "Nous vous répondrons dans les plus brefs délais.",
+    "sendNewMessage": "Envoyer un nouveau message",
+    "contactCta": "Contactez-nous par WhatsApp ou remplissez le formulaire.",
+    "placeholderName": "Votre nom",
+    "placeholderEmail": "example@email.com",
+    "placeholderPhone": "+90 5XX XXX XX XX",
+    "placeholderSubject": "Sujet",
+    "placeholderMessage": "Votre message..."
+  },
+  "footer": {
+    "description": "Transfert sûr et confortable en Cappadoce. Nous sommes là pour vos transferts aéroport et hôtel.",
+    "quickLinks": "Liens rapides",
+    "contactInfo": "Coordonnées",
+    "contact": "Contact",
+    "serviceRegions": "Zones desservies",
+    "followUs": "Suivez-nous",
+    "copyright": "© 2026 Cappadocia Sera Transfer. Tous droits réservés."
+  },
+  "driverApplication": {
+    "title": "Candidature chauffeur",
+    "subtitle": "Rejoignez notre équipe",
+    "name": "Nom complet",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "experienceYears": "Expérience (années)",
+    "licenseType": "Type de permis",
+    "hasOwnVehicle": "Avez-vous votre propre véhicule ?",
+    "vehicleType": "Type de véhicule",
+    "city": "Ville",
+    "message": "Informations complémentaires",
+    "submit": "Envoyer la candidature",
+    "successMessage": "Votre candidature a bien été reçue !"
+  }
+}

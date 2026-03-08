@@ -38,11 +38,16 @@ export function LanguageSwitcher({ currentLocale }: LanguageSwitcherProps) {
     setIsOpen(false)
   }
 
-  const flagIcons: Record<Locale, string> = {
+  const shortLabels: Record<Locale, string> = {
     tr: "TR",
     en: "EN",
     ru: "RU",
     hi: "HI",
+    de: "DE",
+    fr: "FR",
+    es: "ES",
+    ar: "AR",
+    zh: "中",
   }
 
   return (
@@ -50,7 +55,7 @@ export function LanguageSwitcher({ currentLocale }: LanguageSwitcherProps) {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2" disabled={isPending}>
           <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{flagIcons[currentLocale as Locale]}</span>
+          <span className="hidden sm:inline">{shortLabels[currentLocale as Locale] ?? currentLocale.toUpperCase()}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">

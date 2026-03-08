@@ -1,0 +1,27 @@
+-- 9+1, 10+1, 11+1, 12+1 kapasiteli araçları ekle (rezervasyon seçenekleri)
+INSERT INTO vehicles (slug, name_tr, name_en, name_ru, name_hi, model, image_url, capacity, luggage_capacity, features_tr, features_en, features_ru, features_hi, price_per_km, base_price) VALUES
+('9-1', '9+1 Kişilik', '9+1 Seater', '9+1 мест', '9+1 सीटर', 'Minibüs', '/white-mercedes-sprinter-minibus-passenger-van.jpg', 9, 9,
+  ARRAY['Klima', 'Wi-Fi', 'Geniş Bagaj', 'USB Şarj'],
+  ARRAY['Air Conditioning', 'Wi-Fi', 'Large Luggage', 'USB Charging'],
+  ARRAY['Кондиционер', 'Wi-Fi', 'Большой багаж', 'USB зарядка'],
+  ARRAY['एयर कंडीशनिंग', 'वाई-फाई', 'बड़ा सामान', 'USB चार्जिंग'],
+  22.00, 350.00),
+('10-1', '10+1 Kişilik', '10+1 Seater', '10+1 мест', '10+1 सीटर', 'Minibüs', '/white-mercedes-sprinter-minibus-passenger-van.jpg', 10, 10,
+  ARRAY['Klima', 'Wi-Fi', 'Geniş Bagaj', 'USB Şarj'],
+  ARRAY['Air Conditioning', 'Wi-Fi', 'Large Luggage', 'USB Charging'],
+  ARRAY['Кондиционер', 'Wi-Fi', 'Большой багаж', 'USB зарядка'],
+  ARRAY['एयर कंडीशनिंग', 'वाई-फाई', 'बड़ा सामान', 'USB चार्जिंग'],
+  23.00, 400.00),
+('11-1', '11+1 Kişilik', '11+1 Seater', '11+1 мест', '11+1 सीटर', 'Minibüs', '/white-mercedes-sprinter-minibus-passenger-van.jpg', 11, 11,
+  ARRAY['Klima', 'Wi-Fi', 'Geniş Bagaj', 'USB Şarj'],
+  ARRAY['Air Conditioning', 'Wi-Fi', 'Large Luggage', 'USB Charging'],
+  ARRAY['Кондиционер', 'Wi-Fi', 'Большой багаж', 'USB зарядка'],
+  ARRAY['एयर कंडीशनिंग', 'वाई-फाई', 'बड़ा सामान', 'USB चार्जिंग'],
+  24.00, 450.00),
+('12-1', '12+1 Kişilik', '12+1 Seater', '12+1 мест', '12+1 सीटर', 'Minibüs', '/white-mercedes-sprinter-minibus-passenger-van.jpg', 12, 12,
+  ARRAY['Klima', 'Wi-Fi', 'Geniş Bagaj', 'USB Şarj'],
+  ARRAY['Air Conditioning', 'Wi-Fi', 'Large Luggage', 'USB Charging'],
+  ARRAY['Кондиционер', 'Wi-Fi', 'Большой багаж', 'USB зарядка'],
+  ARRAY['एयर कंडीशनिंग', 'वाई-फाई', 'बड़ा सामान', 'USB चार्जिंग'],
+  25.00, 500.00)
+ON CONFLICT (slug) DO NOTHING;
