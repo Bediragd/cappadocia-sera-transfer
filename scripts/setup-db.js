@@ -15,18 +15,22 @@ async function setupDatabase() {
   console.log('🚀 Veritabanı kurulumu başlıyor...\n');
 
   try {
-    // Neon'dan kopyalanan URL'de channel_binding=require sunucuda timeout yapabiliyor; script'te disable ediyoruz.
-    let connectionString = process.env.DATABASE_URL
-      .replace(/[?&]channel_binding=require/gi, '')
-      .replace(/[?&]channel_binding=disable/gi, '');
-    const sep = connectionString.includes('?') ? '&' : '?';
-    if (!/[?&]sslmode=/i.test(connectionString)) connectionString += sep + 'sslmode=require';
-    if (!/[?&]uselibpqcompat=true/i.test(connectionString)) connectionString += sep + 'uselibpqcompat=true';
-    connectionString += (connectionString.includes('?') ? '&' : '?') + 'channel_binding=disable';
+    const rawUrl = process.env.DATABASE_URL;
+    const isLocal = /localhost|127\.0\.0\.1/.test(rawUrl);
+    let connectionString = rawUrl;
+    if (!isLocal) {
+      connectionString = rawUrl
+        .replace(/[?&]channel_binding=require/gi, '')
+        .replace(/[?&]channel_binding=disable/gi, '');
+      const sep = connectionString.includes('?') ? '&' : '?';
+      if (!/[?&]sslmode=/i.test(connectionString)) connectionString += sep + 'sslmode=require';
+      if (!/[?&]uselibpqcompat=true/i.test(connectionString)) connectionString += sep + 'uselibpqcompat=true';
+      connectionString += (connectionString.includes('?') ? '&' : '?') + 'channel_binding=disable';
+    }
     const pool = new Pool({
       connectionString,
       ssl: connectionString.includes('neon.tech') ? { rejectUnauthorized: false } : false,
-      connectionTimeoutMillis: 30000,
+      connectionTimeoutMillis: isLocal ? 5000 : 30000,
     });
 
     console.log('🔌 Veritabanına bağlanılıyor...');
