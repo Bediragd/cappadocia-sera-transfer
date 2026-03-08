@@ -8,7 +8,7 @@ export async function GET(
   try {
     const { id } = await params
     const bookings = await sql`
-      SELECT b.*, v.name_tr as vehicle_name, d.name as driver_name
+      SELECT b.*, v.name_tr as vehicle_name, d.full_name as driver_name
       FROM bookings b
       LEFT JOIN vehicles v ON b.vehicle_id = v.id
       LEFT JOIN drivers d ON b.driver_id = d.id
