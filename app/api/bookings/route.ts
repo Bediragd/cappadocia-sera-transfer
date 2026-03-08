@@ -57,20 +57,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Vehicle not found' }, { status: 404 })
     }
 
-    // Calculate price (simplified - you can add distance calculation later)
-    const totalPrice = vehicle.base_price
+    // Fiyat (tablo: calculated_price, final_price; distance_km zorunlu)
+    const totalPrice = Number(vehicle.base_price) || 0
+    const notesFull = [
+      validatedData.notes,
+      `Pickup: ${validatedData.pickupLocation}`,
+      `Dropoff: ${validatedData.dropoffLocation}`,
+      `Luggage: ${validatedData.luggage}`,
+    ].filter(Boolean).join('\n')
 
     const result = await sql`
       INSERT INTO bookings (
         booking_number, status, customer_name, customer_email, customer_phone,
-        pickup_location, dropoff_location, pickup_date, pickup_time,
-        passengers, luggage, vehicle_id, total_price, currency, notes
+        transfer_type, hotel_address, airport_id, vehicle_id, passenger_count,
+        distance_km, calculated_price, final_price, pickup_date, pickup_time, notes
       ) VALUES (
         ${bookingNumber}, 'pending', ${validatedData.customerName}, ${validatedData.customerEmail},
-        ${validatedData.customerPhone}, ${validatedData.pickupLocation}, ${validatedData.dropoffLocation},
-        ${validatedData.pickupDate}, ${validatedData.pickupTime}, ${validatedData.passengers},
-        ${validatedData.luggage}, ${validatedData.vehicleId}, ${totalPrice}, 'TRY',
-        ${validatedData.notes || null}
+        ${validatedData.customerPhone}, 'airport_to_hotel', ${validatedData.dropoffLocation},
+        null, ${validatedData.vehicleId}, ${validatedData.passengers},
+        0, ${totalPrice}, ${totalPrice}, ${validatedData.pickupDate}, ${validatedData.pickupTime},
+        ${notesFull || null}
       )
       RETURNING *
     `
