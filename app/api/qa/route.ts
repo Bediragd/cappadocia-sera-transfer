@@ -7,14 +7,22 @@ export async function GET(request: NextRequest) {
     const all = searchParams.get("all") === "1"
     const limit = Math.min(parseInt(searchParams.get("limit") || "20", 10) || 20, 100)
 
-    const rows = await sql`
-      SELECT id, username, question, answer, rating, created_at, answered_at
-      FROM qa_questions
-      WHERE is_active = true
-      ${all ? sql`` : sql`AND answer IS NOT NULL`}
-      ORDER BY created_at DESC
-      LIMIT ${limit}
-    `
+    const rows = all
+      ? await sql`
+          SELECT id, username, question, answer, rating, created_at, answered_at
+          FROM qa_questions
+          WHERE is_active = true
+          ORDER BY created_at DESC
+          LIMIT ${limit}
+        `
+      : await sql`
+          SELECT id, username, question, answer, rating, created_at, answered_at
+          FROM qa_questions
+          WHERE is_active = true
+            AND answer IS NOT NULL
+          ORDER BY created_at DESC
+          LIMIT ${limit}
+        `
 
     return NextResponse.json({ questions: rows })
   } catch (error) {
