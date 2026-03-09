@@ -20,11 +20,11 @@ CREATE TABLE IF NOT EXISTS popular_hotels (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Index'ler
-CREATE INDEX idx_hotels_region ON popular_hotels(region);
-CREATE INDEX idx_hotels_category ON popular_hotels(category);
-CREATE INDEX idx_hotels_rating ON popular_hotels(rating DESC);
-CREATE INDEX idx_hotels_active ON popular_hotels(is_active);
+-- Index'ler (IF NOT EXISTS ile tekrar çalıştırılabilir)
+CREATE INDEX IF NOT EXISTS idx_hotels_region ON popular_hotels(region);
+CREATE INDEX IF NOT EXISTS idx_hotels_category ON popular_hotels(category);
+CREATE INDEX IF NOT EXISTS idx_hotels_rating ON popular_hotels(rating DESC);
+CREATE INDEX IF NOT EXISTS idx_hotels_active ON popular_hotels(is_active);
 
 -- Kapadokya popüler otelleri ekle
 INSERT INTO popular_hotels (name, category, region, address, latitude, longitude, rating, image_url, amenities, phone, price_range, description) VALUES

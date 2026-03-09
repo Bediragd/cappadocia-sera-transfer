@@ -21,7 +21,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { 
+import {
   ArrowRight, 
   Users, 
   Fuel, 
@@ -31,7 +31,7 @@ import {
   Loader2,
   Building2,
   Star,
-  Euro,
+  TurkishLira,
   AlertCircle
 } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -442,7 +442,7 @@ export function BookingFormImproved() {
                                   </div>
                                   <div className="mt-3 flex items-center justify-between">
                                     <div className="flex items-center gap-2">
-                                      <Euro className="w-5 h-5 text-green-600" />
+                                      <TurkishLira className="w-5 h-5 text-green-600" />
                                       <span className="text-2xl font-bold text-green-600">
                                         {calculatePrice(vehicle)} TL
                                       </span>

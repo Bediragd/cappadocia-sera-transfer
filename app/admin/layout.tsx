@@ -1,9 +1,9 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard,
   Calendar,
@@ -34,8 +34,47 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
+  const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+  const [isAuthorized, setIsAuthorized] = useState(false)
   const pathname = usePathname()
+
+  useEffect(() => {
+    try {
+      const stored = typeof window !== "undefined" ? localStorage.getItem("admin_user") : null
+
+      if (!stored) {
+        router.replace("/admin/login")
+        return
+      }
+
+      const user = JSON.parse(stored)
+
+      if (!user || user.role !== "admin") {
+        router.replace("/admin/login")
+        return
+      }
+
+      setIsAuthorized(true)
+    } catch {
+      router.replace("/admin/login")
+    } finally {
+      setIsCheckingAuth(false)
+    }
+  }, [router])
+
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-muted/30">
+        <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+      </div>
+    )
+  }
+
+  if (!isAuthorized) {
+    return null
+  }
 
   return (
     <div className="min-h-screen bg-muted/30">
