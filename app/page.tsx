@@ -6,6 +6,7 @@ import { BookingFormImproved } from "@/components/booking-form-improved"
 import { About } from "@/components/about"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
+import { QASection } from "@/components/qa"
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
       <Gallery />
       <BookingFormImproved />
       <About />
+      <QASection />
       <Contact />
       <Footer />
     </main>

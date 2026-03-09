@@ -15,6 +15,7 @@ import {
   X,
   LogOut,
   UserPlus,
+  HelpCircle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -26,6 +27,7 @@ const sidebarItems = [
   { href: "/admin/drivers", label: "Soforler", icon: Users },
   { href: "/admin/applications", label: "Basvurular", icon: UserPlus },
   { href: "/admin/messages", label: "Mesajlar", icon: MessageSquare },
+  { href: "/admin/questions", label: "Sorular", icon: HelpCircle },
   { href: "/admin/settings", label: "Ayarlar", icon: Settings },
 ]
 
@@ -39,8 +41,14 @@ export default function AdminLayout({
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [isAuthorized, setIsAuthorized] = useState(false)
   const pathname = usePathname()
+  const isLoginPage = pathname === "/admin/login"
 
   useEffect(() => {
+    if (isLoginPage) {
+      setIsCheckingAuth(false)
+      return
+    }
+
     try {
       const stored = typeof window !== "undefined" ? localStorage.getItem("admin_user") : null
 
@@ -62,7 +70,7 @@ export default function AdminLayout({
     } finally {
       setIsCheckingAuth(false)
     }
-  }, [router])
+  }, [router, isLoginPage])
 
   if (isCheckingAuth) {
     return (
@@ -70,6 +78,10 @@ export default function AdminLayout({
         <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
       </div>
     )
+  }
+
+  if (isLoginPage) {
+    return <>{children}</>
   }
 
   if (!isAuthorized) {

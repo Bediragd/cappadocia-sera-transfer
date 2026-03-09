@@ -83,7 +83,7 @@ async function setupDatabase() {
     } catch (e) {
       console.log('   ⚠️  003-create-driver-applications-table.sql atlandı:', e.message);
     }
-    console.log('\n📦 Varsayılan veriler eklendi:');
+    console.log('\n📦 Varsayılan veriler ve ek tablolar:');
     console.log('   • 3 araç (Sedan, VIP Minivan, Minibüs)');
     console.log('   • 2 havalimanı (Nevşehir, Kayseri)');
     console.log('   • Site ayarları');
@@ -104,6 +104,15 @@ async function setupDatabase() {
       console.log('   • Araç description sütunları (varsa) eklendi');
     } catch (e) {
       console.log('   ⚠️  005-add-vehicle-description-columns.sql atlandı:', e.message);
+    }
+    
+    // Soru & Cevap (Q&A) tablosu
+    try {
+      const sql006 = fs.readFileSync(path.join(__dirname, '006-create-qa-table.sql'), 'utf8');
+      await pool.query(sql006);
+      console.log('   • qa_questions (Soru & Cevap) tablosu');
+    } catch (e) {
+      console.log('   ⚠️  006-create-qa-table.sql atlandı:', e.message);
     }
     
     // Create test admin user

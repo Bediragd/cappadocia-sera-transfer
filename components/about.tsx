@@ -21,10 +21,6 @@ export function About() {
                 className="object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground p-6 rounded-lg shadow-xl hidden md:block">
-              <p className="text-4xl font-bold">{t("experienceBadge")}</p>
-              <p className="text-sm">{t("experience")}</p>
-            </div>
           </div>
 
           <div>
