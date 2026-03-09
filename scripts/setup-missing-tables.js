@@ -12,6 +12,7 @@ const SCRIPTS = [
   '002-create-hotels-table.sql',
   '003-create-driver-applications-table.sql',
   '006-create-qa-table.sql',
+  '007-fix-qa-table.sql',
 ];
 
 async function run() {
