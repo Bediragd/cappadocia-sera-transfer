@@ -10,7 +10,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // output: 'standalone', // Linux sunucuda deploy ederken aktif edin (Windows'ta symlink izni gerektirir)
+  output: 'standalone',
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
