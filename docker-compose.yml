@@ -1,0 +1,45 @@
+# Sunucuda: cp .env.example .env && düzenle → docker compose up -d --build
+services:
+  app:
+    build: .
+    image: cappadocia-transfer:latest
+    container_name: cappadocia-transfer
+    restart: unless-stopped
+    ports:
+      # Host nginx (nginx-cappadocia-minimal.conf) 127.0.0.1:3000 bekliyor
+      - "127.0.0.1:3000:3000"
+    env_file: .env
+    environment:
+      HOSTNAME: "0.0.0.0"
+      PORT: "3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  db:
+    image: postgres:16-alpine
+    container_name: cappadocia-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cappadocia
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD gerekli}
+      POSTGRES_DB: cappadocia
+    ports:
+      # İlk kurulum: host'tan node scripts/setup-db.js (5433 — ciftci-postgres ile karışmasın)
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - cappadocia_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cappadocia -d cappadocia"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  cappadocia_pg_data:
