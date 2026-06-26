@@ -38,6 +38,42 @@ function buildConnectionString(rawUrl) {
   return connectionString;
 }
 
+/** Docker .env: @db:5432 — sadece container ağında çözülür; host'ta 127.0.0.1:5433 */
+function hostDockerFallback(rawUrl) {
+  if (/@db:5432\b/.test(rawUrl)) {
+    return rawUrl.replace('@db:5432', '@127.0.0.1:5433');
+  }
+  return null;
+}
+
+function createPool(rawUrl) {
+  const connectionString = buildConnectionString(rawUrl);
+  const isLocal = /localhost|127\.0\.0\.1/.test(rawUrl);
+  return new Pool({
+    connectionString,
+    ssl: connectionString.includes('neon.tech') ? { rejectUnauthorized: false } : false,
+    connectionTimeoutMillis: isLocal ? 5000 : 30000,
+  });
+}
+
+async function connectPool(rawUrl) {
+  const pool = createPool(rawUrl);
+  try {
+    await pool.query('SELECT 1');
+    return pool;
+  } catch (error) {
+    await pool.end();
+    const fallback = hostDockerFallback(rawUrl);
+    if (fallback && /ENOTFOUND|getaddrinfo/i.test(error.message)) {
+      console.log('ℹ️  Host\'tan çalıştırılıyor: db → 127.0.0.1:5433 (docker-compose port)\n');
+      const fallbackPool = createPool(fallback);
+      await fallbackPool.query('SELECT 1');
+      return fallbackPool;
+    }
+    throw error;
+  }
+}
+
 async function seedAdminUsers(pool) {
   const passwordHash = crypto.createHash('sha256').update('admin123').digest('hex');
   const adminHash = crypto.createHash('sha256').update('Admin123!').digest('hex');
@@ -57,18 +93,11 @@ async function migrate() {
     process.exit(1);
   }
 
-  const connectionString = buildConnectionString(process.env.DATABASE_URL);
-  const isLocal = /localhost|127\.0\.0\.1/.test(process.env.DATABASE_URL);
-  const pool = new Pool({
-    connectionString,
-    ssl: connectionString.includes('neon.tech') ? { rejectUnauthorized: false } : false,
-    connectionTimeoutMillis: isLocal ? 5000 : 30000,
-  });
-
   console.log('🚀 Migration başlıyor...\n');
 
+  let pool;
   try {
-    await pool.query('SELECT 1');
+    pool = await connectPool(process.env.DATABASE_URL);
     console.log('🔌 Veritabanı bağlantısı OK\n');
 
     await pool.query('SET statement_timeout = 90000');
@@ -97,7 +126,7 @@ async function migrate() {
     console.error('❌ Migration hatası:', error.message);
     process.exit(1);
   } finally {
-    await pool.end();
+    if (pool) await pool.end();
   }
 }
 
