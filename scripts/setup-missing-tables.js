@@ -11,6 +11,8 @@ const path = require('path');
 const SCRIPTS = [
   '002-create-hotels-table.sql',
   '003-create-driver-applications-table.sql',
+  '004-add-capacity-vehicles.sql',
+  '005-add-vehicle-description-columns.sql',
   '006-create-qa-table.sql',
   '007-fix-qa-table.sql',
 ];
