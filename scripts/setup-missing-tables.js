@@ -3,7 +3,8 @@
  * Sunucuda bir kez veya eksik tablo hatası alındığında çalıştır: node scripts/setup-missing-tables.js
  * 001 zaten çalıştırıldıysa sadece popular_hotels ve driver_applications eklenir.
  */
-require('dotenv').config();
+const { loadEnv } = require('./load-env');
+loadEnv();
 const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');

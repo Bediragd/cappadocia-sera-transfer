@@ -5,7 +5,8 @@
  * Kullanım: pnpm migrate  veya  node scripts/migrate.js
  * Gerekli: .env içinde DATABASE_URL
  */
-require('dotenv').config();
+const { loadEnv } = require('./load-env');
+loadEnv();
 const { Pool } = require('pg');
 const crypto = require('crypto');
 const fs = require('fs');
