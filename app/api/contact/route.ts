@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
       name: validatedData.name,
       email: validatedData.email,
       subject: validatedData.subject,
+      message: validatedData.message,
     })
 
     return NextResponse.json({ message: result[0] }, { status: 201 })

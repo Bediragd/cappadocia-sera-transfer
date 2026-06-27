@@ -1,6 +1,7 @@
 import { getAllSettings, parseBool } from '@/lib/site-settings'
 import { SETTING_KEYS } from '@/lib/settings-utils'
 import { sendPushToAdmins } from '@/lib/push'
+import { sendAdminEmail, adminPanelUrl } from '@/lib/email'
 
 export type NotificationType = 'booking' | 'driver_application' | 'contact' | 'qa'
 
@@ -51,6 +52,52 @@ function buildContent(type: NotificationType, payload: Record<string, unknown>):
   }
 }
 
+function buildEmailDetails(type: NotificationType, payload: Record<string, unknown>): string[] {
+  switch (type) {
+    case 'booking':
+      return [
+        `Rezervasyon No: ${payload.bookingNumber ?? '-'}`,
+        `Musteri: ${payload.customerName ?? '-'}`,
+        `E-posta: ${payload.customerEmail ?? '-'}`,
+        `Telefon: ${payload.customerPhone ?? '-'}`,
+      ]
+    case 'driver_application':
+      return [
+        `Ad: ${payload.name ?? '-'}`,
+        `E-posta: ${payload.email ?? '-'}`,
+        `Sehir: ${payload.city ?? '-'}`,
+      ]
+    case 'contact':
+      return [
+        `Gonderen: ${payload.name ?? '-'}`,
+        `E-posta: ${payload.email ?? '-'}`,
+        `Konu: ${payload.subject ?? '-'}`,
+        payload.message ? `Mesaj: ${String(payload.message).slice(0, 500)}` : '',
+      ].filter(Boolean)
+    case 'qa':
+      return [
+        `Kullanici: ${payload.username ?? '-'}`,
+        `Soru: ${payload.question ?? '-'}`,
+      ]
+  }
+}
+
+function buildEmailHtml(content: NotificationContent, details: string[], link: string): string {
+  const rows = details.map((line) => `<p style="margin:4px 0">${line}</p>`).join('')
+  return `
+    <div style="font-family:sans-serif;max-width:520px">
+      <h2 style="color:#1a1a1a">${content.title}</h2>
+      <p>${content.body}</p>
+      ${rows}
+      <p style="margin-top:20px">
+        <a href="${link}" style="background:#2563eb;color:#fff;padding:10px 16px;text-decoration:none;border-radius:6px;display:inline-block">
+          Admin Panelde Gor
+        </a>
+      </p>
+    </div>
+  `
+}
+
 export async function shouldNotify(type: NotificationType): Promise<boolean> {
   const settings = await getAllSettings()
   const key = KEY_BY_TYPE[type]
@@ -61,17 +108,35 @@ export async function notifyAdmin(type: NotificationType, payload: Record<string
   if (!(await shouldNotify(type))) return
 
   const settings = await getAllSettings()
-  const adminEmail = settings[SETTING_KEYS.siteEmail]
+  const adminEmail = settings[SETTING_KEYS.siteEmail]?.trim()
   const content = buildContent(type, payload)
+  const link = adminPanelUrl(content.url)
+  const details = buildEmailDetails(type, payload)
 
-  console.info(`[notify:${type}] → ${adminEmail}`, payload)
+  const tasks: Promise<void>[] = []
 
-  try {
-    const sent = await sendPushToAdmins(content)
-    if (sent > 0) {
-      console.info(`[push] ${sent} admin cihazina bildirim gonderildi (${type})`)
-    }
-  } catch (err) {
-    console.error('[push] notifyAdmin push hatasi:', err)
+  tasks.push(
+    sendPushToAdmins(content)
+      .then((sent) => {
+        if (sent > 0) {
+          console.info(`[push] ${sent} cihaza bildirim gonderildi (${type})`)
+        }
+      })
+      .catch((err) => console.error('[push] hata:', err))
+  )
+
+  if (adminEmail) {
+    tasks.push(
+      sendAdminEmail({
+        to: adminEmail,
+        subject: `[Admin] ${content.title}`,
+        text: `${content.body}\n\n${details.join('\n')}\n\nAdmin panel: ${link}`,
+        html: buildEmailHtml(content, details, link),
+      }).then((ok) => {
+        if (ok) console.info(`[email] ${adminEmail} adresine mail gonderildi (${type})`)
+      })
+    )
   }
+
+  await Promise.all(tasks)
 }

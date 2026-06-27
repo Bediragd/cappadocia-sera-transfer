@@ -378,7 +378,7 @@ export default function SettingsPage() {
               Bildirim Ayarlari
             </CardTitle>
             <CardDescription>
-              Yeni kayitlarda admin paneline push bildirim gonderilir
+              Yeni kayitlarda hem cihaza push hem de admin e-postasina bildirim gonderilir
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -409,28 +409,28 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Yeni Rezervasyon</p>
-                  <p className="text-sm text-muted-foreground">{siteEmail || "Admin e-postasi"}</p>
+                  <p className="text-sm text-muted-foreground">Push + e-posta ({siteEmail || "site e-postasi"})</p>
                 </div>
                 <Switch checked={notifyBooking} onCheckedChange={setNotifyBooking} />
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Sofor Basvurusu</p>
-                  <p className="text-sm text-muted-foreground">Yeni basvurularda bildirim</p>
+                  <p className="text-sm text-muted-foreground">Push + e-posta bildirimi</p>
                 </div>
                 <Switch checked={notifyDriver} onCheckedChange={setNotifyDriver} />
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Iletisim Formu</p>
-                  <p className="text-sm text-muted-foreground">Yeni mesajlarda bildirim</p>
+                  <p className="text-sm text-muted-foreground">Push + e-posta bildirimi</p>
                 </div>
                 <Switch checked={notifyContact} onCheckedChange={setNotifyContact} />
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Soru &amp; Cevap</p>
-                  <p className="text-sm text-muted-foreground">Yeni sorularda bildirim</p>
+                  <p className="text-sm text-muted-foreground">Push + e-posta bildirimi</p>
                 </div>
                 <Switch checked={notifyQa} onCheckedChange={setNotifyQa} />
               </div>
