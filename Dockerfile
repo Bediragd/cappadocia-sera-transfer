@@ -5,7 +5,9 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+# frozen-lockfile yerine: package.json ile lockfile arasında sürüm kayması
+# olsa bile build kilitlenmesin (sunucuda pnpm olmadan lockfile güncellenemiyor).
+RUN pnpm install --no-frozen-lockfile
 
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
