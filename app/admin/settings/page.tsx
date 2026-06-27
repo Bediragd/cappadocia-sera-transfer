@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { Settings, Globe, CreditCard, Bell, Shield } from "lucide-react"
+import { Settings, Globe, CreditCard, Bell, Shield, Smartphone } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { SETTING_KEYS } from "@/lib/settings-utils"
 import { locales, localeNames, defaultLocale, type Locale } from "@/i18n/config"
+import { getPushSupport, subscribeToPush } from "@/lib/push-client"
 
 type AdminUser = {
   id: number
@@ -59,8 +60,11 @@ export default function SettingsPage() {
   const [notifyBooking, setNotifyBooking] = useState(true)
   const [notifyDriver, setNotifyDriver] = useState(true)
   const [notifyContact, setNotifyContact] = useState(true)
+  const [notifyQa, setNotifyQa] = useState(true)
   const [notifyLoading, setNotifyLoading] = useState(false)
   const [notifyMsg, setNotifyMsg] = useState<{ type: "error" | "success"; text: string } | null>(null)
+  const [pushStatus, setPushStatus] = useState<ReturnType<typeof getPushSupport>>("default")
+  const [pushLoading, setPushLoading] = useState(false)
 
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
@@ -87,7 +91,28 @@ export default function SettingsPage() {
     setNotifyBooking(settings[SETTING_KEYS.notifyBooking] !== "false")
     setNotifyDriver(settings[SETTING_KEYS.notifyDriverApplication] !== "false")
     setNotifyContact(settings[SETTING_KEYS.notifyContact] !== "false")
+    setNotifyQa(settings[SETTING_KEYS.notifyQa] !== "false")
   }, [])
+
+  useEffect(() => {
+    setPushStatus(getPushSupport())
+  }, [])
+
+  async function handleEnablePush() {
+    setPushLoading(true)
+    setNotifyMsg(null)
+    try {
+      const result = await subscribeToPush()
+      setPushStatus(getPushSupport())
+      if (result.ok) {
+        setNotifyMsg({ type: "success", text: "Push bildirimleri acildi. Yeni kayitlarda tarayiciniza bildirim gelecek." })
+      } else {
+        setNotifyMsg({ type: "error", text: result.error || "Push acilamadi." })
+      }
+    } finally {
+      setPushLoading(false)
+    }
+  }
 
   useEffect(() => {
     try {
@@ -353,11 +378,33 @@ export default function SettingsPage() {
               Bildirim Ayarlari
             </CardTitle>
             <CardDescription>
-              Yeni kayitlarda admin e-postasina bildirim (simdi log; SMTP sonra eklenebilir)
+              Yeni kayitlarda admin paneline push bildirim gonderilir
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {notifyMsg && <Alert type={notifyMsg.type} message={notifyMsg.text} />}
+            <div className="p-4 rounded-lg border border-border bg-muted/30 space-y-3">
+              <div className="flex items-start gap-3">
+                <Smartphone className="w-5 h-5 mt-0.5 text-primary" />
+                <div className="flex-1 space-y-2">
+                  <p className="font-medium">Tarayici Push Bildirimleri</p>
+                  <p className="text-sm text-muted-foreground">
+                    {pushStatus === "granted"
+                      ? "Bildirimler acik. Yeni rezervasyon, basvuru, mesaj ve sorularda uyarilirsiniz."
+                      : pushStatus === "denied"
+                        ? "Bildirim izni reddedildi. Tarayici ayarlarindan izin verin."
+                        : pushStatus === "unsupported"
+                          ? "Tarayiciniz push bildirimlerini desteklemiyor."
+                          : "Push bildirimleri icin izin verin."}
+                  </p>
+                  {pushStatus !== "granted" && pushStatus !== "unsupported" && (
+                    <Button type="button" size="sm" disabled={pushLoading} onClick={handleEnablePush}>
+                      {pushLoading ? "Aciliyor..." : "Push Bildirimlerini Ac"}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -380,6 +427,13 @@ export default function SettingsPage() {
                 </div>
                 <Switch checked={notifyContact} onCheckedChange={setNotifyContact} />
               </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">Soru &amp; Cevap</p>
+                  <p className="text-sm text-muted-foreground">Yeni sorularda bildirim</p>
+                </div>
+                <Switch checked={notifyQa} onCheckedChange={setNotifyQa} />
+              </div>
             </div>
             <Button
               type="button"
@@ -390,6 +444,7 @@ export default function SettingsPage() {
                     [SETTING_KEYS.notifyBooking]: notifyBooking ? "true" : "false",
                     [SETTING_KEYS.notifyDriverApplication]: notifyDriver ? "true" : "false",
                     [SETTING_KEYS.notifyContact]: notifyContact ? "true" : "false",
+                    [SETTING_KEYS.notifyQa]: notifyQa ? "true" : "false",
                   },
                   setNotifyLoading,
                   setNotifyMsg

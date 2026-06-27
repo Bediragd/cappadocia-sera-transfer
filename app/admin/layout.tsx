@@ -22,6 +22,8 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { AdminPushNotifications } from "@/components/admin-push-notifications"
+import { unsubscribeFromPush } from "@/lib/push-client"
 
 const sidebarItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -52,6 +54,7 @@ export default function AdminLayout({
 
   async function handleLogout() {
     try {
+      await unsubscribeFromPush()
       await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -112,6 +115,7 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-muted/30">
+      <AdminPushNotifications />
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div

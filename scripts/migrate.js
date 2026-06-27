@@ -22,6 +22,8 @@ const MIGRATIONS = [
   '007-fix-qa-table.sql',
   '008-seed-admin.sql',
   '009-add-settings-keys.sql',
+  '010-create-push-subscriptions.sql',
+  '011-add-notify-qa-setting.sql',
 ];
 
 function buildConnectionString(rawUrl) {

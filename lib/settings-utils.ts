@@ -10,6 +10,7 @@ export const SETTING_KEYS = {
   notifyBooking: 'notify_booking',
   notifyDriverApplication: 'notify_driver_application',
   notifyContact: 'notify_contact',
+  notifyQa: 'notify_qa',
   paymentCashEnabled: 'payment_cash_enabled',
   paymentOnlineEnabled: 'payment_online_enabled',
   currency: 'currency',

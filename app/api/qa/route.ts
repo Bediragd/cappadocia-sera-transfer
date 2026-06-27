@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { sql } from "@/lib/db"
+import { notifyAdmin } from "@/lib/notifications"
 
 export async function GET(request: NextRequest) {
   try {
@@ -49,6 +50,12 @@ export async function POST(request: NextRequest) {
       VALUES (${username}, ${question})
       RETURNING id, username, question, answer, rating, created_at, answered_at
     `
+
+    await notifyAdmin('qa', {
+      username,
+      question,
+      id: row.id,
+    })
 
     return NextResponse.json({ question: row }, { status: 201 })
   } catch (error) {

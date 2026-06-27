@@ -24,6 +24,7 @@ const DEFAULTS: Record<string, string> = {
   [SETTING_KEYS.notifyBooking]: 'true',
   [SETTING_KEYS.notifyDriverApplication]: 'true',
   [SETTING_KEYS.notifyContact]: 'true',
+  [SETTING_KEYS.notifyQa]: 'true',
   [SETTING_KEYS.paymentCashEnabled]: 'true',
   [SETTING_KEYS.paymentOnlineEnabled]: 'false',
   [SETTING_KEYS.currency]: 'TRY',
