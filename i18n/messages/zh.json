@@ -67,6 +67,29 @@
       "description": "为您的特别日子提供豪华用车"
     }
   },
+  "gallery": {
+    "label": "图库",
+    "title": "卡帕多奇亚之美",
+    "subtitle": "卡帕多奇亚以独特的仙人烟囱和迷人的风景等待着您。"
+  },
+  "qa": {
+    "title": "问答",
+    "subtitle": "关于接送、预订和我们的服务，欢迎随时咨询。",
+    "askTitle": "提问",
+    "nameLabel": "用户名",
+    "namePlaceholder": "您的显示名称",
+    "questionLabel": "您的问题",
+    "questionPlaceholder": "写下您关于接送、机场、付款等的问题……",
+    "submit": "发送问题",
+    "submitting": "发送中...",
+    "faqTitle": "常见问题",
+    "empty": "暂无已回答的问题。来做第一个提问的人吧。",
+    "questionPrefix": "问题：",
+    "answerPrefix": "回答：",
+    "success": "已收到您的问题，我们会尽快回复。",
+    "errorRequired": "用户名和问题为必填项。",
+    "errorSubmit": "提交问题时出错。"
+  },
   "vehicles": {
     "title": "我们的车队",
     "subtitle": "满足各种需求的车型",

@@ -67,6 +67,29 @@
       "description": "Özel günleriniz için lüks araç kiralama"
     }
   },
+  "gallery": {
+    "label": "Galeri",
+    "title": "Kapadokya'nın Güzellikleri",
+    "subtitle": "Eşsiz peri bacaları ve büyüleyici manzaralarıyla Kapadokya sizi bekliyor."
+  },
+  "qa": {
+    "title": "Soru & Cevap",
+    "subtitle": "Transfer, rezervasyon ve hizmetlerimizle ilgili merak ettiklerinizi bize sorabilirsiniz.",
+    "askTitle": "Soru Sor",
+    "nameLabel": "Kullanıcı Adı",
+    "namePlaceholder": "Görünecek isminiz",
+    "questionLabel": "Sorunuz",
+    "questionPlaceholder": "Transfer, havalimanı, ödeme vb. ile ilgili sorunuzu yazın...",
+    "submit": "Soruyu Gönder",
+    "submitting": "Gönderiliyor...",
+    "faqTitle": "Sık Sorulan Sorular",
+    "empty": "Henüz cevaplanmış soru bulunmuyor. İlk soruyu siz sorabilirsiniz.",
+    "questionPrefix": "Soru:",
+    "answerPrefix": "Cevap:",
+    "success": "Sorunuz alındı. En kısa sürede cevaplanacaktır.",
+    "errorRequired": "Kullanıcı adı ve soru zorunludur.",
+    "errorSubmit": "Soru gönderilirken bir hata oluştu."
+  },
   "vehicles": {
     "title": "Araç Filomuz",
     "subtitle": "Her ihtiyaca uygun araç seçenekleri",

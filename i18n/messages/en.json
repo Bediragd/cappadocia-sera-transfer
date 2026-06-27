@@ -67,6 +67,29 @@
       "description": "Luxury car rental for your special days"
     }
   },
+  "gallery": {
+    "label": "Gallery",
+    "title": "The Beauties of Cappadocia",
+    "subtitle": "Cappadocia awaits you with its unique fairy chimneys and mesmerizing landscapes."
+  },
+  "qa": {
+    "title": "Q&A",
+    "subtitle": "Ask us anything about transfers, bookings and our services.",
+    "askTitle": "Ask a Question",
+    "nameLabel": "Username",
+    "namePlaceholder": "Your display name",
+    "questionLabel": "Your Question",
+    "questionPlaceholder": "Write your question about transfer, airport, payment, etc...",
+    "submit": "Send Question",
+    "submitting": "Sending...",
+    "faqTitle": "Frequently Asked Questions",
+    "empty": "No answered questions yet. Be the first to ask.",
+    "questionPrefix": "Question:",
+    "answerPrefix": "Answer:",
+    "success": "Your question has been received. It will be answered shortly.",
+    "errorRequired": "Username and question are required.",
+    "errorSubmit": "An error occurred while submitting your question."
+  },
   "vehicles": {
     "title": "Our Fleet",
     "subtitle": "Vehicle options for every need",

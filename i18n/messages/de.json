@@ -67,6 +67,29 @@
       "description": "Luxus-Autovermietung für Ihre besonderen Tage"
     }
   },
+  "gallery": {
+    "label": "Galerie",
+    "title": "Die Schönheiten Kappadokiens",
+    "subtitle": "Kappadokien erwartet Sie mit einzigartigen Feenkaminen und faszinierenden Landschaften."
+  },
+  "qa": {
+    "title": "Fragen & Antworten",
+    "subtitle": "Stellen Sie uns alle Fragen zu Transfers, Buchungen und unseren Leistungen.",
+    "askTitle": "Frage stellen",
+    "nameLabel": "Benutzername",
+    "namePlaceholder": "Ihr angezeigter Name",
+    "questionLabel": "Ihre Frage",
+    "questionPlaceholder": "Schreiben Sie Ihre Frage zu Transfer, Flughafen, Zahlung usw...",
+    "submit": "Frage senden",
+    "submitting": "Senden...",
+    "faqTitle": "Häufig gestellte Fragen",
+    "empty": "Noch keine beantworteten Fragen. Stellen Sie die erste Frage.",
+    "questionPrefix": "Frage:",
+    "answerPrefix": "Antwort:",
+    "success": "Ihre Frage ist eingegangen. Sie wird in Kürze beantwortet.",
+    "errorRequired": "Benutzername und Frage sind erforderlich.",
+    "errorSubmit": "Beim Senden Ihrer Frage ist ein Fehler aufgetreten."
+  },
   "vehicles": {
     "title": "Unsere Flotte",
     "subtitle": "Fahrzeugoptionen für jeden Bedarf",

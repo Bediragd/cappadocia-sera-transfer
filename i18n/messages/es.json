@@ -67,6 +67,29 @@
       "description": "Alquiler de vehículos de lujo para sus días especiales"
     }
   },
+  "gallery": {
+    "label": "Galería",
+    "title": "Las Bellezas de Capadocia",
+    "subtitle": "Capadocia te espera con sus singulares chimeneas de hadas y paisajes fascinantes."
+  },
+  "qa": {
+    "title": "Preguntas y Respuestas",
+    "subtitle": "Pregúntanos lo que quieras sobre traslados, reservas y nuestros servicios.",
+    "askTitle": "Hacer una pregunta",
+    "nameLabel": "Nombre de usuario",
+    "namePlaceholder": "Tu nombre visible",
+    "questionLabel": "Tu pregunta",
+    "questionPlaceholder": "Escribe tu pregunta sobre traslado, aeropuerto, pago, etc...",
+    "submit": "Enviar pregunta",
+    "submitting": "Enviando...",
+    "faqTitle": "Preguntas frecuentes",
+    "empty": "Aún no hay preguntas respondidas. Sé el primero en preguntar.",
+    "questionPrefix": "Pregunta:",
+    "answerPrefix": "Respuesta:",
+    "success": "Hemos recibido tu pregunta. Te responderemos pronto.",
+    "errorRequired": "El nombre de usuario y la pregunta son obligatorios.",
+    "errorSubmit": "Ocurrió un error al enviar tu pregunta."
+  },
   "vehicles": {
     "title": "Nuestra flota",
     "subtitle": "Vehículos para cada necesidad",

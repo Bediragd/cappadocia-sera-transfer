@@ -67,6 +67,29 @@
       "description": "Location de véhicules de luxe pour vos jours spéciaux"
     }
   },
+  "gallery": {
+    "label": "Galerie",
+    "title": "Les Beautés de la Cappadoce",
+    "subtitle": "La Cappadoce vous attend avec ses cheminées de fées uniques et ses paysages fascinants."
+  },
+  "qa": {
+    "title": "Questions & Réponses",
+    "subtitle": "Posez-nous toutes vos questions sur les transferts, les réservations et nos services.",
+    "askTitle": "Poser une question",
+    "nameLabel": "Nom d'utilisateur",
+    "namePlaceholder": "Votre nom affiché",
+    "questionLabel": "Votre question",
+    "questionPlaceholder": "Écrivez votre question sur le transfert, l'aéroport, le paiement, etc...",
+    "submit": "Envoyer la question",
+    "submitting": "Envoi...",
+    "faqTitle": "Questions fréquentes",
+    "empty": "Aucune question répondue pour l'instant. Soyez le premier à poser une question.",
+    "questionPrefix": "Question :",
+    "answerPrefix": "Réponse :",
+    "success": "Votre question a été reçue. Nous y répondrons sous peu.",
+    "errorRequired": "Le nom d'utilisateur et la question sont obligatoires.",
+    "errorSubmit": "Une erreur s'est produite lors de l'envoi de votre question."
+  },
   "vehicles": {
     "title": "Notre flotte",
     "subtitle": "Véhicules pour tous les besoins",

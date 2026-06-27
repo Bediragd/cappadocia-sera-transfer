@@ -22,6 +22,7 @@ export default function AdminQuestionsPage() {
   const [loading, setLoading] = useState(true)
   const [savingId, setSavingId] = useState<number | null>(null)
   const [deletingId, setDeletingId] = useState<number | null>(null)
+  const [feedback, setFeedback] = useState<{ type: "error" | "success"; text: string } | null>(null)
 
   useEffect(() => {
     fetchItems()
@@ -46,8 +47,9 @@ export default function AdminQuestionsPage() {
 
   async function handleSave(item: QaItem) {
     setSavingId(item.id)
+    setFeedback(null)
     try {
-      await fetch(`/api/qa/${item.id}`, {
+      const res = await fetch(`/api/qa/${item.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -55,9 +57,19 @@ export default function AdminQuestionsPage() {
           rating: item.rating,
         }),
       })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setFeedback({
+          type: "error",
+          text: data.error || "Cevap kaydedilemedi. Lütfen tekrar giriş yapmayı deneyin.",
+        })
+        return
+      }
       await fetchItems()
+      setFeedback({ type: "success", text: "Cevap kaydedildi ve sitede yayınlandı." })
     } catch (e) {
       console.error("QA save error", e)
+      setFeedback({ type: "error", text: "Bir hata oluştu, cevap kaydedilemedi." })
     } finally {
       setSavingId(null)
     }
@@ -93,6 +105,17 @@ export default function AdminQuestionsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {feedback && (
+            <div
+              className={
+                feedback.type === "error"
+                  ? "mb-4 p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md"
+                  : "mb-4 p-3 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md"
+              }
+            >
+              {feedback.text}
+            </div>
+          )}
           {loading ? (
             <div className="flex items-center justify-center py-10">
               <div className="w-6 h-6 rounded-full border-2 border-primary border-t-transparent animate-spin" />

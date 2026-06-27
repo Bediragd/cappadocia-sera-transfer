@@ -2,30 +2,18 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Share2, LayoutGrid, Image as ImageIcon, MapPin, Plus, Trash2 } from "lucide-react"
+import { Share2, Image as ImageIcon, MapPin, Plus, Trash2, Languages } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import {
   SETTING_KEYS,
-  DEFAULT_SERVICES,
   DEFAULT_GALLERY,
   DEFAULT_FOOTER_REGIONS,
   parseJsonSetting,
-  type ServiceItem,
   type GalleryItem,
 } from "@/lib/settings-utils"
-
-const ICON_OPTIONS = ["Plane", "Hotel", "Users", "Car"]
 
 function Alert({ type, message }: { type: "error" | "success"; message: string }) {
   if (!message) return null
@@ -52,10 +40,6 @@ export default function ContentPage() {
   const [twitter, setTwitter] = useState("")
   const [socialLoading, setSocialLoading] = useState(false)
   const [socialMsg, setSocialMsg] = useState<{ type: "error" | "success"; text: string } | null>(null)
-
-  const [services, setServices] = useState<ServiceItem[]>(DEFAULT_SERVICES)
-  const [servicesLoading, setServicesLoading] = useState(false)
-  const [servicesMsg, setServicesMsg] = useState<{ type: "error" | "success"; text: string } | null>(null)
 
   const [gallery, setGallery] = useState<GalleryItem[]>(DEFAULT_GALLERY)
   const [galleryLoading, setGalleryLoading] = useState(false)
@@ -84,7 +68,6 @@ export default function ContentPage() {
         setFacebook(s[SETTING_KEYS.socialFacebook] || "")
         setYoutube(s[SETTING_KEYS.socialYoutube] || "")
         setTwitter(s[SETTING_KEYS.socialTwitter] || "")
-        setServices(parseJsonSetting<ServiceItem[]>(s[SETTING_KEYS.contentServices], DEFAULT_SERVICES))
         setGallery(parseJsonSetting<GalleryItem[]>(s[SETTING_KEYS.contentGallery], DEFAULT_GALLERY))
         setRegions(parseJsonSetting<string[]>(s[SETTING_KEYS.contentFooterRegions], DEFAULT_FOOTER_REGIONS))
       })
@@ -182,84 +165,21 @@ export default function ContentPage() {
         </CardContent>
       </Card>
 
-      {/* Services */}
+      {/* Services (i18n) */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <LayoutGrid className="w-5 h-5" />
+            <Languages className="w-5 h-5" />
             Hizmetler
           </CardTitle>
           <CardDescription>Ana sayfadaki hizmet kartlari</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {servicesMsg && <Alert type={servicesMsg.type} message={servicesMsg.text} />}
-          {services.map((service, index) => (
-            <div key={index} className="grid gap-3 md:grid-cols-[140px_1fr_auto] items-start p-3 rounded-lg border border-border">
-              <div className="space-y-1">
-                <Label className="text-xs">Ikon</Label>
-                <Select
-                  value={service.icon}
-                  onValueChange={(value) =>
-                    setServices((prev) => prev.map((s, i) => (i === index ? { ...s, icon: value } : s)))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {ICON_OPTIONS.map((icon) => (
-                      <SelectItem key={icon} value={icon}>{icon}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Input
-                  value={service.title}
-                  placeholder="Baslik"
-                  onChange={(e) =>
-                    setServices((prev) => prev.map((s, i) => (i === index ? { ...s, title: e.target.value } : s)))
-                  }
-                />
-                <Textarea
-                  value={service.description}
-                  placeholder="Aciklama"
-                  rows={2}
-                  onChange={(e) =>
-                    setServices((prev) => prev.map((s, i) => (i === index ? { ...s, description: e.target.value } : s)))
-                  }
-                />
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-rose-600"
-                onClick={() => setServices((prev) => prev.filter((_, i) => i !== index))}
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          ))}
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant="outline"
-              onClick={() => setServices((prev) => [...prev, { icon: "Car", title: "", description: "" }])}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Hizmet Ekle
-            </Button>
-            <Button
-              disabled={servicesLoading}
-              onClick={() =>
-                save(
-                  { [SETTING_KEYS.contentServices]: JSON.stringify(services) },
-                  setServicesLoading,
-                  setServicesMsg
-                )
-              }
-            >
-              {servicesLoading ? "Kaydediliyor..." : "Hizmetleri Kaydet"}
-            </Button>
+        <CardContent>
+          <div className="p-3 text-sm text-muted-foreground bg-muted/40 border border-border rounded-md">
+            Hizmet kartlari artik cok dilli ceviri dosyalarindan
+            (<code>i18n/messages/*.json</code> &rarr; <code>services</code>) yonetilmektedir.
+            Boylece her dil icin otomatik olarak dogru metin gosterilir. Metni guncellemek
+            icin ilgili dil dosyalarindaki <code>services</code> bolumunu duzenleyin.
           </div>
         </CardContent>
       </Card>

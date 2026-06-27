@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useTranslations } from "next-intl"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -17,6 +18,7 @@ type QaItem = {
 }
 
 export function QASection() {
+  const t = useTranslations("qa")
   const [items, setItems] = useState<QaItem[]>([])
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState("")
@@ -46,7 +48,7 @@ export function QASection() {
     setMessage(null)
 
     if (!username.trim() || !question.trim()) {
-      setError("Kullanıcı adı ve soru zorunludur.")
+      setError(t("errorRequired"))
       return
     }
 
@@ -59,13 +61,13 @@ export function QASection() {
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error || "Soru gönderilemedi.")
+        setError(data.error || t("errorSubmit"))
         return
       }
-      setMessage("Sorunuz alındı. En kısa sürede cevaplanacaktır.")
+      setMessage(t("success"))
       setQuestion("")
     } catch (e) {
-      setError("Soru gönderilirken bir hata oluştu.")
+      setError(t("errorSubmit"))
     } finally {
       setSubmitting(false)
     }
@@ -75,12 +77,8 @@ export function QASection() {
     <section id="sorucevap" className="py-20 bg-linear-to-b from-white to-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Soru &amp; Cevap
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Transfer, rezervasyon ve hizmetlerimizle ilgili merak ettiklerinizi bize sorabilirsiniz.
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">{t("title")}</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">{t("subtitle")}</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
@@ -88,7 +86,7 @@ export function QASection() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MessageCircle className="w-5 h-5" />
-                Soru Sor
+                {t("askTitle")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -104,24 +102,24 @@ export function QASection() {
                   </div>
                 )}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Kullanıcı Adı</label>
+                  <label className="text-sm font-medium">{t("nameLabel")}</label>
                   <Input
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Görünecek isminiz"
+                    placeholder={t("namePlaceholder")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Sorunuz</label>
+                  <label className="text-sm font-medium">{t("questionLabel")}</label>
                   <Textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="Transfer, havalimanı, ödeme vb. ile ilgili sorunuzu yazın..."
+                    placeholder={t("questionPlaceholder")}
                     rows={4}
                   />
                 </div>
                 <Button type="submit" disabled={submitting} className="w-full">
-                  {submitting ? "Gönderiliyor..." : "Soruyu Gönder"}
+                  {submitting ? t("submitting") : t("submit")}
                 </Button>
               </form>
             </CardContent>
@@ -129,7 +127,7 @@ export function QASection() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Sık Sorulan Sorular</CardTitle>
+              <CardTitle>{t("faqTitle")}</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -137,9 +135,7 @@ export function QASection() {
                   <div className="w-6 h-6 rounded-full border-2 border-primary border-t-transparent animate-spin" />
                 </div>
               ) : items.length === 0 ? (
-                <p className="text-sm text-gray-500">
-                  Henüz cevaplanmış soru bulunmuyor. İlk soruyu siz sorabilirsiniz.
-                </p>
+                <p className="text-sm text-gray-500">{t("empty")}</p>
               ) : (
                 <div className="space-y-4">
                   {items.map((item) => (
@@ -156,11 +152,11 @@ export function QASection() {
                         )}
                       </div>
                       <p className="text-sm text-gray-800 mb-2">
-                        <span className="font-medium">Soru:</span> {item.question}
+                        <span className="font-medium">{t("questionPrefix")}</span> {item.question}
                       </p>
                       {item.answer && (
                         <p className="text-sm text-gray-700">
-                          <span className="font-medium">Cevap:</span> {item.answer}
+                          <span className="font-medium">{t("answerPrefix")}</span> {item.answer}
                         </p>
                       )}
                     </div>
@@ -174,4 +170,3 @@ export function QASection() {
     </section>
   )
 }
-

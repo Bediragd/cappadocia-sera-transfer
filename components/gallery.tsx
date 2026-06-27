@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { useTranslations } from "next-intl"
 import { useSiteSettings } from "@/hooks/use-site-settings"
 import {
   DEFAULT_GALLERY,
@@ -9,6 +10,7 @@ import {
 } from "@/lib/settings-utils"
 
 export function Gallery() {
+  const t = useTranslations("gallery")
   const { settings } = useSiteSettings()
   const images = parseJsonSetting<GalleryItem[]>(
     settings.content_gallery,
@@ -19,11 +21,9 @@ export function Gallery() {
     <section id="galeri" className="py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <p className="text-accent font-medium mb-2 tracking-widest uppercase text-sm">Galeri</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Kapadokya&apos;nın Güzellikleri</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Eşsiz peri bacaları ve büyüleyici manzaralarıyla Kapadokya sizi bekliyor.
-          </p>
+          <p className="text-accent font-medium mb-2 tracking-widest uppercase text-sm">{t("label")}</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{t("title")}</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">{t("subtitle")}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
