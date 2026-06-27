@@ -126,7 +126,7 @@ export async function notifyAdmin(type: NotificationType, payload: Record<string
       .catch((err) => console.error('[push] hata:', err))
   )
 
-  if (siteEmail && isEmailConfigured(siteEmail)) {
+  if (siteEmail && (await isEmailConfigured(siteEmail))) {
     tasks.push(
       sendAdminEmail({
         to: siteEmail,

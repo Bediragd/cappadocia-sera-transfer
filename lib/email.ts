@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer'
+import { getAllSettings } from '@/lib/site-settings'
+import { SETTING_KEYS } from '@/lib/settings-utils'
 
 type MailOptions = {
   to: string
@@ -9,36 +11,52 @@ type MailOptions = {
   html: string
 }
 
-function getTransporter(smtpUser: string) {
-  const host = process.env.SMTP_HOST?.trim()
-  const pass = process.env.SMTP_PASS?.trim()
+type SmtpConfig = {
+  host: string
+  port: number
+  secure: boolean
+  pass: string
+  user: string
+}
 
-  if (!host || !pass || !smtpUser) return null
+async function resolveSmtpConfig(siteEmail: string): Promise<SmtpConfig | null> {
+  const settings = await getAllSettings()
+  const host = settings[SETTING_KEYS.smtpHost]?.trim() || process.env.SMTP_HOST?.trim()
+  const pass = settings[SETTING_KEYS.smtpPass]?.trim() || process.env.SMTP_PASS?.trim()
+  const user = siteEmail.trim()
 
-  const port = parseInt(process.env.SMTP_PORT || '587', 10)
-  const secure = process.env.SMTP_SECURE === 'true' || port === 465
+  if (!host || !pass || !user) return null
 
+  const port = parseInt(
+    settings[SETTING_KEYS.smtpPort] || process.env.SMTP_PORT || '587',
+    10
+  )
+  const secureSetting =
+    settings[SETTING_KEYS.smtpSecure] ?? process.env.SMTP_SECURE ?? 'false'
+  const secure = secureSetting === 'true' || port === 465
+
+  return { host, port, secure, pass, user }
+}
+
+function createTransporter(config: SmtpConfig) {
   return nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth: { user: smtpUser, pass },
+    host: config.host,
+    port: config.port,
+    secure: config.secure,
+    auth: { user: config.user, pass: config.pass },
   })
 }
 
-/** SMTP sunucu + sifre + admin panelindeki site e-postasi yeterli */
-export function isEmailConfigured(siteEmail?: string): boolean {
-  return Boolean(
-    process.env.SMTP_HOST?.trim() &&
-      process.env.SMTP_PASS?.trim() &&
-      siteEmail?.trim()
-  )
+export async function isEmailConfigured(siteEmail?: string): Promise<boolean> {
+  if (!siteEmail?.trim()) return false
+  const config = await resolveSmtpConfig(siteEmail)
+  return config !== null
 }
 
 export async function sendAdminEmail(options: MailOptions): Promise<boolean> {
-  const transporter = getTransporter(options.fromEmail)
-  if (!transporter) {
-    console.warn('[email] SMTP ayarlari veya site e-postasi eksik, mail atlaniyor')
+  const config = await resolveSmtpConfig(options.fromEmail)
+  if (!config) {
+    console.warn('[email] SMTP veya site e-postasi eksik, mail atlaniyor')
     return false
   }
 
@@ -46,7 +64,7 @@ export async function sendAdminEmail(options: MailOptions): Promise<boolean> {
   const from = `"${fromName}" <${options.fromEmail}>`
 
   try {
-    await transporter.sendMail({
+    await createTransporter(config).sendMail({
       from,
       to: options.to,
       subject: options.subject,

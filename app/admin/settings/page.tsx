@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { Settings, Globe, CreditCard, Bell, Shield, Smartphone } from "lucide-react"
+import { Settings, Globe, CreditCard, Bell, Shield, Smartphone, Mail } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -66,6 +66,14 @@ export default function SettingsPage() {
   const [pushStatus, setPushStatus] = useState<ReturnType<typeof getPushSupport>>("default")
   const [pushLoading, setPushLoading] = useState(false)
 
+  const [smtpHost, setSmtpHost] = useState("smtp.gmail.com")
+  const [smtpPort, setSmtpPort] = useState("587")
+  const [smtpSecure, setSmtpSecure] = useState(false)
+  const [smtpPass, setSmtpPass] = useState("")
+  const [smtpPassSet, setSmtpPassSet] = useState(false)
+  const [smtpLoading, setSmtpLoading] = useState(false)
+  const [smtpMsg, setSmtpMsg] = useState<{ type: "error" | "success"; text: string } | null>(null)
+
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -92,6 +100,9 @@ export default function SettingsPage() {
     setNotifyDriver(settings[SETTING_KEYS.notifyDriverApplication] !== "false")
     setNotifyContact(settings[SETTING_KEYS.notifyContact] !== "false")
     setNotifyQa(settings[SETTING_KEYS.notifyQa] !== "false")
+    setSmtpHost(settings[SETTING_KEYS.smtpHost] || "smtp.gmail.com")
+    setSmtpPort(settings[SETTING_KEYS.smtpPort] || "587")
+    setSmtpSecure(settings[SETTING_KEYS.smtpSecure] === "true")
   }, [])
 
   useEffect(() => {
@@ -132,6 +143,7 @@ export default function SettingsPage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.settings) applySettings(data.settings)
+        if (data.smtp_pass_set) setSmtpPassSet(true)
       })
       .catch(() => setGeneralMsg({ type: "error", text: "Ayarlar yüklenemedi" }))
       .finally(() => setLoading(false))
@@ -141,7 +153,7 @@ export default function SettingsPage() {
     updates: Record<string, string>,
     setBusy: (v: boolean) => void,
     setMsg: (v: { type: "error" | "success"; text: string } | null) => void
-  ) {
+  ): Promise<boolean> {
     setBusy(true)
     setMsg(null)
     try {
@@ -153,12 +165,15 @@ export default function SettingsPage() {
       const data = await res.json()
       if (!res.ok) {
         setMsg({ type: "error", text: data.error || "Kaydedilemedi" })
-        return
+        return false
       }
       if (data.settings) applySettings(data.settings)
+      if (data.smtp_pass_set) setSmtpPassSet(true)
       setMsg({ type: "success", text: data.message || "Kaydedildi" })
+      return true
     } catch {
       setMsg({ type: "error", text: "Bir hata oluştu" })
+      return false
     } finally {
       setBusy(false)
     }
@@ -404,6 +419,75 @@ export default function SettingsPage() {
                   )}
                 </div>
               </div>
+            </div>
+            <div className="p-4 rounded-lg border border-border space-y-4">
+              <div className="flex items-center gap-2">
+                <Mail className="w-5 h-5 text-primary" />
+                <p className="font-medium">E-posta Gonderim (SMTP)</p>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Bildirim mailleri yukaridaki site e-postasindan gider. Gmail icin: smtp.gmail.com + uygulama sifresi.
+              </p>
+              {smtpMsg && <Alert type={smtpMsg.type} message={smtpMsg.text} />}
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="smtpHost">SMTP Sunucu</Label>
+                  <Input
+                    id="smtpHost"
+                    value={smtpHost}
+                    onChange={(e) => setSmtpHost(e.target.value)}
+                    placeholder="smtp.gmail.com"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtpPort">Port</Label>
+                  <Input
+                    id="smtpPort"
+                    value={smtpPort}
+                    onChange={(e) => setSmtpPort(e.target.value)}
+                    placeholder="587"
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="smtpPass">SMTP Sifre / Uygulama Sifresi</Label>
+                  <Input
+                    id="smtpPass"
+                    type="password"
+                    value={smtpPass}
+                    onChange={(e) => setSmtpPass(e.target.value)}
+                    placeholder={smtpPassSet ? "Kayitli (degistirmek icin yeni sifre girin)" : "Gmail uygulama sifresi"}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-sm">SSL (port 465)</p>
+                  <p className="text-xs text-muted-foreground">Gmail icin genelde kapali (587)</p>
+                </div>
+                <Switch checked={smtpSecure} onCheckedChange={setSmtpSecure} />
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={smtpLoading}
+                onClick={async () => {
+                  const updates: Record<string, string> = {
+                    [SETTING_KEYS.smtpHost]: smtpHost.trim(),
+                    [SETTING_KEYS.smtpPort]: smtpPort.trim() || "587",
+                    [SETTING_KEYS.smtpSecure]: smtpSecure ? "true" : "false",
+                  }
+                  if (smtpPass.trim()) {
+                    updates[SETTING_KEYS.smtpPass] = smtpPass.trim()
+                  }
+                  const ok = await saveSettings(updates, setSmtpLoading, setSmtpMsg)
+                  if (ok && smtpPass.trim()) {
+                    setSmtpPass("")
+                    setSmtpPassSet(true)
+                  }
+                }}
+              >
+                {smtpLoading ? "Kaydediliyor..." : "Mail Ayarlarini Kaydet"}
+              </Button>
             </div>
             <div className="space-y-4">
               <div className="flex items-center justify-between">

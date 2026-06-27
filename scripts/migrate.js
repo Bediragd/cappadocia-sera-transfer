@@ -24,6 +24,7 @@ const MIGRATIONS = [
   '009-add-settings-keys.sql',
   '010-create-push-subscriptions.sql',
   '011-add-notify-qa-setting.sql',
+  '012-add-smtp-settings.sql',
 ];
 
 function buildConnectionString(rawUrl) {
