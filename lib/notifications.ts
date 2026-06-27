@@ -1,7 +1,7 @@
 import { getAllSettings, parseBool } from '@/lib/site-settings'
 import { SETTING_KEYS } from '@/lib/settings-utils'
 import { sendPushToAdmins } from '@/lib/push'
-import { sendAdminEmail, adminPanelUrl } from '@/lib/email'
+import { sendAdminEmail, adminPanelUrl, isEmailConfigured } from '@/lib/email'
 
 export type NotificationType = 'booking' | 'driver_application' | 'contact' | 'qa'
 
@@ -108,7 +108,8 @@ export async function notifyAdmin(type: NotificationType, payload: Record<string
   if (!(await shouldNotify(type))) return
 
   const settings = await getAllSettings()
-  const adminEmail = settings[SETTING_KEYS.siteEmail]?.trim()
+  const siteEmail = settings[SETTING_KEYS.siteEmail]?.trim()
+  const companyName = settings[SETTING_KEYS.companyName]?.trim() || 'Cappadocia Sera Transfer'
   const content = buildContent(type, payload)
   const link = adminPanelUrl(content.url)
   const details = buildEmailDetails(type, payload)
@@ -125,15 +126,17 @@ export async function notifyAdmin(type: NotificationType, payload: Record<string
       .catch((err) => console.error('[push] hata:', err))
   )
 
-  if (adminEmail) {
+  if (siteEmail && isEmailConfigured(siteEmail)) {
     tasks.push(
       sendAdminEmail({
-        to: adminEmail,
+        to: siteEmail,
+        fromEmail: siteEmail,
+        fromName: companyName,
         subject: `[Admin] ${content.title}`,
         text: `${content.body}\n\n${details.join('\n')}\n\nAdmin panel: ${link}`,
         html: buildEmailHtml(content, details, link),
       }).then((ok) => {
-        if (ok) console.info(`[email] ${adminEmail} adresine mail gonderildi (${type})`)
+        if (ok) console.info(`[email] ${siteEmail} adresine mail gonderildi (${type})`)
       })
     )
   }

@@ -378,7 +378,7 @@ export default function SettingsPage() {
               Bildirim Ayarlari
             </CardTitle>
             <CardDescription>
-              Yeni kayitlarda hem cihaza push hem de admin e-postasina bildirim gonderilir
+              Yeni kayitlarda cihaza push + Ayarlar&apos;daki site e-postasina mail gider
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -409,7 +409,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium">Yeni Rezervasyon</p>
-                  <p className="text-sm text-muted-foreground">Push + e-posta ({siteEmail || "site e-postasi"})</p>
+                  <p className="text-sm text-muted-foreground">Push + site e-postasi ({siteEmail || "Genel ayarlardan"})</p>
                 </div>
                 <Switch checked={notifyBooking} onCheckedChange={setNotifyBooking} />
               </div>
