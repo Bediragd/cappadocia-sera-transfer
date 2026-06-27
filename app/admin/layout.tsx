@@ -50,7 +50,16 @@ export default function AdminLayout({
   const pathname = usePathname()
   const isLoginPage = pathname === "/admin/login"
 
-  function handleLogout() {
+  async function handleLogout() {
+    try {
+      await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "logout" }),
+      })
+    } catch {
+      // sunucu hatasi olsa bile yerel oturumu temizle
+    }
     localStorage.removeItem("admin_user")
     router.replace("/admin/login")
   }

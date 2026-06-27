@@ -3,9 +3,11 @@ import { sql } from '@/lib/db'
 import { bookingSchema } from '@/lib/validations'
 import { nanoid } from 'nanoid'
 import { notifyAdmin } from '@/lib/notifications'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
     const limit = parseInt(searchParams.get('limit') || '50')

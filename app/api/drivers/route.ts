@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 export async function GET() {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const drivers = await sql`
       SELECT
         id, status, full_name, email, phone, city,
@@ -20,6 +22,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const body = await request.json()
     const {
       fullName,

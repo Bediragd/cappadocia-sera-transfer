@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id } = await params
     const applications = await sql`SELECT * FROM driver_applications WHERE id = ${id}`
 
@@ -25,6 +27,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id } = await params
     const body = await request.json()
     const { status, notes } = body
@@ -58,6 +61,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id } = await params
     await sql`DELETE FROM driver_applications WHERE id = ${id}`
     return NextResponse.json({ success: true })

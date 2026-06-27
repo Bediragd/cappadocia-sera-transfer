@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 const CACHE_MAX_AGE = 120 // 2 dk; araç listesi sık değişmez
 
@@ -19,6 +20,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const body = await request.json()
     const {
       name_tr, name_en, name_ru, name_hi, model,

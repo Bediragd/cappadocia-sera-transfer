@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 const CACHE_MAX_AGE = 300 // 5 dk; havalimanı listesi nadiren değişir
 
@@ -7,6 +8,8 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const includeAll = searchParams.get('all') === 'true'
+
+    if (includeAll && !(await requireAdmin())) return unauthorized()
 
     const airports = includeAll
       ? await sql`SELECT * FROM airports ORDER BY code ASC`
@@ -26,6 +29,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const body = await request.json()
     const { code, nameTr, nameEn, nameRu, nameHi, latitude, longitude, address } = body
 

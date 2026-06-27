@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id } = await params
     const body = await request.json()
 
@@ -40,6 +42,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id } = await params
     await sql`UPDATE airports SET is_active = false WHERE id = ${id}`
     return NextResponse.json({ success: true })

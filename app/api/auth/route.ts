@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 import crypto from 'crypto'
+import {
+  SESSION_COOKIE,
+  createSession,
+  deleteSession,
+  sessionCookieOptions,
+  clearedCookieOptions,
+  requireAdmin,
+} from '@/lib/auth'
 
 // Basit hash fonksiyonu (Production'da bcrypt kullanın!)
 function hashPassword(password: string): string {
@@ -29,14 +37,28 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Geçersiz email veya şifre' }, { status: 401 })
       }
 
-      return NextResponse.json({
-        user: users[0],
-        message: 'Giriş başarılı',
-      })
+      const user = users[0] as { id: number; email: string; name: string; role: string }
+      const { token, expiresAt } = await createSession(user.id)
+
+      const response = NextResponse.json({ user, message: 'Giriş başarılı' })
+      response.cookies.set(SESSION_COOKIE, token, sessionCookieOptions(expiresAt))
+      return response
     }
 
-    // Şifre değiştir
+    // Logout
+    if (action === 'logout') {
+      const token = request.cookies.get(SESSION_COOKIE)?.value
+      if (token) await deleteSession(token)
+      const response = NextResponse.json({ message: 'Çıkış yapıldı' })
+      response.cookies.set(SESSION_COOKIE, '', clearedCookieOptions())
+      return response
+    }
+
+    // Şifre değiştir (giriş yapmış admin gerekli)
     if (action === 'change-password') {
+      if (!(await requireAdmin())) {
+        return NextResponse.json({ error: 'Yetkisiz erişim. Lütfen giriş yapın.' }, { status: 401 })
+      }
       if (!email || !currentPassword || !newPassword) {
         return NextResponse.json({ error: 'Tüm alanlar gerekli' }, { status: 400 })
       }
@@ -74,8 +96,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email ve şifre gerekli' }, { status: 400 })
     }
 
-    // Register (sadece admin oluşturma için - normal kullanıcılar otomatik kayıt yapmaz)
+    // Register (yalnızca giriş yapmış admin yeni admin oluşturabilir)
     if (action === 'register') {
+      const admin = await requireAdmin()
+      if (!admin) {
+        return NextResponse.json({ error: 'Yetkisiz erişim. Lütfen giriş yapın.' }, { status: 401 })
+      }
       // Check if user exists
       const existingUsers = await sql`SELECT id FROM users WHERE email = ${email}`
       if (existingUsers.length > 0) {

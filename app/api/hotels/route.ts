@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { sql } from "@/lib/db"
+import { requireAdmin, unauthorized } from "@/lib/auth"
 
 const CACHE_MAX_AGE = 120 // 2 dakika; otel listesi sık değişmez
 
@@ -13,6 +14,7 @@ export async function GET(request: Request) {
   try {
     // Admin: tüm oteller (pasifler dahil)
     if (includeAll) {
+      if (!(await requireAdmin())) return unauthorized()
       const hotels = await sql`SELECT * FROM popular_hotels ORDER BY name ASC`
       return NextResponse.json(hotels)
     }
@@ -72,6 +74,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const body = await request.json()
     const result = await sql`
       INSERT INTO popular_hotels (

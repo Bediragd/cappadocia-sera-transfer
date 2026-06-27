@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { sql } from "@/lib/db"
+import { requireAdmin, unauthorized } from "@/lib/auth"
 
 type Params = { params: Promise<{ id: string }> }
 
 export async function PATCH(request: NextRequest, { params }: Params) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id: idParam } = await params
     const id = parseInt(idParam, 10)
     if (!id) {
@@ -44,6 +46,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
 export async function DELETE(_request: NextRequest, { params }: Params) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id: idParam } = await params
     const id = parseInt(idParam, 10)
     if (!id) {

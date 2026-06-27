@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 const VALID_STATUS = ['pending', 'approved', 'rejected', 'inactive']
 
@@ -8,6 +9,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id } = await params
     const drivers = await sql`SELECT * FROM drivers WHERE id = ${id}`
     if (drivers.length === 0) {
@@ -25,6 +27,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id } = await params
     const body = await request.json()
 
@@ -66,6 +69,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id } = await params
     await sql`UPDATE bookings SET driver_id = NULL WHERE driver_id = ${id}`
     await sql`DELETE FROM drivers WHERE id = ${id}`

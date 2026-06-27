@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAllSettings, upsertSettings, invalidateSettingsCache } from '@/lib/site-settings'
 import { SETTING_KEYS } from '@/lib/settings-utils'
 import { locales, type Locale } from '@/i18n/config'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 const ALLOWED_KEYS = new Set<string>(Object.values(SETTING_KEYS))
 
@@ -30,6 +31,7 @@ function validateUpdates(updates: Record<string, string>): string | null {
 
 export async function GET() {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const settings = await getAllSettings()
     return NextResponse.json({ settings })
   } catch (error) {
@@ -40,6 +42,7 @@ export async function GET() {
 
 export async function PUT(request: NextRequest) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const body = await request.json()
     const updates = body.settings as Record<string, string> | undefined
 

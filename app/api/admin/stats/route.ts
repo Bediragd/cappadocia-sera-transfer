@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 export async function GET() {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const [
       bookingsCount,
       pendingBookings,

@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 import { driverApplicationSchema } from '@/lib/validations'
 import { notifyAdmin } from '@/lib/notifications'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 export async function GET() {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const applications = await sql`
       SELECT * FROM driver_applications ORDER BY created_at DESC
     `

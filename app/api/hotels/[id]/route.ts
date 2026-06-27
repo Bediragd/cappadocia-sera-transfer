@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { sql } from "@/lib/db"
+import { requireAdmin, unauthorized } from "@/lib/auth"
 
 const CACHE_MAX_AGE = 120
 
@@ -38,6 +39,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const body = await request.json()
     const { id } = await params
     const result = await sql`
@@ -82,6 +84,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const { id } = await params
     const result = await sql`
       UPDATE popular_hotels 

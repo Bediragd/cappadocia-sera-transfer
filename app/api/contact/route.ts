@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 import { contactSchema } from '@/lib/validations'
 import { notifyAdmin } from '@/lib/notifications'
+import { requireAdmin, unauthorized } from '@/lib/auth'
 
 export async function GET() {
   try {
+    if (!(await requireAdmin())) return unauthorized()
     const messages = await sql`
       SELECT * FROM contact_messages ORDER BY created_at DESC
     `
