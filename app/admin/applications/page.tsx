@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { UserPlus, Mail, Phone, Calendar, Car, MapPin, Check, X, Eye } from "lucide-react"
+import { UserPlus, Mail, Phone, Check, X, Eye, Trash2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -28,15 +28,15 @@ import { Label } from "@/components/ui/label"
 
 interface Application {
   id: number
-  full_name: string
+  name: string
   email: string
   phone: string
   experience_years: number
-  license_number: string
-  own_vehicle: boolean
+  license_type: string
+  has_own_vehicle: boolean
   vehicle_type: string | null
   city: string
-  address: string
+  message: string | null
   notes: string | null
   status: string
   created_at: string
@@ -49,6 +49,7 @@ export default function ApplicationsPage() {
   const [reviewingApplication, setReviewingApplication] = useState<Application | null>(null)
   const [actionType, setActionType] = useState<"approved" | "rejected" | null>(null)
   const [adminNotes, setAdminNotes] = useState("")
+  const [deleteTarget, setDeleteTarget] = useState<Application | null>(null)
 
   useEffect(() => {
     fetchApplications()
@@ -90,6 +91,16 @@ export default function ApplicationsPage() {
       fetchApplications()
     } catch (error) {
       console.error("Failed to update application:", error)
+    }
+  }
+
+  async function handleDelete(id: number) {
+    try {
+      await fetch(`/api/driver-applications/${id}`, { method: "DELETE" })
+      setDeleteTarget(null)
+      fetchApplications()
+    } catch (error) {
+      console.error("Failed to delete application:", error)
     }
   }
 
@@ -144,7 +155,7 @@ export default function ApplicationsPage() {
                   <div className="flex items-start justify-between">
                     <div className="space-y-1 flex-1">
                       <div className="flex items-center gap-2">
-                        <h3 className="font-medium text-foreground">{application.full_name}</h3>
+                        <h3 className="font-medium text-foreground">{application.name}</h3>
                         {getStatusBadge(application.status)}
                       </div>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -159,7 +170,7 @@ export default function ApplicationsPage() {
                       </div>
                       <p className="text-sm text-muted-foreground">
                         {application.experience_years} yıl tecrübe • {application.city}
-                        {application.own_vehicle && ` • Kendi aracı var (${application.vehicle_type})`}
+                        {application.has_own_vehicle && ` • Kendi aracı var (${application.vehicle_type})`}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -190,6 +201,14 @@ export default function ApplicationsPage() {
                           </Button>
                         </>
                       )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-rose-600"
+                        onClick={() => setDeleteTarget(application)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -204,7 +223,7 @@ export default function ApplicationsPage() {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Başvuru Detayı</DialogTitle>
-            <DialogDescription>{selectedApplication?.full_name}</DialogDescription>
+            <DialogDescription>{selectedApplication?.name}</DialogDescription>
           </DialogHeader>
           {selectedApplication && (
             <div className="space-y-4 py-4">
@@ -226,23 +245,25 @@ export default function ApplicationsPage() {
                   <p className="font-medium">{selectedApplication.experience_years} yıl</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Ehliyet No</p>
-                  <p className="font-medium">{selectedApplication.license_number || "-"}</p>
+                  <p className="text-sm text-muted-foreground">Ehliyet Sınıfı</p>
+                  <p className="font-medium">{selectedApplication.license_type || "-"}</p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Kendi Aracı</p>
-                  <p className="font-medium">{selectedApplication.own_vehicle ? "Evet" : "Hayır"}</p>
+                  <p className="font-medium">{selectedApplication.has_own_vehicle ? "Evet" : "Hayır"}</p>
                 </div>
-                {selectedApplication.own_vehicle && (
+                {selectedApplication.has_own_vehicle && (
                   <div>
                     <p className="text-sm text-muted-foreground">Araç Tipi</p>
                     <p className="font-medium">{selectedApplication.vehicle_type || "-"}</p>
                   </div>
                 )}
-                <div className="col-span-2">
-                  <p className="text-sm text-muted-foreground">Adres</p>
-                  <p className="font-medium">{selectedApplication.address || "-"}</p>
-                </div>
+                {selectedApplication.message && (
+                  <div className="col-span-2">
+                    <p className="text-sm text-muted-foreground">Mesaj</p>
+                    <p className="font-medium whitespace-pre-wrap">{selectedApplication.message}</p>
+                  </div>
+                )}
                 {selectedApplication.notes && (
                   <div className="col-span-2">
                     <p className="text-sm text-muted-foreground">Admin Notları</p>
@@ -292,7 +313,7 @@ export default function ApplicationsPage() {
               Başvuruyu {actionType === "approved" ? "Onayla" : "Reddet"}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              {reviewingApplication?.full_name} adlı kişinin başvurusunu {actionType === "approved" ? "onaylamak" : "reddetmek"} üzeresiniz.
+              {reviewingApplication?.name} adlı kişinin başvurusunu {actionType === "approved" ? "onaylamak" : "reddetmek"} üzeresiniz.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="py-4">
@@ -312,6 +333,28 @@ export default function ApplicationsPage() {
               className={actionType === "approved" ? "bg-emerald-600 hover:bg-emerald-700" : "bg-destructive hover:bg-destructive/90"}
             >
               {actionType === "approved" ? "Onayla" : "Reddet"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Başvuruyu Sil</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget?.name} adlı kişinin başvurusunu silmek istediğinizden emin misiniz?
+              Bu işlem geri alınamaz.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>İptal</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => deleteTarget && handleDelete(deleteTarget.id)}
+            >
+              Sil
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

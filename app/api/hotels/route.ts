@@ -8,8 +8,15 @@ export async function GET(request: Request) {
   const region = searchParams.get("region")
   const category = searchParams.get("category")
   const minRating = searchParams.get("minRating")
-  
+  const includeAll = searchParams.get("all") === "true"
+
   try {
+    // Admin: tüm oteller (pasifler dahil)
+    if (includeAll) {
+      const hotels = await sql`SELECT * FROM popular_hotels ORDER BY name ASC`
+      return NextResponse.json(hotels)
+    }
+
     // Filtreleri uygula
     if (region) {
       const hotels = await sql`

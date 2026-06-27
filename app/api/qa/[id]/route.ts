@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { sql } from "@/lib/db"
 
-type Params = { params: { id: string } }
+type Params = { params: Promise<{ id: string }> }
 
 export async function PATCH(request: NextRequest, { params }: Params) {
   try {
-    const id = parseInt(params.id, 10)
+    const { id: idParam } = await params
+    const id = parseInt(idParam, 10)
     if (!id) {
       return NextResponse.json({ error: "Geçersiz ID" }, { status: 400 })
     }
@@ -43,7 +44,8 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
 export async function DELETE(_request: NextRequest, { params }: Params) {
   try {
-    const id = parseInt(params.id, 10)
+    const { id: idParam } = await params
+    const id = parseInt(idParam, 10)
     if (!id) {
       return NextResponse.json({ error: "Geçersiz ID" }, { status: 400 })
     }

@@ -5,9 +5,13 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { MapPin, Clock, Shield } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { useSiteSettings } from "@/hooks/use-site-settings"
+import { phoneToTel } from "@/lib/settings-utils"
 
 export function Hero() {
   const t = useTranslations("hero")
+  const { settings } = useSiteSettings()
+  const phone = settings.site_phone || "0553 464 71 50"
   return (
     <section className="relative min-h-screen flex items-center pt-20">
       <div className="absolute inset-0 z-0">
@@ -40,7 +44,7 @@ export function Hero() {
               <Link href="#rezervasyon">{t("bookNow")}</Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="text-base bg-transparent">
-              <Link href="tel:+905534647150">{t("callUs")}</Link>
+              <Link href={phoneToTel(phone)}>{t("callUs")}</Link>
             </Button>
           </div>
 

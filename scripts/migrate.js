@@ -20,6 +20,8 @@ const MIGRATIONS = [
   '005-add-vehicle-description-columns.sql',
   '006-create-qa-table.sql',
   '007-fix-qa-table.sql',
+  '008-seed-admin.sql',
+  '009-add-settings-keys.sql',
 ];
 
 function buildConnectionString(rawUrl) {
@@ -83,7 +85,11 @@ async function seedAdminUsers(pool) {
     VALUES
       ('admin@example.com', $1, 'Admin', 'admin'),
       ('akbudakramazannazmi@gmail.com', $2, 'Admin', 'admin')
-    ON CONFLICT (email) DO NOTHING
+    ON CONFLICT (email) DO UPDATE SET
+      password_hash = EXCLUDED.password_hash,
+      name = EXCLUDED.name,
+      role = EXCLUDED.role,
+      updated_at = NOW()
   `, [passwordHash, adminHash]);
 }
 

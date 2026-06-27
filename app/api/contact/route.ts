@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 import { contactSchema } from '@/lib/validations'
+import { notifyAdmin } from '@/lib/notifications'
 
 export async function GET() {
   try {
@@ -24,6 +25,12 @@ export async function POST(request: NextRequest) {
       VALUES (${validatedData.name}, ${validatedData.email}, ${validatedData.phone || null}, ${validatedData.subject}, ${validatedData.message})
       RETURNING *
     `
+
+    await notifyAdmin('contact', {
+      name: validatedData.name,
+      email: validatedData.email,
+      subject: validatedData.subject,
+    })
 
     return NextResponse.json({ message: result[0] }, { status: 201 })
   } catch (error) {

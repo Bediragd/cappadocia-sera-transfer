@@ -1,33 +1,20 @@
-import Image from "next/image"
+"use client"
 
-const images = [
-  {
-    src: "/cappadocia-fairy-chimneys-sunrise-panorama.jpg",
-    alt: "Kapadokya Peri Bacaları Gündoğumu",
-  },
-  {
-    src: "/cappadocia-hot-air-balloons-sunrise.jpg",
-    alt: "Kapadokya Sıcak Hava Balonları",
-  },
-  {
-    src: "/goreme-valley-cappadocia-sunset.jpg",
-    alt: "Göreme Vadisi Gün Batımı",
-  },
-  {
-    src: "/uchisar-castle-cappadocia.jpg",
-    alt: "Uçhisar Kalesi",
-  },
-  {
-    src: "/cappadocia-cave-hotels-sunset.jpg",
-    alt: "Kapadokya Kaya Otelleri",
-  },
-  {
-    src: "/cappadocia-landscape-fairy-chimneys.jpg",
-    alt: "Kapadokya Manzarası",
-  },
-]
+import Image from "next/image"
+import { useSiteSettings } from "@/hooks/use-site-settings"
+import {
+  DEFAULT_GALLERY,
+  parseJsonSetting,
+  type GalleryItem,
+} from "@/lib/settings-utils"
 
 export function Gallery() {
+  const { settings } = useSiteSettings()
+  const images = parseJsonSetting<GalleryItem[]>(
+    settings.content_gallery,
+    DEFAULT_GALLERY
+  )
+
   return (
     <section id="galeri" className="py-20">
       <div className="container mx-auto px-4">

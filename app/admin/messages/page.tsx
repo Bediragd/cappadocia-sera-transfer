@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { MessageSquare, Mail, Phone, Calendar } from "lucide-react"
+import { MessageSquare, Mail, Phone, Calendar, Trash2, Reply } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -11,6 +12,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 interface Message {
   id: number
@@ -27,6 +38,7 @@ export default function MessagesPage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<Message | null>(null)
 
   useEffect(() => {
     fetchMessages()
@@ -41,6 +53,35 @@ export default function MessagesPage() {
       console.error("Failed to fetch messages:", error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function openMessage(message: Message) {
+    setSelectedMessage(message)
+    if (!message.is_read) {
+      try {
+        await fetch(`/api/contact/${message.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ isRead: true }),
+        })
+        setMessages((prev) =>
+          prev.map((m) => (m.id === message.id ? { ...m, is_read: true } : m))
+        )
+      } catch (error) {
+        console.error("Failed to mark message read:", error)
+      }
+    }
+  }
+
+  async function handleDelete(id: number) {
+    try {
+      await fetch(`/api/contact/${id}`, { method: "DELETE" })
+      setDeleteTarget(null)
+      setSelectedMessage(null)
+      setMessages((prev) => prev.filter((m) => m.id !== id))
+    } catch (error) {
+      console.error("Failed to delete message:", error)
     }
   }
 
@@ -74,11 +115,13 @@ export default function MessagesPage() {
               messages.map((message) => (
                 <div
                   key={message.id}
-                  className="p-4 rounded-lg border border-border bg-card hover:bg-muted/50 cursor-pointer transition-colors"
-                  onClick={() => setSelectedMessage(message)}
+                  className="p-4 rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors"
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
+                  <div className="flex items-start justify-between gap-3">
+                    <div
+                      className="space-y-1 flex-1 cursor-pointer"
+                      onClick={() => openMessage(message)}
+                    >
                       <div className="flex items-center gap-2">
                         <h3 className="font-medium text-foreground">{message.name}</h3>
                         {!message.is_read && (
@@ -90,9 +133,19 @@ export default function MessagesPage() {
                         {message.message}
                       </p>
                     </div>
-                    <span className="text-xs text-muted-foreground whitespace-nowrap">
-                      {new Date(message.created_at).toLocaleDateString("tr-TR")}
-                    </span>
+                    <div className="flex flex-col items-end gap-2">
+                      <span className="text-xs text-muted-foreground whitespace-nowrap">
+                        {new Date(message.created_at).toLocaleDateString("tr-TR")}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-rose-600 h-8 w-8"
+                        onClick={() => setDeleteTarget(message)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))
@@ -131,10 +184,48 @@ export default function MessagesPage() {
               <div className="p-4 rounded-lg bg-muted/50">
                 <p className="text-foreground whitespace-pre-wrap">{selectedMessage.message}</p>
               </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" asChild>
+                  <a href={`mailto:${selectedMessage.email}?subject=${encodeURIComponent("RE: " + selectedMessage.subject)}`}>
+                    <Reply className="w-4 h-4 mr-2" />
+                    E-posta ile Yanıtla
+                  </a>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="text-rose-600"
+                  onClick={() => setDeleteTarget(selectedMessage)}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Sil
+                </Button>
+              </div>
             </div>
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Mesajı Sil</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget?.name} adlı kişinin mesajını silmek istediğinizden emin misiniz?
+              Bu işlem geri alınamaz.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>İptal</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => deleteTarget && handleDelete(deleteTarget.id)}
+            >
+              Sil
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

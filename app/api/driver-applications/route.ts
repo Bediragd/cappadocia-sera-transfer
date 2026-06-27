@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 import { driverApplicationSchema } from '@/lib/validations'
+import { notifyAdmin } from '@/lib/notifications'
 
 export async function GET() {
   try {
@@ -31,6 +32,12 @@ export async function POST(request: NextRequest) {
       )
       RETURNING *
     `
+
+    await notifyAdmin('driver_application', {
+      name: validatedData.name,
+      email: validatedData.email,
+      city: validatedData.city,
+    })
 
     return NextResponse.json({ application: result[0] }, { status: 201 })
   } catch (error) {

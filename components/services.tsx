@@ -1,30 +1,28 @@
-import { Plane, Hotel, Users, Car } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+"use client"
 
-const services = [
-  {
-    icon: Plane,
-    title: "Havalimanı Transferi",
-    description: "Nevşehir ve Kayseri havalimanlarından otelinize güvenli transfer hizmeti.",
-  },
-  {
-    icon: Hotel,
-    title: "Otel Transferi",
-    description: "Otelinizden havalimanına zamanında ve konforlu ulaşım.",
-  },
-  {
-    icon: Users,
-    title: "VIP Transfer",
-    description: "Lüks araçlarla özel ve kişiye özel transfer deneyimi.",
-  },
-  {
-    icon: Car,
-    title: "Grup Transferi",
-    description: "Büyük gruplar için geniş araç filosuyla toplu transfer hizmeti.",
-  },
-]
+import { Plane, Hotel, Users, Car, type LucideIcon } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { useSiteSettings } from "@/hooks/use-site-settings"
+import {
+  DEFAULT_SERVICES,
+  parseJsonSetting,
+  type ServiceItem,
+} from "@/lib/settings-utils"
+
+const ICONS: Record<string, LucideIcon> = {
+  Plane,
+  Hotel,
+  Users,
+  Car,
+}
 
 export function Services() {
+  const { settings } = useSiteSettings()
+  const services = parseJsonSetting<ServiceItem[]>(
+    settings.content_services,
+    DEFAULT_SERVICES
+  )
+
   return (
     <section id="hizmetler" className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
@@ -37,17 +35,20 @@ export function Services() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service, index) => (
-            <Card key={index} className="bg-card border-border hover:shadow-lg transition-shadow">
-              <CardContent className="p-6 text-center">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <service.icon className="w-7 h-7 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold text-card-foreground mb-2">{service.title}</h3>
-                <p className="text-muted-foreground text-sm">{service.description}</p>
-              </CardContent>
-            </Card>
-          ))}
+          {services.map((service, index) => {
+            const Icon = ICONS[service.icon] || Car
+            return (
+              <Card key={index} className="bg-card border-border hover:shadow-lg transition-shadow">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <Icon className="w-7 h-7 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-card-foreground mb-2">{service.title}</h3>
+                  <p className="text-muted-foreground text-sm">{service.description}</p>
+                </CardContent>
+              </Card>
+            )
+          })}
         </div>
       </div>
     </section>

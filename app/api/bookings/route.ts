@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@/lib/db'
 import { bookingSchema } from '@/lib/validations'
 import { nanoid } from 'nanoid'
+import { notifyAdmin } from '@/lib/notifications'
 
 export async function GET(request: NextRequest) {
   try {
@@ -80,6 +81,13 @@ export async function POST(request: NextRequest) {
       )
       RETURNING *
     `
+
+    await notifyAdmin('booking', {
+      bookingNumber,
+      customerName: validatedData.customerName,
+      customerEmail: validatedData.customerEmail,
+      customerPhone: validatedData.customerPhone,
+    })
 
     return NextResponse.json({ booking: result[0], bookingNumber }, { status: 201 })
   } catch (error) {

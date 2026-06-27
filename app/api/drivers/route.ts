@@ -4,7 +4,10 @@ import { sql } from '@/lib/db'
 export async function GET() {
   try {
     const drivers = await sql`
-      SELECT id, status, full_name as name, email, phone, city, license_number, own_vehicle, vehicle_type, notes, created_at
+      SELECT
+        id, status, full_name, email, phone, city,
+        license_number, own_vehicle, vehicle_type, vehicle_plate,
+        experience_years, notes, created_at
       FROM drivers
       ORDER BY full_name ASC
     `
@@ -18,11 +21,37 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, phone, email, licenseNumber } = body
+    const {
+      fullName,
+      name,
+      phone,
+      email,
+      licenseNumber,
+      city,
+      vehicleType,
+      vehiclePlate,
+      experienceYears,
+      ownVehicle,
+      notes,
+      status,
+    } = body
+
+    const finalName = fullName || name
+
+    if (!finalName || !phone) {
+      return NextResponse.json({ error: 'Ad ve telefon zorunlu' }, { status: 400 })
+    }
 
     const result = await sql`
-      INSERT INTO drivers (full_name, phone, email, license_number)
-      VALUES (${name}, ${phone}, ${email}, ${licenseNumber || null})
+      INSERT INTO drivers (
+        full_name, phone, email, license_number, city,
+        vehicle_type, vehicle_plate, experience_years, own_vehicle, notes, status
+      )
+      VALUES (
+        ${finalName}, ${phone}, ${email || null}, ${licenseNumber || null}, ${city || null},
+        ${vehicleType || null}, ${vehiclePlate || null}, ${experienceYears || 0},
+        ${ownVehicle ?? false}, ${notes || null}, ${status || 'approved'}
+      )
       RETURNING *
     `
 

@@ -6,11 +6,16 @@ import { Menu, X, Phone } from "lucide-react"
 import { useTranslations, useLocale } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { useSiteSettings } from "@/hooks/use-site-settings"
+import { phoneToTel } from "@/lib/settings-utils"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const t = useTranslations()
   const locale = useLocale()
+  const { settings } = useSiteSettings()
+  const phone = settings.site_phone || "0553 464 71 50"
+  const telHref = phoneToTel(phone)
 
   const navItems = [
     { href: "#hizmetler", label: t("nav.services") },
@@ -49,9 +54,9 @@ export function Header() {
 
           <div className="hidden md:flex items-center gap-4">
             <LanguageSwitcher currentLocale={locale} />
-            <a href="tel:+905534647150" className="flex items-center gap-2 text-sm font-medium text-foreground">
+            <a href={telHref} className="flex items-center gap-2 text-sm font-medium text-foreground">
               <Phone className="w-4 h-4" />
-              <span>0553 464 71 50</span>
+              <span>{phone}</span>
             </a>
             <Button asChild>
               <Link href="#rezervasyon">{t("nav.booking")}</Link>
@@ -79,9 +84,9 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
-              <a href="tel:+905534647150" className="flex items-center gap-2 text-sm font-medium text-foreground">
+              <a href={telHref} className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Phone className="w-4 h-4" />
-                <span>0553 464 71 50</span>
+                <span>{phone}</span>
               </a>
               <Button asChild className="w-full">
                 <Link href="#rezervasyon">{t("nav.booking")}</Link>

@@ -16,6 +16,9 @@ import {
   LogOut,
   UserPlus,
   HelpCircle,
+  Hotel,
+  Plane,
+  FileText,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -26,8 +29,11 @@ const sidebarItems = [
   { href: "/admin/vehicles", label: "Araclar", icon: Car },
   { href: "/admin/drivers", label: "Soforler", icon: Users },
   { href: "/admin/applications", label: "Basvurular", icon: UserPlus },
+  { href: "/admin/hotels", label: "Oteller", icon: Hotel },
+  { href: "/admin/airports", label: "Havalimanlari", icon: Plane },
   { href: "/admin/messages", label: "Mesajlar", icon: MessageSquare },
   { href: "/admin/questions", label: "Sorular", icon: HelpCircle },
+  { href: "/admin/content", label: "Site Icerigi", icon: FileText },
   { href: "/admin/settings", label: "Ayarlar", icon: Settings },
 ]
 
@@ -40,8 +46,14 @@ export default function AdminLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [isAuthorized, setIsAuthorized] = useState(false)
+  const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null)
   const pathname = usePathname()
   const isLoginPage = pathname === "/admin/login"
+
+  function handleLogout() {
+    localStorage.removeItem("admin_user")
+    router.replace("/admin/login")
+  }
 
   useEffect(() => {
     if (isLoginPage) {
@@ -59,11 +71,12 @@ export default function AdminLayout({
 
       const user = JSON.parse(stored)
 
-      if (!user || user.role !== "admin") {
+      if (!user || !["admin", "super_admin"].includes(user.role)) {
         router.replace("/admin/login")
         return
       }
 
+      setAdminUser({ email: user.email, name: user.name })
       setIsAuthorized(true)
     } catch {
       router.replace("/admin/login")
@@ -145,14 +158,21 @@ export default function AdminLayout({
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-border">
+          <div className="p-4 border-t border-border space-y-1">
             <Link
               href="/"
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
             >
-              <LogOut className="w-5 h-5" />
               Siteye Don
             </Link>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex w-full items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
+            >
+              <LogOut className="w-5 h-5" />
+              Cikis Yap
+            </button>
           </div>
         </div>
       </aside>
@@ -170,8 +190,16 @@ export default function AdminLayout({
             <Menu className="w-5 h-5" />
           </Button>
           <div className="flex-1" />
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">Admin</span>
+          <div className="flex items-center gap-3">
+            {adminUser && (
+              <span className="hidden sm:inline text-sm text-muted-foreground truncate max-w-[200px]">
+                {adminUser.email}
+              </span>
+            )}
+            <Button variant="outline" size="sm" onClick={handleLogout}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Cikis
+            </Button>
           </div>
         </header>
 

@@ -11,38 +11,46 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { contactSchema, type ContactFormData } from "@/lib/validations"
-
-const contactInfo = [
-  {
-    icon: Phone,
-    titleKey: "phone",
-    content: "0553 464 71 50",
-    href: "tel:+905534647150",
-  },
-  {
-    icon: MessageCircle,
-    titleKey: "whatsapp",
-    content: "0553 464 71 50",
-    href: "https://wa.me/905534647150",
-  },
-  {
-    icon: Mail,
-    titleKey: "email",
-    content: "info@cappadociaseratransfer.com",
-    href: "mailto:info@cappadociaseratransfer.com",
-  },
-  {
-    icon: MapPin,
-    titleKey: "address",
-    content: "Goreme, Nevsehir, Turkiye",
-    href: "https://maps.google.com/?q=Goreme,Nevsehir,Turkey",
-  },
-]
+import { useSiteSettings } from "@/hooks/use-site-settings"
+import { phoneToTel, phoneToWhatsApp } from "@/lib/settings-utils"
 
 export function Contact() {
   const t = useTranslations()
+  const { settings } = useSiteSettings()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const phone = settings.site_phone || "0553 464 71 50"
+  const email = settings.site_email || "info@cappadociaseratransfer.com"
+  const address = settings.site_address || "Nevsehir, Turkiye"
+  const whatsapp = settings.site_whatsapp || phoneToWhatsApp(phone)
+
+  const contactInfo = [
+    {
+      icon: Phone,
+      titleKey: "phone",
+      content: phone,
+      href: phoneToTel(phone),
+    },
+    {
+      icon: MessageCircle,
+      titleKey: "whatsapp",
+      content: phone,
+      href: `https://wa.me/${whatsapp}`,
+    },
+    {
+      icon: Mail,
+      titleKey: "email",
+      content: email,
+      href: `mailto:${email}`,
+    },
+    {
+      icon: MapPin,
+      titleKey: "address",
+      content: address,
+      href: `https://maps.google.com/?q=${encodeURIComponent(address)}`,
+    },
+  ]
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -227,13 +235,13 @@ export function Contact() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild>
-              <a href="https://wa.me/905534647150" target="_blank" rel="noopener noreferrer">
+              <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 {t("hero.whatsapp")}
               </a>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <a href="tel:+905534647150">
+              <a href={phoneToTel(phone)}>
                 <Phone className="w-5 h-5 mr-2" />
                 {t("hero.callUs")}
               </a>

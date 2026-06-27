@@ -47,9 +47,16 @@ interface Booking {
   status: string
   payment_status: string
   vehicle_name: string
+  driver_id: number | null
   driver_name: string | null
   created_at: string
   notes: string | null
+}
+
+interface DriverOption {
+  id: number
+  full_name: string
+  status: string
 }
 
 export default function BookingsPage() {
@@ -59,10 +66,28 @@ export default function BookingsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
   const [deleteBooking, setDeleteBooking] = useState<Booking | null>(null)
+  const [drivers, setDrivers] = useState<DriverOption[]>([])
 
   useEffect(() => {
     fetchBookings()
   }, [statusFilter])
+
+  useEffect(() => {
+    fetchDrivers()
+  }, [])
+
+  async function fetchDrivers() {
+    try {
+      const response = await fetch("/api/drivers")
+      const data = await response.json()
+      const list: DriverOption[] = (data.drivers || []).filter(
+        (d: DriverOption) => d.status === "approved"
+      )
+      setDrivers(list)
+    } catch (error) {
+      console.error("Failed to fetch drivers:", error)
+    }
+  }
 
   async function fetchBookings() {
     try {
@@ -100,6 +125,47 @@ export default function BookingsPage() {
     } catch (error) {
       console.error("Failed to delete booking:", error)
     }
+  }
+
+  async function assignDriver(bookingId: number, driverId: string) {
+    const id = driverId === "none" ? null : Number(driverId)
+    try {
+      await fetch(`/api/bookings/${bookingId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ driverId: id }),
+      })
+      const driverName = id ? drivers.find((d) => d.id === id)?.full_name ?? null : null
+      setSelectedBooking((prev) =>
+        prev && prev.id === bookingId ? { ...prev, driver_id: id, driver_name: driverName } : prev
+      )
+      fetchBookings()
+    } catch (error) {
+      console.error("Failed to assign driver:", error)
+    }
+  }
+
+  async function updatePayment(bookingId: number, paymentStatus: string) {
+    try {
+      await fetch(`/api/bookings/${bookingId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentStatus }),
+      })
+      setSelectedBooking((prev) =>
+        prev && prev.id === bookingId ? { ...prev, payment_status: paymentStatus } : prev
+      )
+      fetchBookings()
+    } catch (error) {
+      console.error("Failed to update payment:", error)
+    }
+  }
+
+  async function updateStatusInline(bookingId: number, status: string) {
+    await updateStatus(bookingId, status)
+    setSelectedBooking((prev) =>
+      prev && prev.id === bookingId ? { ...prev, status } : prev
+    )
   }
 
   const filteredBookings = bookings.filter(
@@ -347,17 +413,72 @@ export default function BookingsPage() {
                     {selectedBooking.total_price?.toLocaleString("tr-TR")} TL
                   </p>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Sofor</p>
-                  <p className="font-medium">{selectedBooking.driver_name || "Atanmadi"}</p>
-                </div>
               </div>
+
               {selectedBooking.notes && (
                 <div>
                   <p className="text-sm text-muted-foreground">Notlar</p>
-                  <p className="font-medium">{selectedBooking.notes}</p>
+                  <p className="font-medium whitespace-pre-wrap">{selectedBooking.notes}</p>
                 </div>
               )}
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-border">
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">Durum</p>
+                  <Select
+                    value={selectedBooking.status}
+                    onValueChange={(value) => updateStatusInline(selectedBooking.id, value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pending">Bekliyor</SelectItem>
+                      <SelectItem value="confirmed">Onaylandi</SelectItem>
+                      <SelectItem value="in_progress">Devam Ediyor</SelectItem>
+                      <SelectItem value="completed">Tamamlandi</SelectItem>
+                      <SelectItem value="cancelled">Iptal</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">Odeme</p>
+                  <Select
+                    value={selectedBooking.payment_status}
+                    onValueChange={(value) => updatePayment(selectedBooking.id, value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pending">Odenmedi</SelectItem>
+                      <SelectItem value="paid">Odendi</SelectItem>
+                      <SelectItem value="refunded">Iade Edildi</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">Sofor</p>
+                  <Select
+                    value={selectedBooking.driver_id ? String(selectedBooking.driver_id) : "none"}
+                    onValueChange={(value) => assignDriver(selectedBooking.id, value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sofor sec" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Atanmadi</SelectItem>
+                      {drivers.map((driver) => (
+                        <SelectItem key={driver.id} value={String(driver.id)}>
+                          {driver.full_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </div>
           )}
         </DialogContent>

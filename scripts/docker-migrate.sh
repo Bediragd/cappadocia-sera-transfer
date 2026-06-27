@@ -16,7 +16,9 @@ for f in scripts/001-create-tables.sql \
          scripts/004-add-capacity-vehicles.sql \
          scripts/005-add-vehicle-description-columns.sql \
          scripts/006-create-qa-table.sql \
-         scripts/007-fix-qa-table.sql; do
+         scripts/007-fix-qa-table.sql \
+         scripts/008-seed-admin.sql \
+         scripts/009-add-settings-keys.sql; do
   if [ ! -f "$f" ]; then
     echo "⏭️  Atlandı: $f"
     continue
