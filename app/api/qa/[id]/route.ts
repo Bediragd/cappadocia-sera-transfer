@@ -15,6 +15,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     const body = await request.json()
     const answer = body.answer?.toString().trim() || null
+    const hasAnswer = answer !== null && answer.length > 0
     let rating: number | null = null
     if (body.rating != null) {
       const num = Number(body.rating)
@@ -28,7 +29,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
       SET
         answer = ${answer},
         rating = ${rating},
-        answered_at = CASE WHEN ${answer} IS NOT NULL THEN NOW() ELSE answered_at END
+        answered_at = CASE WHEN ${hasAnswer} THEN NOW() ELSE answered_at END
       WHERE id = ${id}
       RETURNING id, username, question, answer, rating, created_at, answered_at
     `
