@@ -16,6 +16,7 @@ export function Footer() {
   const phone = settings.site_phone || "0553 464 71 50"
   const email = settings.site_email || "info@cappadociaseratransfer.com"
   const address = settings.site_address || "Nevsehir, Turkiye"
+  const logoSrc = settings.site_logo || "/logo.png"
   const regions = parseJsonSetting<string[]>(settings.content_footer_regions, DEFAULT_FOOTER_REGIONS)
   const socials = [
     { url: settings.social_instagram, Icon: Instagram, label: "Instagram" },
@@ -29,7 +30,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src="/logo.png" alt="Cappadocia Sera Transfer" className="w-10 h-10 rounded-full object-cover" />
+              <img src={logoSrc} alt="Cappadocia Sera Transfer" className="w-10 h-10 rounded-full object-cover" />
               <div className="flex flex-col">
                 <span className="text-lg font-bold text-background tracking-tight">Cappadocia Sera</span>
                 <span className="text-xs text-background/60 -mt-1">TRANSFER</span>

@@ -18,6 +18,8 @@ export type PublicSiteSettings = {
   content_services?: string
   content_gallery?: string
   content_footer_regions?: string
+  site_logo?: string
+  site_favicon?: string
 }
 
 const FALLBACK: PublicSiteSettings = {
@@ -29,6 +31,8 @@ const FALLBACK: PublicSiteSettings = {
   enabled_locales: '["tr","en","ru","hi"]',
   payment_cash_enabled: "true",
   payment_online_enabled: "false",
+  site_logo: "/logo.png",
+  site_favicon: "/logo.png",
 }
 
 export function useSiteSettings() {

@@ -26,6 +26,13 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 
+interface ApplicationDocument {
+  key: string
+  label: string
+  path: string
+  filename: string
+}
+
 interface Application {
   id: number
   name: string
@@ -40,11 +47,28 @@ interface Application {
   notes: string | null
   status: string
   created_at: string
+  tc_kimlik?: string | null
+  vehicle_plate?: string | null
+  vehicle_brand?: string | null
+  vehicle_model?: string | null
+  vehicle_year?: string | null
+  documents?: string | null
+}
+
+function parseDocuments(raw: string | null | undefined): ApplicationDocument[] {
+  if (!raw) return []
+  try {
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
 }
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState<Application[]>([])
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState<string | null>(null)
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null)
   const [reviewingApplication, setReviewingApplication] = useState<Application | null>(null)
   const [actionType, setActionType] = useState<"approved" | "rejected" | null>(null)
@@ -57,11 +81,18 @@ export default function ApplicationsPage() {
 
   async function fetchApplications() {
     try {
-      const response = await fetch("/api/driver-applications")
+      setFetchError(null)
+      const response = await fetch("/api/driver-applications", { cache: "no-store" })
       const data = await response.json()
+      if (!response.ok) {
+        setFetchError(data.error || "Basvurular yuklenemedi")
+        setApplications([])
+        return
+      }
       setApplications(data.applications || [])
     } catch (error) {
       console.error("Failed to fetch applications:", error)
+      setFetchError("Basvurular yuklenemedi")
     } finally {
       setLoading(false)
     }
@@ -143,6 +174,11 @@ export default function ApplicationsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {fetchError && (
+            <p className="mb-4 p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
+              {fetchError}
+            </p>
+          )}
           <div className="space-y-4">
             {applications.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">Henüz başvuru yok</p>
@@ -169,8 +205,11 @@ export default function ApplicationsPage() {
                         </span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        {application.experience_years} yıl tecrübe • {application.city}
-                        {application.has_own_vehicle && ` • Kendi aracı var (${application.vehicle_type})`}
+                        {application.vehicle_plate
+                          ? `${application.vehicle_plate} • ${application.vehicle_brand || ""} ${application.vehicle_model || ""} ${application.vehicle_year || ""}`.trim()
+                          : `${application.experience_years} yıl tecrübe • ${application.city}`}
+                        {application.has_own_vehicle && application.vehicle_type && !application.vehicle_plate &&
+                          ` • ${application.vehicle_type}`}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -237,6 +276,22 @@ export default function ApplicationsPage() {
                   <p className="font-medium">{selectedApplication.phone}</p>
                 </div>
                 <div>
+                  <p className="text-sm text-muted-foreground">T.C. Kimlik</p>
+                  <p className="font-medium">{selectedApplication.tc_kimlik || "-"}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Plaka</p>
+                  <p className="font-medium">{selectedApplication.vehicle_plate || "-"}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Araç</p>
+                  <p className="font-medium">
+                    {[selectedApplication.vehicle_brand, selectedApplication.vehicle_model, selectedApplication.vehicle_year]
+                      .filter(Boolean)
+                      .join(" ") || selectedApplication.vehicle_type || "-"}
+                  </p>
+                </div>
+                <div>
                   <p className="text-sm text-muted-foreground">Şehir</p>
                   <p className="font-medium">{selectedApplication.city}</p>
                 </div>
@@ -260,8 +315,26 @@ export default function ApplicationsPage() {
                 )}
                 {selectedApplication.message && (
                   <div className="col-span-2">
-                    <p className="text-sm text-muted-foreground">Mesaj</p>
+                    <p className="text-sm text-muted-foreground">Not</p>
                     <p className="font-medium whitespace-pre-wrap">{selectedApplication.message}</p>
+                  </div>
+                )}
+                {parseDocuments(selectedApplication.documents).length > 0 && (
+                  <div className="col-span-2">
+                    <p className="text-sm text-muted-foreground mb-2">Belgeler</p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      {parseDocuments(selectedApplication.documents).map((doc) => (
+                        <a
+                          key={doc.key}
+                          href={doc.path}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-primary hover:underline border border-border rounded-md p-2"
+                        >
+                          {doc.label}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 )}
                 {selectedApplication.notes && (

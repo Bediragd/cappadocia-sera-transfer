@@ -40,6 +40,8 @@ const DEFAULTS: Record<string, string> = {
   [SETTING_KEYS.contentServices]: JSON.stringify(DEFAULT_SERVICES),
   [SETTING_KEYS.contentGallery]: JSON.stringify(DEFAULT_GALLERY),
   [SETTING_KEYS.contentFooterRegions]: JSON.stringify(DEFAULT_FOOTER_REGIONS),
+  [SETTING_KEYS.siteLogo]: '/logo.png',
+  [SETTING_KEYS.siteFavicon]: '/logo.png',
 }
 
 export type SiteSettings = Record<string, string>

@@ -28,6 +28,8 @@ export const SETTING_KEYS = {
   contentServices: 'content_services',
   contentGallery: 'content_gallery',
   contentFooterRegions: 'content_footer_regions',
+  siteLogo: 'site_logo',
+  siteFavicon: 'site_favicon',
 } as const
 
 export const PUBLIC_SETTING_KEYS = [
@@ -46,6 +48,8 @@ export const PUBLIC_SETTING_KEYS = [
   SETTING_KEYS.contentServices,
   SETTING_KEYS.contentGallery,
   SETTING_KEYS.contentFooterRegions,
+  SETTING_KEYS.siteLogo,
+  SETTING_KEYS.siteFavicon,
 ] as const
 
 export type ServiceItem = { icon: string; title: string; description: string }

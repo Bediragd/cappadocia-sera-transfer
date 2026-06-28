@@ -3,6 +3,11 @@ import { sql } from '@/lib/db'
 import { driverApplicationSchema } from '@/lib/validations'
 import { notifyAdmin } from '@/lib/notifications'
 import { requireAdmin, unauthorized } from '@/lib/auth'
+import {
+  saveApplicationDocuments,
+  validateRequiredDocuments,
+  REQUIRED_DOC_KEYS,
+} from '@/lib/driver-application-upload'
 
 export async function GET() {
   try {
@@ -17,8 +22,91 @@ export async function GET() {
   }
 }
 
+async function handleFormDataSubmit(request: NextRequest) {
+  const formData = await request.formData()
+
+  const adSoyad = String(formData.get('adSoyad') || '').trim()
+  const email = String(formData.get('email') || '').trim()
+  const telefon = String(formData.get('telefon') || '').trim()
+  const tcKimlik = String(formData.get('tcKimlik') || '').trim()
+  const plaka = String(formData.get('plaka') || '').trim()
+  const aracMarka = String(formData.get('aracMarka') || '').trim()
+  const aracModel = String(formData.get('aracModel') || '').trim()
+  const aracYil = String(formData.get('aracYil') || '').trim()
+  const kvkkOnay = formData.get('kvkkOnay') === 'true'
+
+  if (!kvkkOnay) {
+    return NextResponse.json({ error: 'KVKK onayi zorunludur' }, { status: 400 })
+  }
+
+  const files: Record<string, File> = {}
+  for (const key of REQUIRED_DOC_KEYS) {
+    const file = formData.get(key)
+    if (file instanceof File) files[key] = file
+  }
+
+  const docError = validateRequiredDocuments(files)
+  if (docError) {
+    return NextResponse.json({ error: docError }, { status: 400 })
+  }
+
+  const payload = {
+    name: adSoyad,
+    email,
+    phone: telefon,
+    experienceYears: 0,
+    licenseType: 'SRC + Ehliyet',
+    hasOwnVehicle: true,
+    vehicleType: `${aracMarka} ${aracModel}`.trim(),
+    city: 'Nevsehir',
+    message: `TC: ${tcKimlik} | Plaka: ${plaka}`,
+  }
+
+  const validated = driverApplicationSchema.parse(payload)
+
+  const [row] = await sql`
+    INSERT INTO driver_applications (
+      name, email, phone, experience_years, license_type,
+      has_own_vehicle, vehicle_type, city, message,
+      tc_kimlik, vehicle_plate, vehicle_brand, vehicle_model, vehicle_year
+    ) VALUES (
+      ${validated.name}, ${validated.email}, ${validated.phone},
+      ${validated.experienceYears}, ${validated.licenseType},
+      ${validated.hasOwnVehicle}, ${validated.vehicleType || null},
+      ${validated.city}, ${validated.message || null},
+      ${tcKimlik || null}, ${plaka || null}, ${aracMarka || null},
+      ${aracModel || null}, ${aracYil || null}
+    )
+    RETURNING id
+  `
+
+  const applicationId = Number(row.id)
+  const documents = await saveApplicationDocuments(applicationId, files)
+
+  await sql`
+    UPDATE driver_applications
+    SET documents = ${JSON.stringify(documents)}
+    WHERE id = ${applicationId}
+  `
+
+  await notifyAdmin('driver_application', {
+    name: validated.name,
+    email: validated.email,
+    city: validated.city,
+    vehicle: `${plaka} - ${aracMarka} ${aracModel}`,
+  })
+
+  return NextResponse.json({ application: { id: applicationId }, message: 'Basvuru alindi' }, { status: 201 })
+}
+
 export async function POST(request: NextRequest) {
   try {
+    const contentType = request.headers.get('content-type') || ''
+
+    if (contentType.includes('multipart/form-data')) {
+      return handleFormDataSubmit(request)
+    }
+
     const body = await request.json()
     const validatedData = driverApplicationSchema.parse(body)
 

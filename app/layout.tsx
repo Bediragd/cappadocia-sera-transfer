@@ -4,40 +4,36 @@ import { Playfair_Display, Inter } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, getLocale } from "next-intl/server"
+import { getPublicSettings } from "@/lib/site-settings"
+import { SETTING_KEYS } from "@/lib/settings-utils"
+import { appleIconUrl } from "@/lib/branding"
 import "./globals.css"
 
 const _playfair = Playfair_Display({ subsets: ["latin", "cyrillic"], variable: "--font-playfair" })
 const _inter = Inter({ subsets: ["latin", "cyrillic"], variable: "--font-inter" })
 
-export const metadata: Metadata = {
-  title: "Cappadocia Sera Transfer | Nevşehir Havalimanı Transfer",
-  description:
-    "Kapadokya ve Kayseri havalimanı transfer hizmetleri. Güvenli, konforlu ve zamanında otel transferi. 7/24 hizmet.",
-  generator: "v0.app",
-  keywords: [
-    "Kapadokya transfer",
-    "Nevşehir transfer",
-    "Kayseri havalimanı transfer",
-    "otel transfer",
-    "Cappadocia transfer",
-  ],
-  icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getPublicSettings()
+  const logo = settings[SETTING_KEYS.siteLogo] || "/logo.png"
+  const favicon = settings[SETTING_KEYS.siteFavicon] || logo
+  const apple = appleIconUrl(favicon)
+
+  return {
+    title: "Cappadocia Sera Transfer | Nevşehir Havalimanı Transfer",
+    description:
+      "Kapadokya ve Kayseri havalimanı transfer hizmetleri. Güvenli, konforlu ve zamanında otel transferi. 7/24 hizmet.",
+    keywords: [
+      "Kapadokya transfer",
+      "Nevşehir transfer",
+      "Kayseri havalimanı transfer",
+      "otel transfer",
+      "Cappadocia transfer",
     ],
-    apple: "/apple-icon.png",
-  },
+    icons: {
+      icon: [{ url: favicon, sizes: "32x32", type: "image/png" }],
+      apple: [{ url: apple, sizes: "180x180", type: "image/png" }],
+    },
+  }
 }
 
 export default async function RootLayout({

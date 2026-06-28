@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { AdminPushNotifications } from "@/components/admin-push-notifications"
 import { unsubscribeFromPush } from "@/lib/push-client"
+import { useSiteSettings } from "@/hooks/use-site-settings"
 
 const sidebarItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -51,6 +52,8 @@ export default function AdminLayout({
   const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null)
   const pathname = usePathname()
   const isLoginPage = pathname === "/admin/login"
+  const { settings } = useSiteSettings()
+  const logoSrc = settings.site_logo || "/logo.png"
 
   async function handleLogout() {
     try {
@@ -135,7 +138,7 @@ export default function AdminLayout({
           {/* Logo */}
           <div className="flex items-center justify-between h-16 px-4 border-b border-border">
             <Link href="/admin" className="flex items-center gap-2">
-              <img src="/logo.png" alt="Cappadocia Sera Transfer" className="w-8 h-8 rounded-full object-cover" />
+              <img src={logoSrc} alt="Cappadocia Sera Transfer" className="w-8 h-8 rounded-full object-cover" />
               <span className="font-bold text-foreground">Admin Panel</span>
             </Link>
             <button

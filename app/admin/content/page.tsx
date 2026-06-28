@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Share2, Image as ImageIcon, MapPin, Plus, Trash2, Languages } from "lucide-react"
+import { Share2, Image as ImageIcon, MapPin, Plus, Trash2, Languages, Upload } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -49,6 +49,12 @@ export default function ContentPage() {
   const [regionsLoading, setRegionsLoading] = useState(false)
   const [regionsMsg, setRegionsMsg] = useState<{ type: "error" | "success"; text: string } | null>(null)
 
+  const [siteLogo, setSiteLogo] = useState("/logo.png")
+  const [siteFavicon, setSiteFavicon] = useState("/logo.png")
+  const [brandLoading, setBrandLoading] = useState(false)
+  const [brandMsg, setBrandMsg] = useState<{ type: "error" | "success"; text: string } | null>(null)
+  const [brandVersion, setBrandVersion] = useState(0)
+
   useEffect(() => {
     try {
       if (!localStorage.getItem("admin_user")) {
@@ -70,6 +76,8 @@ export default function ContentPage() {
         setTwitter(s[SETTING_KEYS.socialTwitter] || "")
         setGallery(parseJsonSetting<GalleryItem[]>(s[SETTING_KEYS.contentGallery], DEFAULT_GALLERY))
         setRegions(parseJsonSetting<string[]>(s[SETTING_KEYS.contentFooterRegions], DEFAULT_FOOTER_REGIONS))
+        setSiteLogo(s[SETTING_KEYS.siteLogo] || "/logo.png")
+        setSiteFavicon(s[SETTING_KEYS.siteFavicon] || "/logo.png")
       })
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -101,6 +109,53 @@ export default function ContentPage() {
     }
   }
 
+  async function uploadBranding(file: File, type: "logo" | "favicon") {
+    setBrandLoading(true)
+    setBrandMsg(null)
+    try {
+      const form = new FormData()
+      form.append("file", file)
+      form.append("type", type)
+      const res = await fetch("/api/upload/branding", { method: "POST", body: form })
+      const data = await res.json()
+      if (!res.ok) {
+        setBrandMsg({ type: "error", text: data.error || "Yukleme basarisiz" })
+        return
+      }
+      if (data.site_logo) setSiteLogo(data.site_logo)
+      if (data.site_favicon) setSiteFavicon(data.site_favicon)
+      setBrandVersion((v) => v + 1)
+      setBrandMsg({ type: "success", text: data.message || "Yuklendi" })
+    } catch {
+      setBrandMsg({ type: "error", text: "Yukleme sirasinda hata olustu" })
+    } finally {
+      setBrandLoading(false)
+    }
+  }
+
+  async function faviconFromLogo() {
+    setBrandLoading(true)
+    setBrandMsg(null)
+    try {
+      const form = new FormData()
+      form.append("type", "from-logo")
+      form.append("logoPath", siteLogo)
+      const res = await fetch("/api/upload/branding", { method: "POST", body: form })
+      const data = await res.json()
+      if (!res.ok) {
+        setBrandMsg({ type: "error", text: data.error || "Favicon olusturulamadi" })
+        return
+      }
+      if (data.site_favicon) setSiteFavicon(data.site_favicon)
+      setBrandVersion((v) => v + 1)
+      setBrandMsg({ type: "success", text: data.message || "Favicon olusturuldu" })
+    } catch {
+      setBrandMsg({ type: "error", text: "Islem basarisiz" })
+    } finally {
+      setBrandLoading(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[40vh]">
@@ -115,6 +170,101 @@ export default function ContentPage() {
         <h1 className="text-2xl font-bold text-foreground">Site Icerigi</h1>
         <p className="text-muted-foreground">Ana sayfa bolumlerini ve sosyal medya baglantilarini duzenleyin</p>
       </div>
+
+      {/* Logo & Favicon */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Upload className="w-5 h-5" />
+            Logo ve Site Ikonu (Favicon)
+          </CardTitle>
+          <CardDescription>
+            Varsayilan: /logo.png. Logo yuklenince favicon otomatik olusturulur (32, 180, 192 px).
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {brandMsg && <Alert type={brandMsg.type} message={brandMsg.text} />}
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="space-y-3 p-4 rounded-lg border border-border">
+              <p className="font-medium text-sm">Site Logosu</p>
+              <p className="text-xs text-muted-foreground">Onerilen: kare, en az 256x256 px, max 2 MB</p>
+              <div className="flex items-center gap-4">
+                <img
+                  src={`${siteLogo}${siteLogo.includes("?") ? "&" : "?"}v=${brandVersion}`}
+                  alt="Logo"
+                  className="w-16 h-16 rounded-full object-cover border border-border"
+                />
+                <div>
+                  <input
+                    id="logo-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    disabled={brandLoading}
+                    onChange={(e) => {
+                      const f = e.target.files?.[0]
+                      if (f) uploadBranding(f, "logo")
+                      e.target.value = ""
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={brandLoading}
+                    onClick={() => document.getElementById("logo-upload")?.click()}
+                  >
+                    {brandLoading ? "Yukleniyor..." : "Logo Yukle"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-3 p-4 rounded-lg border border-border">
+              <p className="font-medium text-sm">Mini Ikon (Favicon)</p>
+              <p className="text-xs text-muted-foreground">Sekme ikonu: 32x32 | Apple: 180x180 (otomatik)</p>
+              <div className="flex items-center gap-4">
+                <img
+                  src={`${siteFavicon}${siteFavicon.includes("?") ? "&" : "?"}v=${brandVersion}`}
+                  alt="Favicon"
+                  className="w-10 h-10 rounded object-cover border border-border"
+                />
+                <div className="flex flex-col gap-2">
+                  <input
+                    id="favicon-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    disabled={brandLoading}
+                    onChange={(e) => {
+                      const f = e.target.files?.[0]
+                      if (f) uploadBranding(f, "favicon")
+                      e.target.value = ""
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={brandLoading}
+                    onClick={() => document.getElementById("favicon-upload")?.click()}
+                  >
+                    Ikon Yukle
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    disabled={brandLoading}
+                    onClick={faviconFromLogo}
+                  >
+                    Logodan Ikon Olustur
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Social */}
       <Card>

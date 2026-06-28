@@ -16,6 +16,7 @@ export function Header() {
   const { settings } = useSiteSettings()
   const phone = settings.site_phone || "0553 464 71 50"
   const telHref = phoneToTel(phone)
+  const logoSrc = settings.site_logo || "/logo.png"
 
   const navItems = [
     { href: "#hizmetler", label: t("nav.services") },
@@ -31,7 +32,7 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="Cappadocia Sera Transfer" className="w-10 h-10 rounded-full object-cover" />
+            <img src={logoSrc} alt="Cappadocia Sera Transfer" className="w-10 h-10 rounded-full object-cover" />
             <div className="flex flex-col">
               <span className="font-sans text-lg md:text-xl font-bold text-foreground tracking-tight">
                 Cappadocia Sera

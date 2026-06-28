@@ -79,7 +79,21 @@ export default function SoforBasvuruPage() {
   const [formData, setFormData] = useState<FormData>(initialFormData)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const [kvkkDialogOpen, setKvkkDialogOpen] = useState(false)
+
+  const FILE_FIELDS: (keyof FormData)[] = [
+    "ehliyetOn",
+    "ehliyetArka",
+    "aracOn",
+    "aracArka",
+    "aracSag",
+    "aracSol",
+    "aracIc",
+    "srcBelgesi",
+    "adliSicil",
+    "psikoteknik",
+  ]
 
   const handleInputChange = (field: keyof FormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -105,13 +119,57 @@ export default function SoforBasvuruPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitError(null)
+
+    if (!formData.kvkkOnay) {
+      setSubmitError("KVKK onayını işaretlemeniz gerekiyor.")
+      return
+    }
+
+    for (const field of FILE_FIELDS) {
+      const upload = formData[field] as FileUpload
+      if (!upload.file) {
+        setSubmitError("Lütfen tüm zorunlu belgeleri yükleyin.")
+        return
+      }
+    }
+
     setIsSubmitting(true)
 
-    // Simüle edilmiş form gönderimi - gerçek uygulamada API'ye gönderilecek
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      const body = new FormData()
+      body.append("adSoyad", formData.adSoyad.trim())
+      body.append("email", formData.email.trim())
+      body.append("telefon", formData.telefon.trim())
+      body.append("tcKimlik", formData.tcKimlik.trim())
+      body.append("plaka", formData.plaka.trim())
+      body.append("aracMarka", formData.aracMarka.trim())
+      body.append("aracModel", formData.aracModel.trim())
+      body.append("aracYil", formData.aracYil.trim())
+      body.append("kvkkOnay", "true")
 
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+      for (const field of FILE_FIELDS) {
+        const upload = formData[field] as FileUpload
+        if (upload.file) body.append(field, upload.file)
+      }
+
+      const res = await fetch("/api/driver-applications", {
+        method: "POST",
+        body,
+      })
+      const data = await res.json()
+
+      if (!res.ok) {
+        setSubmitError(data.error || "Başvuru gönderilemedi. Lütfen tekrar deneyin.")
+        return
+      }
+
+      setIsSubmitted(true)
+    } catch {
+      setSubmitError("Bağlantı hatası. Lütfen tekrar deneyin.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const FileUploadField = ({
@@ -494,6 +552,11 @@ export default function SoforBasvuruPage() {
 
             {/* Submit Button */}
             <div className="flex flex-col items-center gap-4">
+              {submitError && (
+                <div className="w-full max-w-md p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md text-center">
+                  {submitError}
+                </div>
+              )}
               <Button
                 type="submit"
                 size="lg"
