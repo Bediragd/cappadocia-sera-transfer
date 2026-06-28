@@ -157,16 +157,35 @@ export default function SoforBasvuruPage() {
         method: "POST",
         body,
       })
-      const data = await res.json()
+
+      let data: { error?: string } = {}
+      const contentType = res.headers.get("content-type") || ""
+      if (contentType.includes("application/json")) {
+        data = await res.json()
+      } else {
+        const text = await res.text()
+        if (res.status === 413) {
+          setSubmitError("Dosyalar cok buyuk. Her belge en fazla 5 MB olmali.")
+          return
+        }
+        console.error("Non-JSON response:", res.status, text.slice(0, 200))
+        setSubmitError(
+          res.ok
+            ? "Sunucu yaniti okunamadi. Lutfen tekrar deneyin."
+            : `Sunucu hatasi (${res.status}). Lutfen tekrar deneyin.`
+        )
+        return
+      }
 
       if (!res.ok) {
-        setSubmitError(data.error || "Başvuru gönderilemedi. Lütfen tekrar deneyin.")
+        setSubmitError(data.error || "Basvuru gonderilemedi. Lutfen tekrar deneyin.")
         return
       }
 
       setIsSubmitted(true)
-    } catch {
-      setSubmitError("Bağlantı hatası. Lütfen tekrar deneyin.")
+    } catch (error) {
+      console.error("Driver application submit failed:", error)
+      setSubmitError("Baglanti hatasi. Lutfen internet baglantinizi kontrol edip tekrar deneyin.")
     } finally {
       setIsSubmitting(false)
     }

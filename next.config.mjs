@@ -12,6 +12,9 @@ const nextConfig = {
   },
   output: 'standalone',
   serverExternalPackages: ['sharp'],
+  experimental: {
+    proxyClientMaxBodySize: '60mb',
+  },
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
