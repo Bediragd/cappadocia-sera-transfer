@@ -15,7 +15,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
 
@@ -487,83 +486,86 @@ export default function SoforBasvuruPage() {
                   <Checkbox
                     id="kvkk"
                     checked={formData.kvkkOnay}
-                    onCheckedChange={(checked) => handleInputChange("kvkkOnay", checked as boolean)}
+                    onCheckedChange={(checked) => handleInputChange("kvkkOnay", checked === true)}
                     className="mt-1"
                   />
-                  <div className="flex-1">
-                    <Label htmlFor="kvkk" className="text-sm text-muted-foreground cursor-pointer">
-                      <Dialog open={kvkkDialogOpen} onOpenChange={setKvkkDialogOpen}>
-                        <DialogTrigger asChild>
-                          <span className="text-primary hover:underline cursor-pointer">KVKK Aydınlatma Metni</span>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                          <DialogHeader>
-                            <DialogTitle>KVKK Aydınlatma Metni</DialogTitle>
-                            <DialogDescription>
-                              Kişisel Verilerin Korunması Kanunu Kapsamında Aydınlatma
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="space-y-4 text-sm text-muted-foreground">
-                            <p>
-                              <strong>1. Veri Sorumlusu</strong>
-                              <br />
-                              Cappadocia Sera Transfer olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında
-                              veri sorumlusu sıfatıyla kişisel verilerinizi işlemekteyiz.
-                            </p>
-                            <p>
-                              <strong>2. İşlenen Kişisel Veriler</strong>
-                              <br />
-                              Şoför başvuru sürecinde aşağıdaki kişisel verileriniz işlenmektedir:
-                            </p>
-                            <ul className="list-disc pl-6 space-y-1">
-                              <li>Kimlik bilgileri (Ad, soyad, T.C. kimlik numarası)</li>
-                              <li>İletişim bilgileri (Telefon, e-posta adresi)</li>
-                              <li>Ehliyet bilgileri ve görselleri</li>
-                              <li>Araç bilgileri ve görselleri</li>
-                              <li>SRC belgesi</li>
-                              <li>Adli sicil kaydı</li>
-                              <li>Psikoteknik raporu</li>
-                            </ul>
-                            <p>
-                              <strong>3. Kişisel Verilerin İşlenme Amaçları</strong>
-                              <br />
-                              Toplanan kişisel verileriniz; şoför başvurunuzun değerlendirilmesi, yasal yükümlülüklerin
-                              yerine getirilmesi, iş sözleşmesinin kurulması ve ifası, güvenli ulaşım hizmetinin
-                              sağlanması amaçlarıyla işlenmektedir.
-                            </p>
-                            <p>
-                              <strong>4. Kişisel Verilerin Aktarılması</strong>
-                              <br />
-                              Kişisel verileriniz, yasal zorunluluklar çerçevesinde kamu kurum ve kuruluşlarına, iş
-                              ortaklarımıza ve hizmet aldığımız üçüncü taraflara aktarılabilecektir.
-                            </p>
-                            <p>
-                              <strong>5. Kişisel Verilerin Toplanma Yöntemi</strong>
-                              <br />
-                              Kişisel verileriniz, bu başvuru formu aracılığıyla elektronik ortamda toplanmaktadır.
-                            </p>
-                            <p>
-                              <strong>6. Veri Sahibinin Hakları</strong>
-                              <br />
-                              KVKK&apos;nın 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme,
-                              işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve bunların amacına uygun
-                              kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında aktarıldığı üçüncü
-                              kişileri bilme, eksik veya yanlış işlenmiş olması halinde düzeltilmesini isteme,
-                              silinmesini veya yok edilmesini isteme haklarına sahipsiniz.
-                            </p>
-                            <p>
-                              <strong>7. İletişim</strong>
-                              <br />
-                              KVKK kapsamındaki taleplerinizi info@cappadociaseratransfer.com adresine iletebilirsiniz.
-                            </p>
-                          </div>
-                          <Button onClick={() => setKvkkDialogOpen(false)} className="mt-4">
-                            Anladım
-                          </Button>
-                        </DialogContent>
-                      </Dialog>
-                      &apos;ni okudum ve kişisel verilerimin belirtilen amaçlarla işlenmesini kabul ediyorum. *
-                    </Label>
+                  <div className="flex-1 text-sm text-muted-foreground">
+                    <button
+                      type="button"
+                      className="text-primary hover:underline cursor-pointer"
+                      onClick={() => setKvkkDialogOpen(true)}
+                    >
+                      KVKK Aydınlatma Metni
+                    </button>
+                    {" "}
+                    &apos;ni okudum ve kişisel verilerimin belirtilen amaçlarla işlenmesini kabul ediyorum. *
+                    <Dialog open={kvkkDialogOpen} onOpenChange={setKvkkDialogOpen}>
+                      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle>KVKK Aydınlatma Metni</DialogTitle>
+                          <DialogDescription>
+                            Kişisel Verilerin Korunması Kanunu Kapsamında Aydınlatma
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4 text-sm text-muted-foreground">
+                          <p>
+                            <strong>1. Veri Sorumlusu</strong>
+                            <br />
+                            Cappadocia Sera Transfer olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında
+                            veri sorumlusu sıfatıyla kişisel verilerinizi işlemekteyiz.
+                          </p>
+                          <p>
+                            <strong>2. İşlenen Kişisel Veriler</strong>
+                            <br />
+                            Şoför başvuru sürecinde aşağıdaki kişisel verileriniz işlenmektedir:
+                          </p>
+                          <ul className="list-disc pl-6 space-y-1">
+                            <li>Kimlik bilgileri (Ad, soyad, T.C. kimlik numarası)</li>
+                            <li>İletişim bilgileri (Telefon, e-posta adresi)</li>
+                            <li>Ehliyet bilgileri ve görselleri</li>
+                            <li>Araç bilgileri ve görselleri</li>
+                            <li>SRC belgesi</li>
+                            <li>Adli sicil kaydı</li>
+                            <li>Psikoteknik raporu</li>
+                          </ul>
+                          <p>
+                            <strong>3. Kişisel Verilerin İşlenme Amaçları</strong>
+                            <br />
+                            Toplanan kişisel verileriniz; şoför başvurunuzun değerlendirilmesi, yasal yükümlülüklerin
+                            yerine getirilmesi, iş sözleşmesinin kurulması ve ifası, güvenli ulaşım hizmetinin
+                            sağlanması amaçlarıyla işlenmektedir.
+                          </p>
+                          <p>
+                            <strong>4. Kişisel Verilerin Aktarılması</strong>
+                            <br />
+                            Kişisel verileriniz, yasal zorunluluklar çerçevesinde kamu kurum ve kuruluşlarına, iş
+                            ortaklarımıza ve hizmet aldığımız üçüncü taraflara aktarılabilecektir.
+                          </p>
+                          <p>
+                            <strong>5. Kişisel Verilerin Toplanma Yöntemi</strong>
+                            <br />
+                            Kişisel verileriniz, bu başvuru formu aracılığıyla elektronik ortamda toplanmaktadır.
+                          </p>
+                          <p>
+                            <strong>6. Veri Sahibinin Hakları</strong>
+                            <br />
+                            KVKK&apos;nın 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme,
+                            işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve bunların amacına uygun
+                            kullanılıp kullanılmadığını öğrenme, yurt içinde veya yurt dışında aktarıldığı üçüncü
+                            kişileri bilme, eksik veya yanlış işlenmiş olması halinde düzeltilmesini isteme,
+                            silinmesini veya yok edilmesini isteme haklarına sahipsiniz.
+                          </p>
+                          <p>
+                            <strong>7. İletişim</strong>
+                            <br />
+                            KVKK kapsamındaki taleplerinizi info@cappadociaseratransfer.com adresine iletebilirsiniz.
+                          </p>
+                        </div>
+                        <Button type="button" onClick={() => setKvkkDialogOpen(false)} className="mt-4">
+                          Anladım
+                        </Button>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </CardContent>
