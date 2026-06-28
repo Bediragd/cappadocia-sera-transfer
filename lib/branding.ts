@@ -1,21 +1,14 @@
-import sharp from 'sharp'
 import path from 'path'
 import { mkdir, readFile } from 'fs/promises'
+import { BRANDING_FILES, BRANDING_URLS } from '@/lib/branding-urls'
+
+export { BRANDING_URLS } from '@/lib/branding-urls'
 
 export const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads')
 
-export const BRANDING_FILES = {
-  logo: 'site-logo.png',
-  favicon32: 'favicon-32x32.png',
-  appleTouch: 'apple-touch-icon.png',
-  icon192: 'icon-192x192.png',
-} as const
-
-export const BRANDING_URLS = {
-  logo: `/uploads/${BRANDING_FILES.logo}`,
-  favicon32: `/uploads/${BRANDING_FILES.favicon32}`,
-  appleTouch: `/uploads/${BRANDING_FILES.appleTouch}`,
-} as const
+async function sharpModule() {
+  return (await import('sharp')).default
+}
 
 export async function ensureUploadDir() {
   await mkdir(UPLOAD_DIR, { recursive: true })
@@ -23,6 +16,7 @@ export async function ensureUploadDir() {
 
 /** Site logosu — max 512px, PNG */
 export async function saveLogo(buffer: Buffer): Promise<string> {
+  const sharp = await sharpModule()
   await ensureUploadDir()
   await sharp(buffer)
     .rotate()
@@ -34,6 +28,7 @@ export async function saveLogo(buffer: Buffer): Promise<string> {
 
 /** Favicon seti: 32x32, 180x180 (Apple), 192x192 (Android) */
 export async function saveFavicons(buffer: Buffer): Promise<string> {
+  const sharp = await sharpModule()
   await ensureUploadDir()
   const base = sharp(buffer).rotate()
 
@@ -63,9 +58,4 @@ export async function saveFaviconsFromLogoPath(logoPublicPath: string): Promise<
   const diskPath = path.join(process.cwd(), 'public', relative)
   const buffer = await readFile(diskPath)
   return saveFavicons(buffer)
-}
-
-export function appleIconUrl(faviconPath: string): string {
-  if (faviconPath.startsWith('/uploads/')) return BRANDING_URLS.appleTouch
-  return faviconPath
 }

@@ -6,7 +6,7 @@ import { NextIntlClientProvider } from "next-intl"
 import { getMessages, getLocale } from "next-intl/server"
 import { getPublicSettings } from "@/lib/site-settings"
 import { SETTING_KEYS } from "@/lib/settings-utils"
-import { appleIconUrl } from "@/lib/branding"
+import { appleIconUrl } from "@/lib/branding-urls"
 import "./globals.css"
 
 const _playfair = Playfair_Display({ subsets: ["latin", "cyrillic"], variable: "--font-playfair" })

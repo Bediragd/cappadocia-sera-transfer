@@ -19,6 +19,8 @@ RUN pnpm build
 FROM base AS runner
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+# sharp (logo/favicon isleme) icin Alpine'da libvips gerekli
+RUN apk add --no-cache vips
 RUN addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs
 

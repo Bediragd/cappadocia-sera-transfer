@@ -11,6 +11,7 @@ const nextConfig = {
     unoptimized: true,
   },
   output: 'standalone',
+  serverExternalPackages: ['sharp'],
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
