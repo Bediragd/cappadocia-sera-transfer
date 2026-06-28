@@ -126,11 +126,13 @@ async function handleFormDataSubmit(request: NextRequest) {
       )
     }
     if (isWriteError(error)) {
+      console.error('[driver-application] upload write failed:', error)
       return NextResponse.json(
         { error: 'Belgeler kaydedilemedi. public/uploads klasorunun yazilabilir oldugundan emin olun.' },
         { status: 500 }
       )
     }
+    console.error('[driver-application] unexpected error:', error)
     return NextResponse.json({ error: 'Basvuru kaydedilemedi. Lutfen tekrar deneyin.' }, { status: 500 })
   }
 }
